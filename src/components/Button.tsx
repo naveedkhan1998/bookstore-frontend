@@ -20,7 +20,7 @@ export const buttonStyles = cva(["transitions-colors"], {
         "w-10",
         "h-10",
         "flex",
-        "item-center",
+        "items-center",
         "justify-center",
         "p-2.5",
       ],

@@ -49,7 +49,7 @@ const PageHeader = () => {
         <div className="flex flex-grow max-w-[600px]">
           <input
             type="search"
-            placeholder="Search"
+            placeholder="Search Books"
             className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-1 px-4 text-lg w-full
             focus:border-blue-500 outline-none"
           />

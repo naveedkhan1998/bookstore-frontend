@@ -32,9 +32,17 @@ const Sidebar = () => {
         </div>
         <LargeSidebarSection visibleItemCount={3}>
           <LargeSidebarItem isActive Icon={Home} title="Home" url="/" />
-          <LargeSidebarItem Icon={ShoppingCart} title="Cart" url="/" />
-          <LargeSidebarItem Icon={UserCircle2Icon} title="Account" url="/" />
-          <LargeSidebarItem Icon={HistoryIcon} title="Order History" url="/" />
+          <LargeSidebarItem Icon={ShoppingCart} title="Cart" url="/cart" />
+          <LargeSidebarItem
+            Icon={UserCircle2Icon}
+            title="Account"
+            url="/account"
+          />
+          <LargeSidebarItem
+            Icon={HistoryIcon}
+            title="Order History"
+            url="/order-history"
+          />
         </LargeSidebarSection>
         <hr />
       </aside>
