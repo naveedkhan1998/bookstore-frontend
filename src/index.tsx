@@ -5,15 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
+import { DarkModeProvider } from "./context/DarkModeContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <DarkModeProvider>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </DarkModeProvider>
   </Provider>
 );
 
