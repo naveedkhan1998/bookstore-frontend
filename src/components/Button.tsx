@@ -5,8 +5,8 @@ import { twMerge } from "tailwind-merge";
 export const buttonStyles = cva(["transitions-colors"], {
   variants: {
     variant: {
-      default: ["bg-secondary", "hover:bg-secondary-hover"],
-      ghost: ["hover:bg-gray-100"],
+      default: ["bg-stone-300", "hover:bg-stone-400"],
+      ghost: ["hover:bg-stone-500"],
       dark: [
         "bg-secondary-dark",
         "hover:bg-secondary-dark-hover",
@@ -61,7 +61,7 @@ const Button = ({ number = 0, ...buttonProps }: NumberButtonProps) => {
       <div className="relative">
         <span>{buttonProps.children}</span>
         {number > 0 && (
-          <span className="absolute bottom-3 left-5 bg-slate-800 text-white rounded-full p-1 text-xs">
+          <span className="absolute bottom-3 left-5 bg-red-500 text-black rounded-full w-6 h-6 flex items-center justify-center p-2.5 ">
             {number}
           </span>
         )}

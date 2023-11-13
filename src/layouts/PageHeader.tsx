@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
 import file from "../assets/logo.png";
-import {
-  ArrowLeft,
-  Search,
-  ShoppingCart,
-  UserCircle2Icon,
-  MenuIcon,
-} from "lucide-react";
+import { ArrowLeft, Search, ShoppingCart, MenuIcon } from "lucide-react";
 import Button from "../components/Button";
 import { useSidebarContext } from "../context/SidebarContext";
+import ProfileMenu from "../components/ProfileMenu";
 
 const PageHeader = () => {
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
@@ -29,7 +24,7 @@ const PageHeader = () => {
   return (
     <div className="flex gap-10 lg:gap-20 justify-between p-2 mb-6 mx-4 mt-4">
       {/* <PageHeaderFirstSection hidden={showFullWidthSearch} /> */}
-      <PageHeaderFirstSection/>
+      <PageHeaderFirstSection />
       <form
         className={` gap-4 flex-grow justify-center ${
           showFullWidthSearch ? "flex" : "hidden md:flex"
@@ -62,7 +57,7 @@ const PageHeader = () => {
         </div>
       </form>
       <div
-        className={`flex-shrink-0 md:gap-2 ${
+        className={`flex-shrink-0 md:gap-3.5 xs:gap-4 ${
           showFullWidthSearch ? "hidden" : "flex"
         }`}
       >
@@ -77,8 +72,8 @@ const PageHeader = () => {
         <Button size={"icon"} variant={"ghost"} number={6}>
           <ShoppingCart />
         </Button>
-        <Button size={"icon"} variant={"ghost"}>
-          <UserCircle2Icon />
+        <Button size={"icon"} variant={"ghost"} >
+          <ProfileMenu />
         </Button>
       </div>
     </div>

@@ -25,9 +25,9 @@ const Sidebar = () => {
       <aside
         className={`w-56 h-full lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 ${
           isLargeOpen ? "lg:flex" : "lg:hidden"
-        } ${isSmallOpen ? "flex z-[999] bg-slate-200 max-h-screen" : "hidden"}`}
+        } ${isSmallOpen ? "flex z-[999] bg-stone-400 max-h-screen" : "hidden"}`}
       >
-        <div className="lg:hidden pt-2 pb-4 px2 sticky top-0 bg-slate-200">
+        <div className="lg:hidden pt-2 pb-4 px2 sticky top-0 bg-stone-400">
           <PageHeaderFirstSection />
         </div>
         <LargeSidebarSection visibleItemCount={3}>
@@ -78,11 +78,17 @@ function LargeSidebarSection({
       {showExpandButton && (
         <Button
           onClick={() => setIsExpanded((e) => !e)}
-          variant="default"
+          variant="ghost"
           className="w-full flex items-center rounded-lg gap-4 p-3"
         >
-          <ButtonIcon className="w-6 h-6"></ButtonIcon>
-          <div>{isExpanded ? "Show Less" : "Show More"}</div>
+          <div className="flex">
+            <div className="flex flex-col">
+              <ButtonIcon className="w-6 h-6"></ButtonIcon>
+            </div>
+            <div className="flex flex-col">
+              <div>{isExpanded ? "Show Less" : "Show More"}</div>
+            </div>
+          </div>
         </Button>
       )}
     </div>

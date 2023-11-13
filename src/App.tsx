@@ -12,11 +12,11 @@ function App() {
   return (
     <Router>
       <SidebarProvider>
-        <div className="max-h-screen flex flex-col bg-slate-200">
+        <div className="max-h-screen flex flex-col bg-stone-400">
           <PageHeader />
           <div className="grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto">
             <Sidebar />
-            <div className="overflow-x-hidden px-8 pb-4">
+            <div className="overflow-x-hidden px-8 pb-4 h-full">
               <Routes>
                 <Route path="/" element={<FetchTest />} />
                 <Route path="/cart" element={<FetchTest />} />
@@ -25,7 +25,9 @@ function App() {
               </Routes>
             </div>
           </div>
-          <Footer />
+          <div className=" bg-slate-800">
+            <Footer />
+          </div>
         </div>
       </SidebarProvider>
     </Router>
