@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useGetElixirsQuery } from "../services/harryPotterServices";
 import { Elixirs } from "../comman-types";
 import Button from "./Button";
-import { ArrowUp } from "lucide-react";
+import { MoveLeftIcon, MoveRightIcon } from "lucide-react";
 
 const FetchTest = () => {
   const { data, isSuccess, refetch } = useGetElixirsQuery("a");
@@ -20,44 +20,80 @@ const FetchTest = () => {
     setCurrentPage(page);
   };
 
+  const renderPageButtons = () => {
+    const maxVisiblePages = 3;
+    const startPage = Math.max(1, currentPage - 1);
+    const endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
+
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, index) => startPage + index
+    ).map((page) => (
+      <Button
+        key={page}
+        size={"icon"}
+        onClick={() => handlePageChange(page)}
+        className={`mx-1 my-1 p-2 ${
+          page === currentPage
+            ? "bg-blue-500 text-white"
+            : "bg-gray-200 text-black"
+        } sm:mx-2 sm:my-0`}
+      >
+        {page}
+      </Button>
+    ));
+  };
+
   return (
-    <div className="grid gap-4 grid-cols-[auto-fill,minmax(300px,1fr)]">
+    <div className="grid gap-4  grid-cols-[auto-fill,minmax(300px,1fr)]">
       <div className="flex flex-col gap-2">
         {isSuccess && (
           <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {paginatedData.map((elixir: Elixirs) => (
                 <div
-                  className="bg-white rounded-lg p-4 shadow-md"
+                  className="bg-zinc-400 rounded-lg p-4 shadow-md mb-4"
                   key={elixir.id}
                 >
-                  <h3 className="text-lg font-bold mb-2">
+                  <h3 className="text-base sm:text-lg md:text-lg lg:text-lg xl:text-lg font-bold mb-2">
                     Elixir Name: {elixir.name}
                   </h3>
-                  <p className="text-sm mb-2">
+                  <p className="text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm mb-2">
                     Characteristics: {elixir.characteristics}
                   </p>
-                  <p className="text-sm">Effects: {elixir.effect}</p>
+                  <p className="text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm">
+                    Effects: {elixir.effect}
+                  </p>
                 </div>
               ))}
             </div>
-            <div className="flex justify-center mt-4">
-              {Array.from({ length: totalPages }, (_, index) => index + 1).map(
-                (page) => (
-                  <Button
-                    key={page}
-                    size={"icon"}
-                    onClick={() => handlePageChange(page)}
-                    className={`mx-2 p-2 ${
-                      page === currentPage
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-black"
-                    }`}
-                  >
-                    {page}
-                  </Button>
-                )
-              )}
+
+            <div className="flex flex-wrap justify-center mt-4">
+              <Button
+                size={"icon"}
+                onClick={() => handlePageChange(currentPage - 1)}
+                className={`mx-1 my-1 p-2 ${
+                  currentPage === 1
+                    ? "bg-gray-200 text-black"
+                    : "bg-blue-500 text-white"
+                } sm:mx-2 sm:my-0`}
+                disabled={currentPage === 1}
+              >
+                <MoveLeftIcon />
+              </Button>
+              {renderPageButtons()}
+              <Button
+                size={"icon"}
+                onClick={() => handlePageChange(currentPage + 1)}
+                className={`mx-1 my-1 p-2 ${
+                  currentPage === totalPages
+                    ? "bg-gray-200 text-black"
+                    : "bg-blue-500 text-white"
+                } sm:mx-2 sm:my-0`}
+                disabled={currentPage === totalPages}
+              >
+                <MoveRightIcon />
+              </Button>
             </div>
           </div>
         )}

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Fragment, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import { UserCircle2Icon } from "lucide-react";
 
 import Photo from "../assets/pp.jpg";
 import Button from "./Button";
@@ -27,6 +26,7 @@ const ProfileMenu = () => {
         <Menu.Button
           className="rounded-full w-10 h-10 flex items-center justify-center "
           onMouseEnter={() => setOpenModal(true)}
+          onClick={()=>setOpenModal(!openModal)}
         >
           {session?.user?.image && (
             <img
@@ -57,7 +57,7 @@ const ProfileMenu = () => {
                 <img
                   src={Photo}
                   alt="user-profile"
-                  className="rounded-full h-28 w-28"
+                  className="rounded-full h-32 w-32"
                 />
               )}
               <p className="font-semibold">{session?.user?.name}</p>

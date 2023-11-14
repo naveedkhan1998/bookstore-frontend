@@ -19,15 +19,17 @@ const Sidebar = () => {
       {isSmallOpen && (
         <div
           onClick={close}
-          className="lg:hidden fixed inset-0 z-[999] bg-dark opacity-50"
+          className="lg:hidden fixed inset-0 z-[999] bg-black-100 opacity-90 "
         />
       )}
       <aside
         className={`w-56 h-full lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 ${
           isLargeOpen ? "lg:flex" : "lg:hidden"
-        } ${isSmallOpen ? "flex z-[999] bg-stone-400 max-h-screen" : "hidden"}`}
+        } ${
+          isSmallOpen ? "flex z-[999] bg-stone-400 max-h-screen " : "hidden"
+        }`}
       >
-        <div className="lg:hidden pt-2 pb-4 px2 sticky top-0 bg-stone-400">
+        <div className="lg:hidden pt-2 pb-4 px2 sticky gap-2 px-4 py-4 top-0 bg-stone-400">
           <PageHeaderFirstSection />
         </div>
         <LargeSidebarSection visibleItemCount={3}>

@@ -23,8 +23,8 @@ const PageHeader = () => {
 
   return (
     <div className="flex gap-10 lg:gap-20 justify-between p-2 mb-6 mx-4 mt-4">
-      {/* <PageHeaderFirstSection hidden={showFullWidthSearch} /> */}
-      <PageHeaderFirstSection />
+      <PageHeaderFirstSection hidden={showFullWidthSearch} />
+      {/* <PageHeaderFirstSection /> */}
       <form
         className={` gap-4 flex-grow justify-center ${
           showFullWidthSearch ? "flex" : "hidden md:flex"
@@ -49,7 +49,7 @@ const PageHeader = () => {
             focus:border-blue-500 outline-none"
           />
           <Button
-            className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0
+            className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 mr-3
           flex-shrink-0"
           >
             <Search />
@@ -57,8 +57,8 @@ const PageHeader = () => {
         </div>
       </form>
       <div
-        className={`flex-shrink-0 md:gap-3.5 xs:gap-4 ${
-          showFullWidthSearch ? "hidden" : "flex"
+        className={`flex items-center gap-3.5 xs:gap-6 md:gap-3.5 ${
+          showFullWidthSearch ? "hidden" : "md:flex-shrink-0 xs:flex-shrink"
         }`}
       >
         <Button
@@ -69,10 +69,10 @@ const PageHeader = () => {
         >
           <Search />
         </Button>
-        <Button size={"icon"} variant={"ghost"} number={6}>
+        <Button size="icon" variant="ghost" number={6}>
           <ShoppingCart />
         </Button>
-        <Button size={"icon"} variant={"ghost"} >
+        <Button size="icon" variant="ghost">
           <ProfileMenu />
         </Button>
       </div>
