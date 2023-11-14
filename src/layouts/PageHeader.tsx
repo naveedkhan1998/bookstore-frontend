@@ -26,7 +26,7 @@ const PageHeader = () => {
       <PageHeaderFirstSection hidden={showFullWidthSearch} />
       {/* <PageHeaderFirstSection /> */}
       <form
-        className={` gap-4 flex-grow justify-center ${
+        className={` gap-4 flex-grow justify-center  ${
           showFullWidthSearch ? "flex" : "hidden md:flex"
         }`}
       >
@@ -96,7 +96,7 @@ export function PageHeaderFirstSection({
         hidden ? "hidden" : "flex"
       }`}
     >
-      <Button onClick={toggle} variant={"default"} size={"icon"}>
+      <Button onClick={toggle} variant={"ghost"} size={"icon"}>
         <MenuIcon />
       </Button>
       <a href="/">

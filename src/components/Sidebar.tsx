@@ -26,13 +26,15 @@ const Sidebar = () => {
         className={`w-56 h-full lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 ${
           isLargeOpen ? "lg:flex" : "lg:hidden"
         } ${
-          isSmallOpen ? "flex z-[999] bg-stone-400 max-h-screen " : "hidden"
+          isSmallOpen
+            ? "flex z-[999] bg-stone-400 max-h-full min-h-full "
+            : "hidden"
         }`}
       >
-        <div className="lg:hidden pt-2 pb-4 px2 sticky gap-2 px-4 py-4 top-0 bg-stone-400">
+        <div className="lg:hidden pt-2 pb-4 px2 sticky gap-2 px-4 py-4 top-0 ">
           <PageHeaderFirstSection />
         </div>
-        <LargeSidebarSection visibleItemCount={3}>
+        <LargeSidebarSection visibleItemCount={2}>
           <LargeSidebarItem isActive Icon={Home} title="Home" url="/" />
           <LargeSidebarItem Icon={ShoppingCart} title="Cart" url="/cart" />
           <LargeSidebarItem
