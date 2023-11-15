@@ -3,8 +3,9 @@ import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import SidebarProvider from "../context/SidebarContext";
 import PageHeader from "../layouts/PageHeader";
 import Sidebar from "../components/Sidebar";
-import FetchTest from "./FetchTest";
+import FetchTest from "../components/FetchTest";
 import Footer from "../layouts/Footer";
+import ItemPage from "./ItemPage";
 
 const MainPage = () => {
   return (
@@ -20,6 +21,7 @@ const MainPage = () => {
                 <Route path="/cart" element={<FetchTest />} />
                 <Route path="/account" element={<FetchTest />} />
                 <Route path="/order-history" element={<FetchTest />} />
+                <Route path="/item/:id" element={<ItemPage/>} />
               </Routes>
             </div>
           </div>

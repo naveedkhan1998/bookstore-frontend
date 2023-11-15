@@ -1,5 +1,5 @@
 // App.js
-import MainPage from "./components/MainPage";
+import MainPage from "./pages/MainPage";
 import LoginReg from "./components/LoginReg";
 
 function App() {

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { setElixirs, getElixirs } from "../features/elixirSlice";
+import { useNavigate } from "react-router-dom";
 import { useGetElixirsQuery } from "../services/harryPotterServices";
 import { Elixirs } from "../comman-types";
 import Button from "./Button";
@@ -7,14 +9,31 @@ import { MoveLeftIcon, MoveRightIcon } from "lucide-react";
 
 const FetchTest = () => {
   const { data, isSuccess, refetch } = useGetElixirsQuery("a");
+
+  const dispatch = useAppDispatch();
+
+  if (isSuccess) {
+    dispatch(setElixirs(data));
+  }
+
+  const dataFromStore = useAppSelector(getElixirs);
+
   const pageSize = 12; // Adjust the page size as needed
   const [currentPage, setCurrentPage] = useState(1);
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedData = isSuccess ? data.slice(startIndex, endIndex) : [];
+  const paginatedData = isSuccess
+    ? dataFromStore.slice(startIndex, endIndex)
+    : [];
 
-  const totalPages = isSuccess ? Math.ceil(data.length / pageSize) : 0;
+  const totalPages = isSuccess ? Math.ceil(dataFromStore.length / pageSize) : 0;
+
+  const navigate = useNavigate();
+
+  const handleItemClick = (id: string) => {
+    navigate(`/item/${id}`);
+  };
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -78,6 +97,7 @@ const FetchTest = () => {
                 <div
                   className="bg-zinc-400 rounded-lg p-4 shadow-md mb-4"
                   key={elixir.id}
+                  onClick={() => handleItemClick(elixir.id)}
                 >
                   <h3 className="text-base sm:text-lg md:text-lg lg:text-lg xl:text-lg font-bold mb-2">
                     Elixir Name: {elixir.name}
