@@ -3,7 +3,7 @@ import MainPage from "./pages/MainPage";
 import LoginReg from "./components/LoginReg";
 
 function App() {
-  const isLogin = true;
+  const isLogin =true;
   return (
     <>
       {isLogin ? (

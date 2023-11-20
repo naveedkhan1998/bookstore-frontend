@@ -1,19 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { baseApi } from "../services/baseApi";
+import { baseApi as booksApi } from "../services/BooksApi";
 import authReducer from "../features/authSlice";
 import userReducer from "../features/userSlice";
 import elixirReducer from "../features/elixirSlice";
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
+    [booksApi.reducerPath]: booksApi.reducer,
     auth: authReducer,
     user: userReducer,
     elixirs: elixirReducer,
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(baseApi.middleware),
+    getDefaultMiddleware().concat(baseApi.middleware, booksApi.middleware),
 });
 
 setupListeners(store.dispatch);

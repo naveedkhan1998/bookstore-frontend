@@ -148,7 +148,7 @@ body {
 
 /* Profile Menu */
 .profile_menu-items {
-  @apply flex-col absolute right-0 translate-x-3 mt-3 p-7 sm:min-w-[300px] min-w-max rounded-xl bg-white border border-nav-border shadow-menu;
+  @apply flex-col absolute right-0 translate-x-3 mt-3 p-7 sm:min-w-[300px] min-w-max rounded-xl bg-zinc-400  shadow-2xl;
 }
 
 /* Profile Card */

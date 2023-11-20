@@ -6,6 +6,7 @@ import Sidebar from "../components/Sidebar";
 import FetchTest from "../components/FetchTest";
 import Footer from "../layouts/Footer";
 import ItemPage from "./ItemPage";
+import BooksList from "../components/BooksList";
 
 const MainPage = () => {
   return (
@@ -17,7 +18,7 @@ const MainPage = () => {
             <Sidebar />
             <div className="overflow-x-hidden px-8  pb-4 h-full ">
               <Routes>
-                <Route path="/" element={<FetchTest />} />
+                <Route path="/" element={<BooksList />} />
                 <Route path="/cart" element={<FetchTest />} />
                 <Route path="/account" element={<FetchTest />} />
                 <Route path="/order-history" element={<FetchTest />} />
