@@ -1,12 +1,12 @@
+import React, { Children, ElementType, ReactNode, useState } from "react";
 import {
   ChevronDown,
   ChevronUp,
   Home,
   ShoppingCart,
-  UserCircle2Icon,
-  HistoryIcon,
+  UserCircle2 as UserCircle2Icon,
+  History as HistoryIcon,
 } from "lucide-react";
-import React, { Children, ElementType, ReactNode, useState } from "react";
 import Button, { buttonStyles } from "./Button";
 import { twMerge } from "tailwind-merge";
 import { useSidebarContext } from "../context/SidebarContext";
@@ -14,12 +14,13 @@ import { PageHeaderFirstSection } from "../layouts/PageHeader";
 
 const Sidebar = () => {
   const { isLargeOpen, isSmallOpen, close } = useSidebarContext();
+
   return (
     <>
       {isSmallOpen && (
         <div
           onClick={close}
-          className="lg:hidden fixed inset-0 z-[999] bg-black-100 opacity-90 "
+          className="lg:hidden fixed inset-0 z-[999] bg-black-100 opacity-90"
         />
       )}
       <aside
@@ -27,11 +28,11 @@ const Sidebar = () => {
           isLargeOpen ? "lg:flex" : "lg:hidden"
         } ${
           isSmallOpen
-            ? "flex z-[999] bg-stone-400 max-h-full min-h-full "
+            ? "flex z-[999] bg-stone-400 max-h-full min-h-full"
             : "hidden"
         }`}
       >
-        <div className="lg:hidden pt-2 pb-4 px2 sticky gap-2 px-4 py-4 top-0 ">
+        <div className="lg:hidden pt-2 pb-4  sticky gap-2 px-4 py-4 top-0">
           <PageHeaderFirstSection />
         </div>
         <LargeSidebarSection visibleItemCount={2}>
@@ -87,7 +88,7 @@ function LargeSidebarSection({
         >
           <div className="flex">
             <div className="flex flex-col">
-              <ButtonIcon className="w-6 h-6"></ButtonIcon>
+              <ButtonIcon className="w-6 h-6" />
             </div>
             <div className="flex flex-col">
               <div>{isExpanded ? "Show Less" : "Show More"}</div>
@@ -113,12 +114,12 @@ function LargeSidebarItem({ Icon, title, url, isActive = false }: LargeProps) {
       className={twMerge(
         buttonStyles({ variant: "ghost" }),
         `w-full flex items-center rounded-lg gap-4 p-3 ${
-          isActive ? "font-bold hover:bg-secondary" : undefined
+          isActive ? "font-bold hover:bg-secondary" : ""
         }`
       )}
     >
       {typeof Icon === "string" ? (
-        <img src={Icon} alt="icon" className="w-6 h-6 rounded-full "></img>
+        <img src={Icon} alt="icon" className="w-6 h-6 rounded-full" />
       ) : (
         <Icon className="w-6 h-6" />
       )}
