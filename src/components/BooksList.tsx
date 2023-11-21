@@ -12,16 +12,15 @@ const BooksList = () => {
   const pageSize = 12;
   const [currentPage, setCurrentPage] = useState(1);
 
-  const data = useAppSelector(getBooks);
+  const dataFromStore = useAppSelector(getBooks);
 
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedData = data.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(data.length / pageSize);
+  const paginatedData = dataFromStore.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(dataFromStore.length / pageSize);
 
-
-  function handleDivClick(id:String){
-    console.log('hello ',id)
+  function handleDivClick(id: String) {
+    console.log("hello ", id);
   }
 
   const handlePageChange = (page: number) => {
@@ -56,7 +55,7 @@ const BooksList = () => {
       <div
         key={book.id}
         id={book.id}
-        onClick={()=>handleDivClick(book.id)}
+        onClick={() => handleDivClick(book.id)}
         className="relative group bg-zinc-400 rounded-lg overflow-hidden shadow-md mb-4 transition-transform duration-300 ease-in-out transform hover:shadow-lg"
       >
         <div className="relative">
@@ -112,7 +111,7 @@ const BooksList = () => {
               <MoveRightIcon />
             </Button>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {paginatedData.map(renderBook)}
           </div>
         </div>

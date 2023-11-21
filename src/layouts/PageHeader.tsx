@@ -13,19 +13,22 @@ import { useNavigate } from "react-router-dom";
 
 const PageHeader = () => {
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("ALL");
+
   const [searchResults, setSearchResults] = useState([]);
 
-  const { data, isSuccess, refetch } = useGetVolumesQuery(searchTerm);
+  const { data, isSuccess, isLoading, refetch } = useGetVolumesQuery(
+    searchTerm
+  );
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   function handleSearch() {
     if (isSuccess) {
-      dispatch(setBooks(data.items));
       setSearchTerm("");
       navigate("/");
+      dispatch(setBooks(data.items));
     }
   }
 
@@ -40,8 +43,17 @@ const PageHeader = () => {
         return;
       }
       try {
-        await refetch();
-        const list_of_titles = data.items.slice(0, 6);
+        if (isLoading) {
+          refetch();
+        }
+
+        if (searchTerm === "ALL") {
+          setSearchResults([]);
+          handleSearch();
+          return;
+        }
+
+        const list_of_titles = data.items.slice(0, 12);
         setSearchResults(list_of_titles);
       } catch (error) {
         console.error("Error fetching search results:", error);
@@ -49,10 +61,11 @@ const PageHeader = () => {
     };
 
     // Debounce the API call to avoid making requests on every keystroke
-    const debounceTimer = setTimeout(fetchSearchResults, 300);
+
+    const debounceTimer = setTimeout(fetchSearchResults);
 
     return () => clearTimeout(debounceTimer);
-  }, [searchTerm, refetch, data]);
+  }, [searchTerm, data]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -113,33 +126,36 @@ const PageHeader = () => {
       </form>
 
       {isSuccess && (
-        <div>
+        <div className="modal z-10">
           <div
-            className="fixed inset-0 bg-black bg-opacity-80 z-40"
+            className="fixed inset-0 z-40"
             onClick={handleOverlayClick}
           ></div>
-          <div className="flex-col absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-3 p-7 sm:min-w-[100px] min-w-max rounded-xl mr-auto bg-zinc-400 shadow-2xl z-50 max-w-screen-95">
-            <ul className="list-none p-0">
-              {searchResults.map((obj: BookVolume) => (
-                <li
-                  key={obj.id}
-                  id={obj.id}
-                  className="py-2 px-4 hover:bg-gray-100 rounded-lg cursor-pointer"
-                >
-                  <div className="flex items-center">
-                    <img
-                      className="rounded-md h-12 w-12 mr-2"
-                      src={
-                        obj.volumeInfo.imageLinks?.smallThumbnail ||
-                        DefaultThumbnail
-                      }
-                      alt="thumbnail"
-                    />
-                    <span className="text-base ">{obj.volumeInfo.title}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
+          <div className="modal_wrapper z-50">
+            <table className="w-full items-start justify-start shadow-2xl rounded-b-2xl ">
+              <thead>
+                <tr>
+                  <th className="py-2 px-4">Book Name</th>
+                  <th className="py-2 px-4">Author</th>
+                </tr>
+              </thead>
+              <tbody>
+                {searchResults.map((obj: BookVolume) => (
+                  <tr
+                    key={obj.id}
+                    id={obj.id}
+                    className="hover:bg-stone-400 rounded-2xl"
+                  >
+                    <td className="py-2 px-4 rounded-2xl">
+                      {obj.volumeInfo.title}
+                    </td>
+                    <td className="py-2 px-4 rounded-2xl">
+                      {obj.volumeInfo?.authors || "None"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
