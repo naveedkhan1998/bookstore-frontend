@@ -2,20 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../app/store";
 import { Elixirs } from "../comman-types";
 
-const initialState: Elixirs[] = [
-  {
-    id: "1",
-    name: "string",
-    effect: "string",
-    sideEffects: "string",
-    characteristics: "string",
-    time: "string",
-    difficulty: "string",
-    ingredients: [],
-    inventors: [],
-    manufacturer: "string",
-  },
-];
+const initialState: Elixirs[] = [];
 
 export const elixirsSlice = createSlice({
   name: "elixirs",

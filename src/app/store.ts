@@ -5,6 +5,7 @@ import { baseApi as booksApi } from "../services/BooksApi";
 import authReducer from "../features/authSlice";
 import userReducer from "../features/userSlice";
 import elixirReducer from "../features/elixirSlice";
+import booksReducer from "../features/booksSlice";
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
@@ -12,6 +13,7 @@ export const store = configureStore({
     auth: authReducer,
     user: userReducer,
     elixirs: elixirReducer,
+    books: booksReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

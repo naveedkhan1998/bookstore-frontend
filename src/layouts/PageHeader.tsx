@@ -7,6 +7,8 @@ import ProfileMenu from "../components/ProfileMenu";
 import { useGetVolumesQuery } from "../services/googleBooksServices";
 import { BookVolume } from "../comman-types";
 import DefaultThumbnail from "../assets/pp.jpg";
+import { useAppDispatch } from "../app/hooks";
+import { setBooks } from "../features/booksSlice";
 
 const PageHeader = () => {
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
@@ -14,6 +16,15 @@ const PageHeader = () => {
   const [searchResults, setSearchResults] = useState([]);
 
   const { data, isSuccess, refetch } = useGetVolumesQuery(searchTerm);
+
+  const dispatch = useAppDispatch();
+
+  function handleSearch() {
+    if (isSuccess) {
+      dispatch(setBooks(data.items));
+      setSearchTerm("");
+    }
+  }
 
   const handleOverlayClick = () => {
     setSearchTerm("");
@@ -60,6 +71,10 @@ const PageHeader = () => {
       <PageHeaderFirstSection hidden={showFullWidthSearch} />
 
       <form
+        onSubmit={(e) => {
+          e.preventDefault(); // Prevents the default form submission behavior
+          handleSearch();
+        }}
         className={`gap-4 flex-grow justify-center ${
           showFullWidthSearch ? "flex" : "hidden md:flex"
         }`}
@@ -79,7 +94,7 @@ const PageHeader = () => {
           <input
             type="search"
             placeholder="Search Books"
-            className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-1 px-4 text-lg w-full
+            className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-2 px-4 text-lg w-full
             focus:border-blue-500 outline-none z-50"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -87,6 +102,7 @@ const PageHeader = () => {
           <Button
             className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 mr-3
             flex-shrink-0 z-50"
+            type="submit"
           >
             <Search />
           </Button>
@@ -171,7 +187,7 @@ export function PageHeaderFirstSection({
         <MenuIcon />
       </Button>
       <a href="/">
-        <img src={file} className="h-12 " alt="logo" />
+        <img src={file} className="h-6" alt="logo" />
       </a>
     </div>
   );

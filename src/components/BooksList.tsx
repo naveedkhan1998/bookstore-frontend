@@ -3,16 +3,21 @@ import { useGetVolumesQuery } from "../services/googleBooksServices";
 import { BookVolume } from "../comman-types";
 import Button from "./Button";
 import { MoveLeftIcon, MoveRightIcon } from "lucide-react";
+import { getBooks } from "../features/booksSlice";
+import { useAppSelector } from "../app/hooks";
+import DefaultImage from "../assets/pp.jpg";
 
 const BooksList = () => {
-  const { data, isSuccess, refetch } = useGetVolumesQuery("all");
+  //const { data, isSuccess, refetch } = useGetVolumesQuery("all");
   const pageSize = 12;
   const [currentPage, setCurrentPage] = useState(1);
 
+  const data = useAppSelector(getBooks);
+
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedData = isSuccess ? data.items.slice(startIndex, endIndex) : [];
-  const totalPages = isSuccess ? Math.ceil(data.items.length / pageSize) : 0;
+  const paginatedData = data.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(data.length / pageSize);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -49,9 +54,9 @@ const BooksList = () => {
       >
         <div className="relative">
           <img
-            src={book.volumeInfo.imageLinks?.thumbnail}
+            src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage}
             alt={book.volumeInfo.title}
-            className="rounded-xl w-full h-96 object-fill"
+            className="rounded-xl w-full h-80 object-fill"
           />
           <div className="absolute bottom-0 flex flex-col justify-center px-2 py-2 items-left w-full bg-zinc-400 bg-opacity-70 rounded-t-xl opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
             <h2 className="text-black text-lg font-semibold mb-2 z-10">
@@ -72,8 +77,8 @@ const BooksList = () => {
   );
 
   return (
-    <div className="">
-      {isSuccess && (
+    <div className="overflow-x-hidden ">
+      {paginatedData.length > 0 ? (
         <div>
           <div className="flex flex-wrap justify-center mb-4 ">
             <Button
@@ -100,10 +105,12 @@ const BooksList = () => {
               <MoveRightIcon />
             </Button>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
             {paginatedData.map(renderBook)}
           </div>
         </div>
+      ) : (
+        <div>Search Books!!</div>
       )}
     </div>
   );
