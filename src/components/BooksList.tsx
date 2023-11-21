@@ -19,6 +19,11 @@ const BooksList = () => {
   const paginatedData = data.slice(startIndex, endIndex);
   const totalPages = Math.ceil(data.length / pageSize);
 
+
+  function handleDivClick(id:String){
+    console.log('hello ',id)
+  }
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -50,6 +55,8 @@ const BooksList = () => {
     <div className="flex flex-col gap-2">
       <div
         key={book.id}
+        id={book.id}
+        onClick={()=>handleDivClick(book.id)}
         className="relative group bg-zinc-400 rounded-lg overflow-hidden shadow-md mb-4 transition-transform duration-300 ease-in-out transform hover:shadow-lg"
       >
         <div className="relative">

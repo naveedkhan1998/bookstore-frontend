@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes, Link } from "react-router-dom";
 import SidebarProvider from "../context/SidebarContext";
 import PageHeader from "../layouts/PageHeader";
 import Sidebar from "../components/Sidebar";
@@ -7,6 +7,9 @@ import FetchTest from "../components/FetchTest";
 import Footer from "../layouts/Footer";
 import ItemPage from "./ItemPage";
 import BooksList from "../components/BooksList";
+import CartPage from "./CartPage";
+import AccountPage from "./AccountPage";
+import OrderHistoryPage from "./OrderHistoryPage";
 
 const MainPage = () => {
   return (
@@ -19,9 +22,10 @@ const MainPage = () => {
             <div className="flex flex-col items-center justify-center px-8 pb-4 h-full">
               <Routes>
                 <Route path="/" element={<BooksList />} />
-                <Route path="/cart" element={<FetchTest />} />
-                <Route path="/account" element={<FetchTest />} />
-                <Route path="/order-history" element={<FetchTest />} />
+                <Route path="/cart" element={<CartPage />} />
+                <Route path="/account" element={<AccountPage />} />
+                <Route path="/order-history" element={<OrderHistoryPage />} />
+                <Route path="/test" element={<FetchTest />} />
                 <Route path="/item/:id" element={<ItemPage />} />
               </Routes>
             </div>

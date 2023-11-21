@@ -5,14 +5,14 @@ import { BookVolume } from "../comman-types";
 const initialState: BookVolume[] = [];
 
 export const bookSlice = createSlice({
-    name:'books',
-    initialState,
-    reducers: {
-        setBooks: (state, action: PayloadAction<BookVolume[]>) => {
-          return action.payload;
-        },
-      },
-})
+  name: "books",
+  initialState,
+  reducers: {
+    setBooks: (state, action: PayloadAction<BookVolume[]>) => {
+      return action.payload;
+    },
+  },
+});
 
 export const { setBooks } = bookSlice.actions;
 

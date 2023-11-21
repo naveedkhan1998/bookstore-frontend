@@ -25,7 +25,7 @@ const ProfileMenu = () => {
       <Menu as="div">
         <Menu.Button
           className="rounded-full w-10 h-10 flex items-center justify-center "
-          onMouseEnter={() => setOpenModal(true)}
+          //onMouseEnter={() => setOpenModal(true)}
           onClick={()=>setOpenModal(!openModal)}
         >
           {session?.user?.image && (

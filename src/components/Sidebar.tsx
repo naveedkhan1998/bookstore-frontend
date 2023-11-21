@@ -6,11 +6,13 @@ import {
   ShoppingCart,
   UserCircle2 as UserCircle2Icon,
   History as HistoryIcon,
+  TestTube,
 } from "lucide-react";
 import Button, { buttonStyles } from "./Button";
 import { twMerge } from "tailwind-merge";
 import { useSidebarContext } from "../context/SidebarContext";
 import { PageHeaderFirstSection } from "../layouts/PageHeader";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const { isLargeOpen, isSmallOpen, close } = useSidebarContext();
@@ -35,7 +37,7 @@ const Sidebar = () => {
         <div className="lg:hidden pt-2 pb-4  sticky gap-2 px-4 py-4 top-0">
           <PageHeaderFirstSection />
         </div>
-        <LargeSidebarSection visibleItemCount={2}>
+        <LargeSidebarSection visibleItemCount={3}>
           <LargeSidebarItem isActive Icon={Home} title="Home" url="/" />
           <LargeSidebarItem Icon={ShoppingCart} title="Cart" url="/cart" />
           <LargeSidebarItem
@@ -48,6 +50,7 @@ const Sidebar = () => {
             title="Order History"
             url="/order-history"
           />
+          <LargeSidebarItem Icon={TestTube} title="Test" url="/test" />
         </LargeSidebarSection>
         <hr />
       </aside>
@@ -109,8 +112,8 @@ type LargeProps = {
 
 function LargeSidebarItem({ Icon, title, url, isActive = false }: LargeProps) {
   return (
-    <a
-      href={url}
+    <Link
+      to={url}
       className={twMerge(
         buttonStyles({ variant: "ghost" }),
         `w-full flex items-center rounded-lg gap-4 p-3 ${
@@ -126,6 +129,6 @@ function LargeSidebarItem({ Icon, title, url, isActive = false }: LargeProps) {
       <div className="whitespace-nowrap overflow-hidden text-ellipsis">
         {title}
       </div>
-    </a>
+    </Link>
   );
 }

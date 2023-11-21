@@ -72,6 +72,7 @@ const baseQueryWithAutoRefresh = async (
 };
 
 export const baseApi = createApi({
+  reducerPath:'baseApi',
   baseQuery: baseQueryWithAutoRefresh,
   endpoints: (builder) => ({}),
 });

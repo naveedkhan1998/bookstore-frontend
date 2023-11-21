@@ -9,6 +9,7 @@ import { BookVolume } from "../comman-types";
 import DefaultThumbnail from "../assets/pp.jpg";
 import { useAppDispatch } from "../app/hooks";
 import { setBooks } from "../features/booksSlice";
+import { useNavigate } from "react-router-dom";
 
 const PageHeader = () => {
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
@@ -18,11 +19,13 @@ const PageHeader = () => {
   const { data, isSuccess, refetch } = useGetVolumesQuery(searchTerm);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   function handleSearch() {
     if (isSuccess) {
       dispatch(setBooks(data.items));
       setSearchTerm("");
+      navigate("/");
     }
   }
 
@@ -132,9 +135,7 @@ const PageHeader = () => {
                       }
                       alt="thumbnail"
                     />
-                    <span className="text-base truncate max-w-[270px]">
-                      {obj.volumeInfo.title}
-                    </span>
+                    <span className="text-base ">{obj.volumeInfo.title}</span>
                   </div>
                 </li>
               ))}

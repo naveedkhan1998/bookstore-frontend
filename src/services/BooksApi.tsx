@@ -8,6 +8,7 @@ const baseQuery = fetchBaseQuery({
 
 // No auto-refresh logic, just the base query
 export const baseApi = createApi({
+  reducerPath:'booksApi',
   baseQuery,
   endpoints: (builder) => ({}),
 });
