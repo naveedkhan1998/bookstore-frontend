@@ -35,7 +35,7 @@ const Sidebar = () => {
           isLargeOpen ? "lg:flex" : "lg:hidden"
         } ${isSmallOpen ? "flex z-[999] bg-stone-400 max-h-screen" : "hidden"}`}
       >
-        <div className="lg:hidden pt-2 pb-4 sticky gap-2 px-4 py-4 top-0">
+        <div className="lg:hidden pt-2 pb-4 sticky gap-2 px-4 py-4">
           <PageHeaderFirstSection />
         </div>
         <LargeSidebarSection visibleItemCount={3}>
