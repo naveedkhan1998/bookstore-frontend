@@ -31,7 +31,7 @@ const Sidebar = () => {
         />
       )}
       <aside
-        className={`w-56 h-full lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 shadow-2xl ${
+        className={`w-56 min-h-screen lg:sticky absolute top-0 overflow-y-full scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 shadow-2xl rounded-e-2xl ${
           isLargeOpen ? "lg:flex" : "lg:hidden"
         } ${isSmallOpen ? "flex z-[999] bg-stone-400 max-h-screen" : "hidden"}`}
       >
@@ -116,7 +116,7 @@ function LargeSidebarItem({ Icon, title, url, isActive = false }: LargeProps) {
   return (
     <Link
       to={url}
-      onClick={close}
+      //onClick={close}
       className={twMerge(
         buttonStyles({ variant: "ghost" }),
         `w-full flex items-center rounded-lg gap-4 p-3 ${

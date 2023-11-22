@@ -19,7 +19,7 @@ const MainPage = () => {
           <PageHeader />
           <div className="grid md:grid-cols-[auto,1fr] flex-grow-1 overflow-auto w-full">
             <Sidebar />
-            <div className="flex flex-col items-center justify-center px-8 pb-20 h-full">
+            <div className="flex flex-col items-center px-8 pb-20 h-full">
               <Routes>
                 <Route path="/" element={<BooksList />} />
                 <Route path="/cart" element={<CartPage />} />
