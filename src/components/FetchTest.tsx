@@ -63,7 +63,7 @@ const FetchTest = () => {
   };
 
   return (
-    <div className="grid gap-4  grid-cols-[auto-fill,minmax(300,1fr)] max-h-full">
+    <div className="w-full">
       <div className="flex flex-col gap-2">
         {isSuccess && (
           <div>
@@ -92,7 +92,7 @@ const FetchTest = () => {
                 <MoveRightIcon />
               </Button>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-16">
+            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
               {paginatedData.map((elixir: Elixirs) => (
                 <div
                   className="bg-zinc-400 rounded-lg p-4 shadow-md mb-4"

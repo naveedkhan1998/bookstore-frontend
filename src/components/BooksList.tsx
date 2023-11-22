@@ -83,7 +83,7 @@ const BooksList = () => {
   );
 
   return (
-    <div className="overflow-x-hidden ">
+    <div className="flex flex-col w-full">
       {paginatedData.length > 0 ? (
         <div>
           <div className="flex flex-wrap justify-center mb-4 ">
@@ -111,7 +111,7 @@ const BooksList = () => {
               <MoveRightIcon />
             </Button>
           </div>
-          <div className="grid gap-4 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
             {paginatedData.map(renderBook)}
           </div>
         </div>

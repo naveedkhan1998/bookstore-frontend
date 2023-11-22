@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { HashRouter as Router, Route, Routes, Link } from "react-router-dom";
 import SidebarProvider from "../context/SidebarContext";
 import PageHeader from "../layouts/PageHeader";
@@ -17,9 +17,9 @@ const MainPage = () => {
       <SidebarProvider>
         <div className="flex flex-col min-h-screen bg-stone-400">
           <PageHeader />
-          <div className="grid grid-cols-[auto,1fr] flex-grow-1 overflow-auto">
+          <div className="grid md:grid-cols-[auto,1fr] flex-grow-1 overflow-auto w-full">
             <Sidebar />
-            <div className="flex flex-col items-center justify-center px-8 pb-4 h-full">
+            <div className="flex flex-col items-center justify-center px-8 pb-20 h-full">
               <Routes>
                 <Route path="/" element={<BooksList />} />
                 <Route path="/cart" element={<CartPage />} />
@@ -29,9 +29,12 @@ const MainPage = () => {
                 <Route path="/item/:id" element={<ItemPage />} />
               </Routes>
             </div>
-          </div>
-          <div className="bg-slate-800 bg-opacity-90 fixed bottom-0 w-full">
-            <Footer />
+
+            <div className="fixed bottom-0 w-full">
+              <div className="bg-slate-800 bg-opacity-90 transition-all duration-300 ease-in-out">
+                <Footer />
+              </div>
+            </div>
           </div>
         </div>
       </SidebarProvider>

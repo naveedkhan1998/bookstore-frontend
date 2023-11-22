@@ -19,22 +19,23 @@ const Sidebar = () => {
 
   return (
     <>
+      <aside
+        className={`sticky top-0 overflow-y-auto scrollbar-hidden pb-4 flex flex-col ml-1 ${
+          isLargeOpen ? "lg:hidden" : "lg:flex"
+        }`}
+      ></aside>
       {isSmallOpen && (
         <div
           onClick={close}
-          className="lg:hidden fixed inset-0 z-[999] bg-black-100 opacity-90"
+          className="lg:hidden fixed inset-0 z-[999] bg-black opacity-90"
         />
       )}
       <aside
-        className={`w-56 h-full lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 ${
+        className={`w-56 h-full lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 shadow-2xl ${
           isLargeOpen ? "lg:flex" : "lg:hidden"
-        } ${
-          isSmallOpen
-            ? "flex z-[999] bg-stone-400 max-h-full min-h-full"
-            : "hidden"
-        }`}
+        } ${isSmallOpen ? "flex z-[999] bg-stone-400 max-h-screen" : "hidden"}`}
       >
-        <div className="lg:hidden pt-2 pb-4  sticky gap-2 px-4 py-4 top-0">
+        <div className="lg:hidden pt-2 pb-4 sticky gap-2 px-4 py-4 top-0">
           <PageHeaderFirstSection />
         </div>
         <LargeSidebarSection visibleItemCount={3}>
@@ -85,7 +86,7 @@ function LargeSidebarSection({
       {visibleChildren}
       {showExpandButton && (
         <Button
-          onClick={() => setIsExpanded((e) => !e)}
+          onClick={() => setIsExpanded((prev) => !prev)}
           variant="ghost"
           className="w-full flex items-center rounded-lg gap-4 p-3"
         >
@@ -111,9 +112,11 @@ type LargeProps = {
 };
 
 function LargeSidebarItem({ Icon, title, url, isActive = false }: LargeProps) {
+  const { close } = useSidebarContext();
   return (
     <Link
       to={url}
+      onClick={close}
       className={twMerge(
         buttonStyles({ variant: "ghost" }),
         `w-full flex items-center rounded-lg gap-4 p-3 ${
