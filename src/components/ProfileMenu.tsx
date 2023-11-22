@@ -67,7 +67,7 @@ const ProfileMenu = () => {
               <Menu.Item>
                 <Button className="w-full">
                   <Link
-                    to={`/profile/${session?.user?.id}`}
+                    to={`/setting`}
                     className="text-sm"
                   >
                     Settings
@@ -77,7 +77,7 @@ const ProfileMenu = () => {
               <Menu.Item>
                 <Button className="w-full">
                   <Link
-                    to={`/profile/${session?.user?.id}`}
+                    to={`/account`}
                     className="text-sm"
                   >
                     Profile

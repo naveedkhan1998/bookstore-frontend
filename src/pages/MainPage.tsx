@@ -8,8 +8,9 @@ import Footer from "../layouts/Footer";
 import ItemPage from "./ItemPage";
 import BooksList from "../components/BooksList";
 import CartPage from "./CartPage";
-import AccountPage from "./AccountPage";
 import OrderHistoryPage from "./OrderHistoryPage";
+import UserSettings from "./UserSettingPage";
+import UserProfile from "./UserProfilePage";
 import BookPage from "./BookPage";
 
 const MainPage = () => {
@@ -24,11 +25,12 @@ const MainPage = () => {
               <Routes>
                 <Route path="/" element={<BooksList />} />
                 <Route path="/cart" element={<CartPage />} />
-                <Route path="/account" element={<AccountPage />} />
+                <Route path="/account" element={<UserProfile />} />
                 <Route path="/order-history" element={<OrderHistoryPage />} />
                 <Route path="/test" element={<FetchTest />} />
                 <Route path="/book/:id" element={<BookPage />} />
                 <Route path="/item/:id" element={<ItemPage />} />
+                <Route path="/setting" element={<UserSettings />} />
               </Routes>
             </div>
 
