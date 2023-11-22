@@ -10,6 +10,7 @@ import BooksList from "../components/BooksList";
 import CartPage from "./CartPage";
 import AccountPage from "./AccountPage";
 import OrderHistoryPage from "./OrderHistoryPage";
+import BookPage from "./BookPage";
 
 const MainPage = () => {
   return (
@@ -26,6 +27,7 @@ const MainPage = () => {
                 <Route path="/account" element={<AccountPage />} />
                 <Route path="/order-history" element={<OrderHistoryPage />} />
                 <Route path="/test" element={<FetchTest />} />
+                <Route path="/book/:id" element={<BookPage />} />
                 <Route path="/item/:id" element={<ItemPage />} />
               </Routes>
             </div>

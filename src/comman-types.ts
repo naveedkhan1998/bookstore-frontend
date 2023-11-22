@@ -27,7 +27,6 @@ export type Ingredient = {
   name: string;
 };
 
-
 export type BookVolume = {
   kind: string;
   id: string;
@@ -71,6 +70,14 @@ export type BookVolume = {
     country: string;
     saleability: string;
     isEbook: boolean;
+    listPrice?: {
+      amount: number;
+      currencyCode: string;
+    };
+    retailPrice?: {
+      amount: number;
+      currencyCode: string;
+    };
   };
   accessInfo: {
     country: string;

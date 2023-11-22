@@ -24,6 +24,11 @@ const PageHeader = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  function handleSearchClick(id: String) {
+    setSearchTerm("");
+    navigate(`/book/${id}`);
+  }
+
   function handleSearch() {
     if (isSuccess) {
       setSearchTerm("");
@@ -114,6 +119,9 @@ const PageHeader = () => {
             focus:border-blue-500 outline-none z-50"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onFocus={() => {
+              navigate("/");
+            }}
           />
           <Button
             className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 mr-3
@@ -145,6 +153,9 @@ const PageHeader = () => {
                     key={obj.id}
                     id={obj.id}
                     className="hover:bg-stone-400 rounded-2xl"
+                    onClick={() => {
+                      handleSearchClick(obj.id);
+                    }}
                   >
                     <td className="py-2 px-4 rounded-2xl">
                       {obj.volumeInfo.title}

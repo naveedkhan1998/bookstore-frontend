@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useGetVolumesQuery } from "../services/googleBooksServices";
+import { useNavigate } from "react-router-dom";
 import { BookVolume } from "../comman-types";
 import Button from "./Button";
 import { MoveLeftIcon, MoveRightIcon } from "lucide-react";
@@ -19,8 +20,11 @@ const BooksList = () => {
   const paginatedData = dataFromStore.slice(startIndex, endIndex);
   const totalPages = Math.ceil(dataFromStore.length / pageSize);
 
+  const navigate = useNavigate();
+
   function handleDivClick(id: String) {
-    console.log("hello ", id);
+    navigate(`/book/${id}`);
+    //console.log("hello ", id);
   }
 
   const handlePageChange = (page: number) => {
