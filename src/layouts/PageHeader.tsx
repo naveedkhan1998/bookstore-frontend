@@ -6,7 +6,6 @@ import { useSidebarContext } from "../context/SidebarContext";
 import ProfileMenu from "../components/ProfileMenu";
 import { useGetVolumesQuery } from "../services/googleBooksServices";
 import { BookVolume } from "../comman-types";
-import DefaultThumbnail from "../assets/pp.jpg";
 import { useAppDispatch } from "../app/hooks";
 import { setBooks } from "../features/booksSlice";
 import { useNavigate } from "react-router-dom";
@@ -134,13 +133,12 @@ const PageHeader = () => {
       </form>
 
       {isSuccess && (
-        <div className="modal z-10">
-          <div
-            className="fixed inset-0 z-40"
-            onClick={handleOverlayClick}
-          ></div>
-          <div className="modal_wrapper z-50">
-            <table className="w-full items-start justify-start shadow-2xl rounded-b-2xl ">
+        <div
+          className="fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/80 flex justify-center items-center "
+          onClick={handleOverlayClick}
+        >
+          <div className="flex justify-start items-center top-15 flex-col absolute h-[80%] w-[80%]  bg-zinc-400 rounded-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto z-50">
+            <table className="w-full items-start justify-start  ">
               <thead>
                 <tr>
                   <th className="py-2 px-4">Book Name</th>
@@ -161,7 +159,7 @@ const PageHeader = () => {
                       {obj.volumeInfo.title}
                     </td>
                     <td className="py-2 px-4 rounded-2xl">
-                      {obj.volumeInfo?.authors || "None"}
+                      {obj.volumeInfo?.authors.join(" , ") || "None"}
                     </td>
                   </tr>
                 ))}
