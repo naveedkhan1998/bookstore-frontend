@@ -159,7 +159,7 @@ const PageHeader = () => {
                       {obj.volumeInfo.title}
                     </td>
                     <td className="py-2 px-4 rounded-2xl">
-                      {obj.volumeInfo?.authors.join(" , ") || "None"}
+                      {obj.volumeInfo?.authors?.join(" , ") || "None"}
                     </td>
                   </tr>
                 ))}
