@@ -17,23 +17,27 @@ const MainPage = () => {
   return (
     <Router>
       <SidebarProvider>
-        <div className="flex flex-col min-h-screen bg-stone-400">
+        <div className="flex flex-col max-h-screen bg-stone-400">
           <PageHeader />
-          <div className="grid md:grid-cols-[auto,1fr] flex-grow-1 overflow-auto w-full">
+          <div
+            className="grid grid-cols-[auto,1fr] flex-grow-1 
+          overflow-auto"
+          >
             <Sidebar />
-            <div className="flex flex-col items-center px-8 pb-20 h-full">
-              <Routes>
-                <Route path="/" element={<BooksList />} />
-                <Route path="/cart" element={<CartPage />} />
-                <Route path="/account" element={<UserProfile />} />
-                <Route path="/order-history" element={<OrderHistoryPage />} />
-                <Route path="/test" element={<FetchTest />} />
-                <Route path="/book/:id" element={<BookPage />} />
-                <Route path="/item/:id" element={<ItemPage />} />
-                <Route path="/setting" element={<UserSettings />} />
-              </Routes>
+            <div className="overflow-x-hidden px-4 pb-4">
+              <div className="flex flex-col items-center px-4 pb-20 min-h-screen">
+                <Routes>
+                  <Route path="/" element={<BooksList />} />
+                  <Route path="/cart" element={<CartPage />} />
+                  <Route path="/account" element={<UserProfile />} />
+                  <Route path="/order-history" element={<OrderHistoryPage />} />
+                  <Route path="/test" element={<FetchTest />} />
+                  <Route path="/book/:id" element={<BookPage />} />
+                  <Route path="/item/:id" element={<ItemPage />} />
+                  <Route path="/setting" element={<UserSettings />} />
+                </Routes>
+              </div>
             </div>
-
             <div className="fixed bottom-0 w-full">
               <div className="bg-slate-800 bg-opacity-90 transition-all duration-300 ease-in-out">
                 <Footer />

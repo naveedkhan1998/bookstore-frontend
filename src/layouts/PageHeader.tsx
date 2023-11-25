@@ -87,7 +87,7 @@ const PageHeader = () => {
   }, []);
 
   return (
-    <div className="flex gap-10 lg:gap-20 justify-between p-2 mb-6 mx-4 mt-4 shadow-2xl rounded-full">
+    <div className="flex gap-10 lg:gap-20 justify-between p-2  mx-4 mt-4 shadow-2xl rounded-full">
       <PageHeaderFirstSection hidden={showFullWidthSearch} />
 
       <form

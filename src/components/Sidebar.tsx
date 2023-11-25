@@ -27,13 +27,13 @@ const Sidebar = () => {
       {isSmallOpen && (
         <div
           onClick={close}
-          className="lg:hidden fixed inset-0 z-[999] bg-black opacity-90"
+          className="lg:hidden fixed inset-0 z-[999] bg-black opacity-50 "
         />
       )}
       <aside
-        className={`w-56 min-h-screen lg:sticky absolute top-0 overflow-y-full scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 shadow-2xl rounded-e-2xl ${
+        className={`w-56 max-h-screen lg:sticky absolute top-0 overflow-y-full scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 shadow-2xl rounded-e-2xl ${
           isLargeOpen ? "lg:flex" : "lg:hidden"
-        } ${isSmallOpen ? "flex z-[999] bg-stone-400 max-h-screen" : "hidden"}`}
+        } ${isSmallOpen ? "flex z-[999] bg-stone-400 min-h-screen" : "hidden"}`}
       >
         <div className="lg:hidden pt-2 pb-4 sticky gap-2 px-4 py-4">
           <PageHeaderFirstSection />

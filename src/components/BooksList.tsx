@@ -10,7 +10,7 @@ import DefaultImage from "../assets/pp.jpg";
 
 const BooksList = () => {
   //const { data, isSuccess, refetch } = useGetVolumesQuery("all");
-  const pageSize = 12;
+  const pageSize = 15;
   const [currentPage, setCurrentPage] = useState(1);
 
   const dataFromStore = useAppSelector(getBooks);
@@ -87,10 +87,10 @@ const BooksList = () => {
   );
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full ">{/* max-h-screen */}
       {paginatedData.length > 0 ? (
-        <div>
-          <div className="flex flex-wrap justify-center mb-4 ">
+        <>
+          <div className="flex gap-10 lg:gap-20 bg-zinc-400 justify-between p-2  mx-4 mt-4 mb-4 shadow-2xl rounded-full ">
             <Button
               size={"icon"}
               variant={"ghost"}
@@ -115,10 +115,12 @@ const BooksList = () => {
               <MoveRightIcon />
             </Button>
           </div>
-          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
-            {paginatedData.map(renderBook)}
+          <div className="grid grid-cols-[auto,fr] flex-grow-1 overflow-auto">
+            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+              {paginatedData.map(renderBook)}
+            </div>
           </div>
-        </div>
+        </>
       ) : (
         <div>Search Books!!</div>
       )}
