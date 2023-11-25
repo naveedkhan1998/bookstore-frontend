@@ -63,7 +63,7 @@ const BookPage = () => {
           )}
           <p className="text-gray-700">
             <span className="font-semibold">Authors:</span>{" "}
-            {selectedBook.volumeInfo.authors.join(", ")}
+            {selectedBook.volumeInfo.authors?.join(" , ") ||"N/A"}
           </p>
           <p className="text-gray-700">
             <span className="font-semibold">Publisher:</span>{" "}
