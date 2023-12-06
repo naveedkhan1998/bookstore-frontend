@@ -1,22 +1,57 @@
 // src/components/Registration.tsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useRegisterUserMutation,useGetLoggedUserQuery } from "../services/userAuthService";
+import { setCredentials, getCurrentToken } from "../features/authSlice";
+import { getToken, storeToken } from "../services/LocalStorageService";
 
 const Registration: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  interface UserData {
+    _id: string;
+    access: string;
+    email: string;
+    family_name: string;
+    given_name: string;
+  }
+
   const [formData, setFormData] = useState({
-    username: "",
+    given_name: "",
+    family_name: "",
     email: "",
     password: "",
   });
+
+  const [registerUser, isSuccess] = useRegisterUserMutation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const res = await registerUser(formData);
+    if (isSuccess) {
+      if ("data" in res) {
+        // 'data' is present, safe to access
+        const userData: UserData = res.data;
+
+        storeToken({ value: { access: userData.access } });
+        dispatch(setCredentials({ access: userData.access }));
+        navigate("/");
+      } else {
+        // 'error' is present, handle the error
+        alert(JSON.stringify(res.error));
+      }
+    }
+
+    //alert('registered')
     // Handle registration logic
-    console.log("Form submitted:", formData);
+    //console.log("Form submitted:", res);
   };
 
   return (
@@ -25,14 +60,28 @@ const Registration: React.FC = () => {
         <h2 className="text-2xl font-bold mb-4">Registration</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="username" className="block text-gray-600">
-              Username
+            <label htmlFor="given_name" className="block text-gray-600">
+              Given Name
             </label>
             <input
               type="text"
-              id="username"
-              name="username"
-              value={formData.username}
+              id="given_name"
+              name="given_name"
+              value={formData.given_name}
+              onChange={handleChange}
+              className="w-full border p-2 rounded focus:outline-none focus:border-blue-500"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="family_name" className="block text-gray-600">
+              Family Name
+            </label>
+            <input
+              type="text"
+              id="family_name"
+              name="family_name"
+              value={formData.family_name}
               onChange={handleChange}
               className="w-full border p-2 rounded focus:outline-none focus:border-blue-500"
               required

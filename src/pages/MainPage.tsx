@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { HashRouter as Router, Route, Routes, Link } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SidebarProvider from "../context/SidebarContext";
 import PageHeader from "../layouts/PageHeader";
 import Sidebar from "../components/Sidebar";
-import FetchTest from "../components/FetchTest";
 import Footer from "../layouts/Footer";
 import ItemPage from "./ItemPage";
 import BooksList from "../components/BooksList";
@@ -12,8 +11,18 @@ import OrderHistoryPage from "./OrderHistoryPage";
 import UserSettings from "./UserSettingPage";
 import UserProfile from "./UserProfilePage";
 import BookPage from "./BookPage";
+import LoginReg from "../components/LoginReg";
+import BooklistPageAuth from "./BooklistPageAuth";
+import { useAppSelector } from "../app/hooks";
+import { getCurrentToken } from "../features/authSlice";
+import AboutPage from "./AboutPage";
+import UserBooklistPage from "./UserBooklistPage";
+import PublicBooklistsPage from "./PublicBooklistsPage";
+import PublicBookPage from "./PublicBookPage";
+import AuthentiatedBooklistPage from "./AuthenticatedBooklistPage";
 
 const MainPage = () => {
+  const access_token = useAppSelector(getCurrentToken);
   return (
     <Router>
       <SidebarProvider>
@@ -30,11 +39,16 @@ const MainPage = () => {
                   <Route path="/" element={<BooksList />} />
                   <Route path="/cart" element={<CartPage />} />
                   <Route path="/account" element={<UserProfile />} />
+                  <Route path="/about" element={<AboutPage />} />
                   <Route path="/order-history" element={<OrderHistoryPage />} />
-                  <Route path="/test" element={<FetchTest />} />
+                  <Route path="/public-booklists" element={access_token?<AuthentiatedBooklistPage/>:<PublicBooklistsPage />} />
+                  <Route path="/public-booklist" element={<PublicBookPage />} />
+                  <Route path="/booklists" element={<BooklistPageAuth />} />
+                  <Route path="/user-booklist/:id" element={<UserBooklistPage />} />
                   <Route path="/book/:id" element={<BookPage />} />
                   <Route path="/item/:id" element={<ItemPage />} />
                   <Route path="/setting" element={<UserSettings />} />
+                  <Route path="/login" element={<LoginReg />} />
                 </Routes>
               </div>
             </div>

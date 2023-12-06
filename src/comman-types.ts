@@ -100,3 +100,30 @@ export type BookVolume = {
     textSnippet: string;
   };
 };
+
+export interface BookList {
+  _id: string;
+  name: string;
+  isPrivate: boolean;
+  books: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BookListContainer {
+  _id?: string;
+  bookLists?: BookList[];
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
+}
+
+
+
+export type BookCategory = {
+  name?: string;
+  books: string[];
+  authorName?: string;
+};
+
+export type PublicBooklist = BookCategory[];

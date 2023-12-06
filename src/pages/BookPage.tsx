@@ -5,83 +5,172 @@ import { useAppSelector } from "../app/hooks";
 import { BookVolume } from "../comman-types";
 import { useGetVolumeQuery } from "../services/googleBooksServices";
 import DefaultPic from "../assets/pp.jpg";
+import { getCurrentToken } from "../features/authSlice";
+import Button from "../components/Button";
+import { toast } from "react-toastify";
+import { getUserBooklists } from "../features/booklistSlice";
+import { useState, useEffect } from "react";
+import {
+  useAddBookToBooklistMutation,
+  useGetUserBooklistsQuery,
+} from "../services/booklistsServices";
 
 const BookPage = () => {
+  const access_token = useAppSelector(getCurrentToken);
+  const userBooklists = useAppSelector(getUserBooklists);
   const { id } = useParams();
   const books = useAppSelector(getBooks);
+  const { refetch } = useGetUserBooklistsQuery(access_token);
+  const [
+    addBookToBooklist,
+    { isSuccess: bookAdded },
+  ] = useAddBookToBooklistMutation();
 
   // Find the selected book based on the id parameter
   const { data, isSuccess } = useGetVolumeQuery(id);
 
-  let selectedBook = books.find((obj: BookVolume) => obj.id === id);
-  if (isSuccess) {
-    selectedBook = data;
-  }
-
-  if (!selectedBook) {
-    console.log("no object");
-  }
+  const selectedBook = isSuccess
+    ? data
+    : books.find((obj: BookVolume) => obj.id === id);
 
   const removeHtmlTags = (input: string) => {
     return input.replace(/<[^>]*>/g, "");
   };
 
+  const addToCart = () => {
+    toast("cart clicked");
+  };
+
+  const [selectedBooklistID, setSelectedBooklistID] = useState("");
+
+  const handleAddToBooklist = () => {
+    const booklist = userBooklists.bookLists?.find(
+      (obj) => obj._id === selectedBooklistID
+    );
+    if (booklist) {
+      if ("books" in booklist) {
+        const books = [...booklist.books, id];
+        const booklist_id = booklist?._id;
+        //console.log(books);
+        const data = { books, booklist_id };
+        addBookToBooklist({ data, access_token });
+      }
+    } else {
+      toast.error("Please Select a Booklist");
+    }
+  };
+
+  useEffect(() => {
+    if (bookAdded) {
+      toast(
+        `Book Added to ${
+          userBooklists.bookLists?.find((obj) => obj._id === selectedBooklistID)
+            ?.name
+        } Booklist`
+      );
+      refetch();
+    }
+  }, [bookAdded]);
+
   return (
     <Modal>
       {selectedBook && (
-        <div className="flex flex-col items-center space-y-4 p-4">
-          <img
-            src={selectedBook.volumeInfo.imageLinks?.thumbnail || DefaultPic}
-            alt="Book Thumbnail"
-            className="rounded-md"
-            height={250}
-            width={250}
-          />
-          <h2 className="text-2xl font-semibold mb-4">
-            Title: {selectedBook.volumeInfo.title}
-          </h2>
-          {selectedBook.volumeInfo.subtitle && (
-            <p className="text-gray-600 mb-4">
-              {selectedBook.volumeInfo.subtitle}
+        <>
+          <div className="flex flex-col p-12 w-full overflow-auto text-gray-800 ">
+            <img
+              src={selectedBook.volumeInfo.imageLinks?.thumbnail || DefaultPic}
+              alt="Book Thumbnail"
+              className="rounded-md shadow-lg mb-6"
+              height={300}
+              width={300}
+            />
+            <h2 className="text-3xl font-bold mb-4">
+              Title: {selectedBook.volumeInfo.title}
+            </h2>
+            {selectedBook.volumeInfo.subtitle && (
+              <p className="text-gray-600 mb-4">
+                {selectedBook.volumeInfo.subtitle}
+              </p>
+            )}
+            {selectedBook.saleInfo && (
+              <div className="text-gray-700 space-y-2">
+                <p>
+                  <span className="font-semibold">List Price:</span>{" "}
+                  {selectedBook.saleInfo.listPrice
+                    ? `${selectedBook.saleInfo.listPrice.amount} ${selectedBook.saleInfo.listPrice.currencyCode}`
+                    : "Out of Stock"}
+                </p>
+                <p>
+                  <span className="font-semibold">Retail Price:</span>{" "}
+                  {selectedBook.saleInfo.retailPrice
+                    ? `${selectedBook.saleInfo.retailPrice.amount} ${selectedBook.saleInfo.retailPrice.currencyCode}`
+                    : "Out of Stock"}
+                </p>
+              </div>
+            )}
+            <p className="text-gray-700">
+              <span className="font-semibold">Authors:</span>{" "}
+              {selectedBook.volumeInfo.authors?.join(" , ") || "N/A"}
             </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Publisher:</span>{" "}
+              {selectedBook.volumeInfo.publisher || "N/A"}
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Published Date:</span>{" "}
+              {selectedBook.volumeInfo.publishedDate || "N/A"}
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Page Count:</span>{" "}
+              {selectedBook.volumeInfo.pageCount || "N/A"}
+            </p>
+            <p className="text-gray-700">
+              <span className="font-semibold">Description:</span>{" "}
+              {removeHtmlTags(selectedBook.volumeInfo.description || "N/A")}
+            </p>
+          </div>
+          {access_token && (
+            <>
+              <div className="flex flex-row items-center justify-between px-12 py-2 w-full shadow-2xl ">
+                {selectedBook.saleInfo.listPrice ? (
+                  <Button
+                    onClick={addToCart}
+                    className=" bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none"
+                  >
+                    Add To Cart
+                  </Button>
+                ) : (
+                  <Button className=" bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none">
+                    Sold Out
+                  </Button>
+                )}
+                <div className="flex flex-col sm:flex-row my-2 ">
+                  <select
+                    value={selectedBooklistID}
+                    onChange={(e) => setSelectedBooklistID(e.target.value)}
+                    className="bg-slate-500 text-white p-2 rounded mx-2  "
+                  >
+                    <option className="text-black" value="" disabled>
+                      Name | Type
+                    </option>
+                    {userBooklists.bookLists?.map((booklist) => (
+                      <option key={booklist.name} value={booklist._id}>
+                        {booklist.name} |{" "}
+                        {booklist.isPrivate ? "Private" : "Public"}
+                      </option>
+                    ))}
+                  </select>
+                  <Button
+                    onClick={handleAddToBooklist}
+                    className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none  "
+                  >
+                    Add To Selected Booklist
+                  </Button>
+                </div>
+              </div>
+            </>
           )}
-          {selectedBook.saleInfo && (
-            <div className="text-gray-700 space-y-2">
-              <p>
-                <span className="font-semibold">List Price:</span>{" "}
-                {selectedBook.saleInfo.listPrice
-                  ? `${selectedBook.saleInfo.listPrice.amount} ${selectedBook.saleInfo.listPrice.currencyCode}`
-                  : "N/A"}
-              </p>
-              <p>
-                <span className="font-semibold">Retail Price:</span>{" "}
-                {selectedBook.saleInfo.retailPrice
-                  ? `${selectedBook.saleInfo.retailPrice.amount} ${selectedBook.saleInfo.retailPrice.currencyCode}`
-                  : "N/A"}
-              </p>
-            </div>
-          )}
-          <p className="text-gray-700">
-            <span className="font-semibold">Authors:</span>{" "}
-            {selectedBook.volumeInfo.authors?.join(" , ") || 'N/A'}
-          </p>
-          <p className="text-gray-700">
-            <span className="font-semibold">Publisher:</span>{" "}
-            {selectedBook.volumeInfo.publisher || "N/A"}
-          </p>
-          <p className="text-gray-700">
-            <span className="font-semibold">Published Date:</span>{" "}
-            {selectedBook.volumeInfo.publishedDate || "N/A"}
-          </p>
-          <p className="text-gray-700">
-            <span className="font-semibold">Description:</span>{" "}
-            {removeHtmlTags(selectedBook.volumeInfo.description || "N/A")}
-          </p>
-          <p className="text-gray-700">
-            <span className="font-semibold">Page Count:</span>{" "}
-            {selectedBook.volumeInfo.pageCount || "N/A"}
-          </p>
-        </div>
+        </>
       )}
     </Modal>
   );

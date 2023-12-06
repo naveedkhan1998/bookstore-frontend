@@ -1,12 +1,27 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import Button from "./Button";
+import { useLoginUserMutation } from "../services/userAuthService";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { setCredentials, getCurrentToken } from "../features/authSlice";
+import { getToken, storeToken } from "../services/LocalStorageService";
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 
 interface FormData {
   email: string;
   password: string;
 }
 
+interface Token {
+  access: string;
+}
+
 const Login: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [loginUser, isSuccess] = useLoginUserMutation();
+
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: "",
@@ -17,8 +32,23 @@ const Login: React.FC = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    const res = await loginUser(formData);
+    if (isSuccess) {
+      if ("data" in res) {
+        const token: Token = res.data;
+        storeToken({ value: { access: token.access } });
+        dispatch(setCredentials({ access: token.access }));
+        navigate("/");
+        toast.success('Logged In')
+      }
+      else if("error"in res){
+        
+        toast.error('Incorrect Password or Email')
+      }
+    }
     console.log("Login submitted:", formData);
   };
 

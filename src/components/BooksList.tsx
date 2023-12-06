@@ -87,17 +87,18 @@ const BooksList = () => {
   );
 
   return (
-    <div className="flex flex-col w-full ">{/* max-h-screen */}
+    <div className="flex flex-col w-full ">
+      {/* max-h-screen */}
       {paginatedData.length > 0 ? (
         <>
-          <div className="flex gap-10 lg:gap-20 bg-zinc-400 justify-between p-2  mx-4 mt-4 mb-4 shadow-2xl rounded-full ">
+          <div className="flex  lg:gap-20 bg-zinc-400 items-center flex-shrink justify-between p-2  mx-4 mt-4 mb-4 shadow-2xl rounded-full ">
             <Button
               size={"icon"}
               variant={"ghost"}
               onClick={() => handlePageChange(currentPage - 1)}
-              className={`mx-1 my-1 p-2 ${
+              className={` ${
                 currentPage === 1 ? "hidden" : " text-slate-600"
-              } sm:mx-2 sm:my-0`}
+              } `}
               disabled={currentPage === 1}
             >
               <MoveLeftIcon />
@@ -107,9 +108,9 @@ const BooksList = () => {
               size={"icon"}
               variant={"ghost"}
               onClick={() => handlePageChange(currentPage + 1)}
-              className={`mx-1 my-1 p-2 ${
+              className={` ${
                 currentPage === totalPages ? "hidden" : " text-slate-600"
-              } sm:mx-2 sm:my-0`}
+              } `}
               disabled={currentPage === totalPages}
             >
               <MoveRightIcon />
@@ -119,6 +120,31 @@ const BooksList = () => {
             <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
               {paginatedData.map(renderBook)}
             </div>
+          </div>
+          <div className="flex  lg:gap-20 bg-zinc-400 items-center flex-shrink justify-between p-2  mx-4 mt-4 mb-4 shadow-2xl rounded-full ">
+            <Button
+              size={"icon"}
+              variant={"ghost"}
+              onClick={() => handlePageChange(currentPage - 1)}
+              className={` ${
+                currentPage === 1 ? "hidden" : " text-slate-600"
+              } `}
+              disabled={currentPage === 1}
+            >
+              <MoveLeftIcon />
+            </Button>
+            {renderPageButtons()}
+            <Button
+              size={"icon"}
+              variant={"ghost"}
+              onClick={() => handlePageChange(currentPage + 1)}
+              className={` ${
+                currentPage === totalPages ? "hidden" : " text-slate-600"
+              } `}
+              disabled={currentPage === totalPages}
+            >
+              <MoveRightIcon />
+            </Button>
           </div>
         </>
       ) : (

@@ -1,43 +1,48 @@
-// src/components/LoginReg.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./Login";
 import Registration from "./Registration";
 import Button from "./Button";
-import Footer from "../layouts/Footer";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../app/hooks";
+import { getCurrentToken } from "../features/authSlice";
 
 const LoginReg: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
+  const token = useAppSelector(getCurrentToken);
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
   };
 
+  const formMessage = isLogin
+    ? "Need an account? "
+    : "Already have an account? ";
+
+  const buttonText = isLogin ? "Register here" : "Login here";
+
   return (
-    <>
-      <div className="flex flex-col h-screen">
-        <div className="flex-1 flex flex-col bg-stone-400 ">
-          <div className="p-8  rounded-md">
-            <h2 className="text-2xl font-bold mb-4">
-              {isLogin ? "Login" : "Registration"}
-            </h2>
-            {isLogin ? <Login /> : <Registration />}
-            <div className="p-8 bg-zinc-400 shadow-md rounded-md flex flex-col items-center justify-center mt-4 w-full max-w-md mx-auto">
-              {isLogin ? "Need an account?" : "Already have an account?"}
-              <Button
-                variant={"ghost"}
-                className="text-blue-500 cursor-pointer ml-1"
-                onClick={toggleForm}
-              >
-                {isLogin ? "Register here" : "Login here"}
-              </Button>
-            </div>
-          </div>
-        </div>
-        <div className="bg-slate-800 flex flex-col justify-center items-center">
-          <Footer />
+    <div className="flex flex-col w-[90vw] rounded-xl shadow-xl h-[90vh] items-center justify-center mt-20 bg-stone-400">
+      <div className="p-8 rounded-md w-full">
+        {isLogin ? <Login /> : <Registration />}
+        <div className="p-8 bg-zinc-400 shadow-md rounded-md flex flex-col items-center justify-center mt-4 w-full max-w-md mx-auto">
+          {formMessage}
+          <Button
+            variant={"ghost"}
+            className="text-blue-500 cursor-pointer ml-1"
+            onClick={toggleForm}
+          >
+            {buttonText}
+          </Button>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

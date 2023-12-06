@@ -6,6 +6,10 @@ import authReducer from "../features/authSlice";
 import userReducer from "../features/userSlice";
 import elixirReducer from "../features/elixirSlice";
 import booksReducer from "../features/booksSlice";
+import settingReducer from "../features/settingSlice";
+import booklistsReducer from "../features/booklistSlice";
+import publicBooklistReducer from "../features/publicBooklistSlice";
+
 export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
@@ -14,6 +18,9 @@ export const store = configureStore({
     user: userReducer,
     elixirs: elixirReducer,
     books: booksReducer,
+    setting: settingReducer,
+    userbooklists:booklistsReducer,
+    publicbooklists:publicBooklistReducer
   },
 
   middleware: (getDefaultMiddleware) =>

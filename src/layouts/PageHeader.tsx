@@ -1,16 +1,29 @@
 import React, { useEffect, useState } from "react";
 import file from "../assets/logo.png";
-import { ArrowLeft, Search, ShoppingCart, MenuIcon } from "lucide-react";
+import {
+  ArrowLeft,
+  Search,
+  ShoppingCart,
+  MenuIcon,
+  HomeIcon,
+} from "lucide-react";
 import Button from "../components/Button";
 import { useSidebarContext } from "../context/SidebarContext";
 import ProfileMenu from "../components/ProfileMenu";
 import { useGetVolumesQuery } from "../services/googleBooksServices";
 import { BookVolume } from "../comman-types";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setBooks } from "../features/booksSlice";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getCurrentToken } from "../features/authSlice";
+import { UserType, setUserInfo } from "../features/userSlice";
+import { useGetLoggedUserQuery } from "../services/userAuthService";
+import { setUserBookslist } from "../features/booklistSlice";
+import { useGetUserBooklistsQuery } from "../services/booklistsServices";
 
 const PageHeader = () => {
+  const access_token = useAppSelector(getCurrentToken);
+
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("ALL");
 
@@ -22,6 +35,16 @@ const PageHeader = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  /// initial booklist set
+  const {
+    data: booklistData,
+    isSuccess: booklistISuccess,
+  } = useGetUserBooklistsQuery(access_token);
+
+  if (booklistISuccess) {
+    dispatch(setUserBookslist(booklistData));
+  }
 
   function handleSearchClick(id: String) {
     setSearchTerm("");
@@ -40,12 +63,29 @@ const PageHeader = () => {
     setSearchTerm("");
   };
 
+  const token = useAppSelector(getCurrentToken);
+  const { data: userData } = useGetLoggedUserQuery(token);
+
+  useEffect(() => {
+    if (userData) {
+      const newData: UserType = userData;
+      dispatch(
+        setUserInfo({
+          ...newData,
+          avatarUrl: `https://ui-avatars.com/api/?name=${newData.given_name}+${newData.family_name}`,
+        })
+      );
+      console.log(newData);
+    }
+  }, [dispatch, userData, isSuccess]);
+
   useEffect(() => {
     const fetchSearchResults = async () => {
       if (searchTerm.trim() === "") {
         setSearchResults([]);
         return;
       }
+
       try {
         if (isLoading) {
           refetch();
@@ -65,11 +105,10 @@ const PageHeader = () => {
     };
 
     // Debounce the API call to avoid making requests on every keystroke
-
     const debounceTimer = setTimeout(fetchSearchResults);
 
     return () => clearTimeout(debounceTimer);
-  }, [searchTerm, data]);
+  }, [searchTerm, data, isLoading]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -119,7 +158,7 @@ const PageHeader = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onFocus={() => {
-              navigate("/");
+              //navigate("/");
             }}
           />
           <Button
@@ -182,12 +221,40 @@ const PageHeader = () => {
         >
           <Search />
         </Button>
-        <Button size="icon" variant="ghost" number={6}>
-          <ShoppingCart />
+        <Button
+          size="icon"
+          onClick={() => navigate("/")}
+          variant="ghost"
+          className="hidden sm:flex"
+        >
+          <HomeIcon />
         </Button>
-        <Button size="icon" variant="ghost">
-          <ProfileMenu />
-        </Button>
+
+        {!access_token && (
+          <Button
+            onClick={() => navigate("/login")}
+            variant="ghost"
+            className=" rounded-full"
+          >
+            Login
+          </Button>
+        )}
+        {access_token && (
+          <>
+            <Button
+              size="icon"
+              onClick={() => navigate("/cart")}
+              className="hidden xs:flex"
+              variant="ghost"
+              number={6}
+            >
+              <ShoppingCart />
+            </Button>
+            <Button size="icon" variant="ghost">
+              <ProfileMenu />
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -212,9 +279,8 @@ export function PageHeaderFirstSection({
       <Button onClick={toggle} variant="ghost" size="icon">
         <MenuIcon />
       </Button>
-      <a href="/">
-        <img src={file} className="h-6" alt="logo" />
-      </a>
+
+      <img src={file} className="h-6" alt="logo" />
     </div>
   );
 }

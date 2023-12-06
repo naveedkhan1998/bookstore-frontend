@@ -7,14 +7,20 @@ import {
   UserCircle2 as UserCircle2Icon,
   History as HistoryIcon,
   TestTube,
+  BookTextIcon,
+  InfoIcon,
+  BookOpen,
 } from "lucide-react";
 import Button, { buttonStyles } from "./Button";
 import { twMerge } from "tailwind-merge";
 import { useSidebarContext } from "../context/SidebarContext";
 import { PageHeaderFirstSection } from "../layouts/PageHeader";
 import { Link } from "react-router-dom";
+import { useAppSelector } from "../app/hooks";
+import { getCurrentToken } from "../features/authSlice";
 
 const Sidebar = () => {
+  const access_token = useAppSelector(getCurrentToken);
   const { isLargeOpen, isSmallOpen, close } = useSidebarContext();
 
   return (
@@ -31,7 +37,7 @@ const Sidebar = () => {
         />
       )}
       <aside
-        className={`w-56 max-h-screen lg:sticky absolute top-0 overflow-y-full scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 shadow-2xl rounded-e-2xl ${
+        className={`w-56 max-h-screen lg:sticky absolute top-0 overflow-y-full scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 shadow-2xl  ${
           isLargeOpen ? "lg:flex" : "lg:hidden"
         } ${isSmallOpen ? "flex z-[999] bg-stone-400 min-h-screen" : "hidden"}`}
       >
@@ -40,18 +46,32 @@ const Sidebar = () => {
         </div>
         <LargeSidebarSection visibleItemCount={3}>
           <LargeSidebarItem isActive Icon={Home} title="Home" url="/" />
-          <LargeSidebarItem Icon={ShoppingCart} title="Cart" url="/cart" />
+          {access_token && (
+            <>
+              <LargeSidebarItem Icon={ShoppingCart} title="Cart" url="/cart" />
+              <LargeSidebarItem
+                Icon={UserCircle2Icon}
+                title="Account"
+                url="/account"
+              />
+              <LargeSidebarItem
+                Icon={HistoryIcon}
+                title="Order History"
+                url="/order-history"
+              />
+              <LargeSidebarItem
+                Icon={BookTextIcon}
+                title="My Booklists"
+                url="/booklists"
+              />
+            </>
+          )}
           <LargeSidebarItem
-            Icon={UserCircle2Icon}
-            title="Account"
-            url="/account"
+            Icon={BookOpen}
+            title="Public Booklists"
+            url="/public-booklists"
           />
-          <LargeSidebarItem
-            Icon={HistoryIcon}
-            title="Order History"
-            url="/order-history"
-          />
-          <LargeSidebarItem Icon={TestTube} title="Test" url="/test" />
+          <LargeSidebarItem Icon={InfoIcon} title="About Us" url="/about" />
         </LargeSidebarSection>
         <hr />
       </aside>

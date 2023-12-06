@@ -1,16 +1,23 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 
-interface UserType {
+export interface UserType {
+  _id: string;
+  access?: string;
   email: string;
-  name: string;
+  family_name: string;
+  given_name: string;
+  is_verified?: boolean;
+  is_admin?: boolean;
   avatarUrl?: string;
 }
 
 const initialState: UserType = {
+  _id: "",
   email: "",
-  name: "",
-  avatarUrl: "",
+  given_name: "",
+  family_name: "",
+  avatarUrl: "https://ui-avatars.com/api/?name=John+Boe",
 };
 
 export const userSlice = createSlice({
@@ -18,15 +25,23 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action: PayloadAction<UserType>) => {
-      const { email, name, avatarUrl } = action.payload;
+      const { _id, email, given_name, family_name, is_verified, is_admin,avatarUrl } =
+        action.payload;
+      state._id = _id;
       state.email = email;
-      state.name = name;
+      state.given_name = given_name;
+      state.family_name = family_name;
+      state.is_verified = is_verified;
+      state.is_admin = is_admin;
       state.avatarUrl = avatarUrl;
     },
     unSetUserInfo: (state) => {
+      state._id = "";
       state.email = "";
-      state.name = "";
-      state.avatarUrl = "";
+      state.given_name = "";
+      state.family_name = "";
+      state.is_verified = undefined;
+      state.is_admin = undefined;
     },
   },
 });

@@ -1,16 +1,12 @@
 // App.js
 import MainPage from "./pages/MainPage";
-import LoginReg from "./components/LoginReg";
+import Toast from "./components/ToastContainer";
 
 function App() {
-  const isLogin =true;
   return (
     <>
-      {isLogin ? (
-        <MainPage />
-      ) : (
-        <LoginReg />
-      )}
+      <MainPage />
+      <Toast />
     </>
   );
 }
