@@ -10,6 +10,7 @@ import {
   BookTextIcon,
   InfoIcon,
   BookOpen,
+  ShieldCheckIcon,
 } from "lucide-react";
 import Button, { buttonStyles } from "./Button";
 import { twMerge } from "tailwind-merge";
@@ -18,10 +19,12 @@ import { PageHeaderFirstSection } from "../layouts/PageHeader";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
+import { getCurrentUserDetails } from "../features/userSlice";
 
 const Sidebar = () => {
   const access_token = useAppSelector(getCurrentToken);
   const { isLargeOpen, isSmallOpen, close } = useSidebarContext();
+  const user = useAppSelector(getCurrentUserDetails);
 
   return (
     <>
@@ -64,6 +67,13 @@ const Sidebar = () => {
                 title="My Booklists"
                 url="/booklists"
               />
+              {user.isAdmin && (
+                <LargeSidebarItem
+                Icon={ShieldCheckIcon}
+                title="Admin Panel"
+                url="/admin"
+              />
+              )}
             </>
           )}
           <LargeSidebarItem

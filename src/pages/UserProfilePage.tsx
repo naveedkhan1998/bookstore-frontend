@@ -25,7 +25,10 @@ const UserProfile = () => {
       <div className="mt-4">
         <h3 className="text-lg font-semibold mb-2">Contact Information</h3>
         <p className="text-zinc-800">Email: {user.email}</p>
-        {/* Other profile details... */}
+        <p className="text-zinc-800">
+          Is Verified: {user.isVerified ? "🟢" : "🔴"}
+        </p>
+        <p className="text-zinc-800">Is Admin: {user.isAdmin ? "🟢" : "🔴"}</p>
       </div>
     </div>
   );

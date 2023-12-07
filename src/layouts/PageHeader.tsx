@@ -20,21 +20,34 @@ import { UserType, setUserInfo } from "../features/userSlice";
 import { useGetLoggedUserQuery } from "../services/userAuthService";
 import { setUserBookslist } from "../features/booklistSlice";
 import { useGetUserBooklistsQuery } from "../services/booklistsServices";
+import { useGetCartQuery } from "../services/cartServices";
+import { getUserCart, setUserCart } from "../features/cartSlice";
+import Spinner from "../components/Spinner";
 
 const PageHeader = () => {
   const access_token = useAppSelector(getCurrentToken);
-
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("ALL");
 
   const [searchResults, setSearchResults] = useState([]);
 
+  const { data: cartData, isSuccess: CartSuccess } = useGetCartQuery(
+    access_token
+  );
+
+  useEffect(() => {
+    if (CartSuccess) {
+      dispatch(setUserCart(cartData));
+    }
+  }, [CartSuccess]);
+
   const { data, isSuccess, isLoading, refetch } = useGetVolumesQuery(
     searchTerm
   );
 
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const cart_data = useAppSelector(getUserCart);
 
   /// initial booklist set
   const {
@@ -75,7 +88,7 @@ const PageHeader = () => {
           avatarUrl: `https://ui-avatars.com/api/?name=${newData.given_name}+${newData.family_name}`,
         })
       );
-      console.log(newData);
+      //console.log(newData);
     }
   }, [dispatch, userData, isSuccess]);
 
@@ -94,6 +107,7 @@ const PageHeader = () => {
         if (searchTerm === "ALL") {
           setSearchResults([]);
           handleSearch();
+
           return;
         }
 
@@ -131,12 +145,13 @@ const PageHeader = () => {
 
       <form
         onSubmit={(e) => {
-          e.preventDefault(); // Prevents the default form submission behavior
+          e.preventDefault();
           handleSearch();
         }}
-        className={`gap-4 flex-grow justify-center ${
+        className={`flex-grow justify-center ${
           showFullWidthSearch ? "flex" : "hidden md:flex"
         }`}
+        aria-label="Search Form"
       >
         {showFullWidthSearch && (
           <Button
@@ -145,6 +160,7 @@ const PageHeader = () => {
             variant="ghost"
             type="button"
             className="flex-shrink-0"
+            aria-label="Back to Search"
           >
             <ArrowLeft />
           </Button>
@@ -153,18 +169,18 @@ const PageHeader = () => {
           <input
             type="search"
             placeholder="Search Books"
-            className="rounded-l-full border border-secondary-border shadow-inner shadow-secondary py-2 px-4 text-lg w-full
-            focus:border-blue-500 outline-none z-50"
+            className="rounded-l-full border border-secondary-border shadow-inner placeholder-black bg-zinc-400 py-2 px-4 text-lg w-full focus:border-blue-500 outline-none z-50"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onFocus={() => {
               //navigate("/");
             }}
+            aria-label="Search Input"
           />
           <Button
-            className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 mr-3
-            flex-shrink-0 z-50"
+            className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 mr-3 flex-shrink-0 z-50"
             type="submit"
+            aria-label="Submit Search"
           >
             <Search />
           </Button>
@@ -177,7 +193,10 @@ const PageHeader = () => {
           onClick={handleOverlayClick}
         >
           <div className="flex justify-start items-center top-15 flex-col absolute h-[80%] w-[80%]  bg-zinc-400 rounded-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto z-50">
-            <table className="w-full items-start justify-start  ">
+            <table
+              className="w-full items-start justify-start "
+              aria-label="Search Results"
+            >
               <thead>
                 <tr>
                   <th className="py-2 px-4">Book Name</th>
@@ -190,9 +209,7 @@ const PageHeader = () => {
                     key={obj.id}
                     id={obj.id}
                     className="hover:bg-stone-400 rounded-2xl"
-                    onClick={() => {
-                      handleSearchClick(obj.id);
-                    }}
+                    onClick={() => handleSearchClick(obj.id)}
                   >
                     <td className="py-2 px-4 rounded-2xl">
                       {obj.volumeInfo.title}
@@ -246,7 +263,10 @@ const PageHeader = () => {
               onClick={() => navigate("/cart")}
               className="hidden xs:flex"
               variant="ghost"
-              number={6}
+              number={Object.values(cart_data.books).reduce(
+                (acc, val) => acc + val,
+                0
+              )}
             >
               <ShoppingCart />
             </Button>

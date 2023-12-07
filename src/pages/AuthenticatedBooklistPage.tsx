@@ -1,18 +1,28 @@
 import React, { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
-import { useGetALLBooklistsQuery} from "../services/booklistsServices";
+import {
+  useAddBooklistReviewMutation,
+  useGetALLBooklistsQuery,
+} from "../services/booklistsServices";
 import {
   getPublicBooklists,
   setPublicBookslist,
 } from "../features/publicBooklistSlice";
 import { Link } from "react-router-dom";
+import Button from "../components/Button";
+import { getRefresh, setRefresh } from "../features/refreshSlice";
+import { BookCategory } from "../comman-types";
 
 const AuthentiatedBooklistPage = () => {
   const dispatch = useAppDispatch();
   const access_token = useAppSelector(getCurrentToken);
 
-  const { data, isSuccess, refetch } = useGetALLBooklistsQuery(access_token);
+  const refresh = useAppSelector(getRefresh);
+
+  const { data, isSuccess, isLoading, refetch } = useGetALLBooklistsQuery(
+    access_token
+  );
 
   // Update data in the Redux store if the query is successful
   useEffect(() => {
@@ -23,27 +33,28 @@ const AuthentiatedBooklistPage = () => {
 
   // Fetch data every 30 seconds
   useEffect(() => {
-    const intervalId = setInterval(() => {
+    if (refresh) {
       refetch();
-    }, 30000);
 
-    // Clear the interval when the component unmounts or if refetch changes
-    return () => clearInterval(intervalId);
-  }, [refetch]);
+      dispatch(setPublicBookslist(data));
 
-  const booklists = useAppSelector(getPublicBooklists);
+      dispatch(setRefresh(false));
+    }
+  }, [refresh]);
+
+  //const booklists = useAppSelector(getPublicBooklists);
 
   return (
     <div className="flex flex-col w-full items-center justify-center p-6 mt-10">
       <div className="grid grid-cols-[auto,fr] flex-grow-1  w-[80dvw]  shadow-2xl p-6 rounded-2xl">
         <h1 className="pt-6 text-2xl font-bold pb-6">
-          Authenticated User BookLists No Limit 
+          Authenticated User BookLists No Limit
         </h1>
 
-        {booklists && (
+        {data && (
           <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
-            {booklists &&
-              booklists.map((bookList) => (
+            {data &&
+              data.map((bookList: BookCategory) => (
                 <div className="flex flex-row" key={bookList.name}>
                   <Link to="/public-booklist" state={{ from: bookList }}>
                     <div

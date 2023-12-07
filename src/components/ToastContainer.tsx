@@ -1,12 +1,15 @@
-
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer,toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-
-
 const Toast: React.FC = () => {
-  return <ToastContainer />;
+
+  const toastOptions = {
+    autoClose: 1000,
+    position: toast.POSITION.BOTTOM_LEFT,
+  };
+
+  return <ToastContainer {...toastOptions} />;
 };
 
 export default Toast;

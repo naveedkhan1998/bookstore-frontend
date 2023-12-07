@@ -24,7 +24,7 @@ const ProfileMenu = () => {
     dispatch(logOut());
     dispatch(unSetUserBooklist());
     dispatch(unSetPublicBooklist())
-    //window.location.reload();
+    window.location.reload();
     toast.success("Logged Out");
     //console.log("hello world");
   };

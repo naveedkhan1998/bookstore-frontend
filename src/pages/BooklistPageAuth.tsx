@@ -41,6 +41,7 @@ const BooklistPageAuth: React.FC = () => {
   useEffect(() => {
     if (createBooklistSuccess) {
       refetch();
+      toast.success("Booklist Created");
     }
   }, [createBooklistSuccess]);
 
@@ -54,14 +55,14 @@ const BooklistPageAuth: React.FC = () => {
     }));
   };
 
-  const handleDelete = async(id: String) => {
-    alert('Are you sure you want to delete this booklist?')
+  const handleDelete = async (id: String) => {
+    alert("Are you sure you want to delete this booklist?");
     await deleteBooklist({ id, access_token });
     refetch();
-    toast("Booklist Deleted");
+    toast.warning("Booklist Deleted");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const booklist = {
@@ -69,10 +70,14 @@ const BooklistPageAuth: React.FC = () => {
       isPrivate: formData.isPrivate,
     };
 
-    createBooklist({
+    const res = await createBooklist({
       access_token,
       booklist,
     });
+    if ("data" in res) {
+    } else if ("error" in res) {
+      toast.error(JSON.stringify(res.error));
+    }
 
     setFormData({
       booklist_name: "",

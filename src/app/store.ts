@@ -9,6 +9,9 @@ import booksReducer from "../features/booksSlice";
 import settingReducer from "../features/settingSlice";
 import booklistsReducer from "../features/booklistSlice";
 import publicBooklistReducer from "../features/publicBooklistSlice";
+import cartReducer from "../features/cartSlice";
+import loadBookReducer from "../features/loadBookSlice";
+import refreshReducer from "../features/refreshSlice";
 
 export const store = configureStore({
   reducer: {
@@ -20,7 +23,10 @@ export const store = configureStore({
     books: booksReducer,
     setting: settingReducer,
     userbooklists:booklistsReducer,
-    publicbooklists:publicBooklistReducer
+    publicbooklists:publicBooklistReducer,
+    usercart:cartReducer,
+    loadbook:loadBookReducer,
+    refresh:refreshReducer
   },
 
   middleware: (getDefaultMiddleware) =>

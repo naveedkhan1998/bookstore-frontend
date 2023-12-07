@@ -78,6 +78,18 @@ export const booklistsApi = baseApi.injectEndpoints({
         };
       },
     }),
+    addBooklistReview: builder.mutation({
+      query: ({body,access_token}) => {
+        return {
+          url: `/booklist/add_review/${body.booklist_id}`,
+          method: "PUT",
+          body:{reviewText:body.reviewText},
+          headers: {
+            "x-auth-token": `${access_token}`,
+          },
+        };
+      },
+    }),
   }),
 });
 
@@ -89,4 +101,5 @@ export const {
   useGetPublicBooklistsQuery,
   useGetALLBooklistsQuery,
   useDeleteBooklistMutation,
+  useAddBooklistReviewMutation,
 } = booklistsApi;

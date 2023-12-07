@@ -3,9 +3,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { useRegisterUserMutation,useGetLoggedUserQuery } from "../services/userAuthService";
+import {
+  useRegisterUserMutation,
+  useGetLoggedUserQuery,
+} from "../services/userAuthService";
 import { setCredentials, getCurrentToken } from "../features/authSlice";
 import { getToken, storeToken } from "../services/LocalStorageService";
+import { toast } from "react-toastify";
 
 const Registration: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -45,7 +49,7 @@ const Registration: React.FC = () => {
         navigate("/");
       } else {
         // 'error' is present, handle the error
-        alert(JSON.stringify(res.error));
+        toast.error(JSON.stringify(res.error));
       }
     }
 
@@ -55,7 +59,7 @@ const Registration: React.FC = () => {
   };
 
   return (
-    <div className="flex items-top justify-center bg-stone-400">
+    <div className="flex items-top justify-center bg-stone-400 mt-16">
       <div className="bg-zinc-400 p-8 shadow-md rounded-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">Registration</h2>
         <form onSubmit={handleSubmit}>

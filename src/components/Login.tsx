@@ -5,8 +5,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setCredentials, getCurrentToken } from "../features/authSlice";
 import { getToken, storeToken } from "../services/LocalStorageService";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
-
+import { toast } from "react-toastify";
 
 interface FormData {
   email: string;
@@ -42,18 +41,16 @@ const Login: React.FC = () => {
         storeToken({ value: { access: token.access } });
         dispatch(setCredentials({ access: token.access }));
         navigate("/");
-        toast.success('Logged In')
-      }
-      else if("error"in res){
+        toast.success("Logged In");
+      } else if ("error" in res) {
         
-        toast.error('Incorrect Password or Email')
+        toast.error(JSON.stringify(res.error));
       }
     }
-    console.log("Login submitted:", formData);
   };
 
   return (
-    <div className="flex items-top justify-center bg-stone-400">
+    <div className="flex items-top justify-center bg-stone-400 ">
       <div className="bg-zinc-400 p-8 shadow-md rounded-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleSubmit}>

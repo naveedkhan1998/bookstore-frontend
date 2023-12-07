@@ -7,8 +7,8 @@ export interface UserType {
   email: string;
   family_name: string;
   given_name: string;
-  is_verified?: boolean;
-  is_admin?: boolean;
+  isVerified?: boolean;
+  isAdmin?: boolean;
   avatarUrl?: string;
 }
 
@@ -25,14 +25,14 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action: PayloadAction<UserType>) => {
-      const { _id, email, given_name, family_name, is_verified, is_admin,avatarUrl } =
+      const { _id, email, given_name, family_name, isVerified, isAdmin,avatarUrl } =
         action.payload;
       state._id = _id;
       state.email = email;
       state.given_name = given_name;
       state.family_name = family_name;
-      state.is_verified = is_verified;
-      state.is_admin = is_admin;
+      state.isVerified = isVerified;
+      state.isAdmin = isAdmin;
       state.avatarUrl = avatarUrl;
     },
     unSetUserInfo: (state) => {
@@ -40,8 +40,8 @@ export const userSlice = createSlice({
       state.email = "";
       state.given_name = "";
       state.family_name = "";
-      state.is_verified = undefined;
-      state.is_admin = undefined;
+      state.isVerified = undefined;
+      state.isAdmin = undefined;
     },
   },
 });

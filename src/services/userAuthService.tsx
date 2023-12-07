@@ -33,6 +33,14 @@ export const userAuthApi = baseApi.injectEndpoints({
         };
       },
     }),
+    googleLogin: builder.query({
+      query: () => {
+        return {
+          url: "/auth/google",
+          method: "GET",
+        };
+      },
+    }),
   }),
 });
 
@@ -40,4 +48,5 @@ export const {
   useRegisterUserMutation,
   useLoginUserMutation,
   useGetLoggedUserQuery,
+  useGoogleLoginQuery
 } = userAuthApi;

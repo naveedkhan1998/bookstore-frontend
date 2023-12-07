@@ -115,15 +115,45 @@ export interface BookListContainer {
   bookLists?: BookList[];
   createdAt?: string;
   updatedAt?: string;
+  reviews?: Reviews[];
+  __v?: number;
+}
+
+export type Reviews = {
+  reviewId:string;
+  reviewText: string;
+  reviewerName: string;
+  isHidden: boolean;
+};
+
+export type BookCategory = {
+  _id: string;
+  name?: string;
+  books: string[];
+  authorName?: string;
+  reviews?: Reviews[];
+};
+
+export type PublicBooklist = BookCategory[];
+
+export type BooksInCart = Record<string, number>;
+
+export interface UserCart {
+  _id?: string;
+  books: BooksInCart;
   __v?: number;
 }
 
 
+type TransactionItem = Record<string, number>;
 
-export type BookCategory = {
-  name?: string;
-  books: string[];
-  authorName?: string;
+type Transaction = {
+  price: number;
+  items: TransactionItem;
 };
 
-export type PublicBooklist = BookCategory[];
+export type Transactions = Record<string, Transaction>;
+
+export type TransactionObject = {
+  transactions: Transactions;
+};

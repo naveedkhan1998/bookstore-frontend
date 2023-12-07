@@ -1,7 +1,7 @@
 import Modal from "../components/Modal";
 import { useParams } from "react-router-dom";
 import { getBooks } from "../features/booksSlice";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { BookVolume } from "../comman-types";
 import { useGetVolumeQuery } from "../services/googleBooksServices";
 import DefaultPic from "../assets/pp.jpg";
@@ -14,10 +14,16 @@ import {
   useAddBookToBooklistMutation,
   useGetUserBooklistsQuery,
 } from "../services/booklistsServices";
+import {
+  useAddToCartMutation,
+  useGetCartQuery,
+} from "../services/cartServices";
+import { setUserCart } from "../features/cartSlice";
 
 const BookPage = () => {
   const access_token = useAppSelector(getCurrentToken);
   const userBooklists = useAppSelector(getUserBooklists);
+  const dispatch = useAppDispatch();
   const { id } = useParams();
   const books = useAppSelector(getBooks);
   const { refetch } = useGetUserBooklistsQuery(access_token);
@@ -26,6 +32,14 @@ const BookPage = () => {
     { isSuccess: bookAdded },
   ] = useAddBookToBooklistMutation();
 
+  const [addToCart, { isLoading: addedToCart }] = useAddToCartMutation();
+
+  const {
+    data: cartData,
+    isSuccess: CartSuccess,
+    isFetching,
+    refetch: refetchCart,
+  } = useGetCartQuery(access_token);
   // Find the selected book based on the id parameter
   const { data, isSuccess } = useGetVolumeQuery(id);
 
@@ -37,9 +51,23 @@ const BookPage = () => {
     return input.replace(/<[^>]*>/g, "");
   };
 
-  const addToCart = () => {
-    toast("cart clicked");
+  const handleAddToCart = () => {
+    const book_id = { book_id: id };
+    addToCart({ book_id, access_token });
   };
+
+  useEffect(() => {
+    if (addedToCart) {
+      toast.success("Book Added To Cart");
+    }
+    refetchCart();
+  }, [addedToCart]);
+
+  useEffect(() => {
+    if (!isFetching) {
+      dispatch(setUserCart(cartData));
+    }
+  }, [isFetching]);
 
   const [selectedBooklistID, setSelectedBooklistID] = useState("");
 
@@ -134,7 +162,7 @@ const BookPage = () => {
               <div className="flex flex-row items-center justify-between px-12 py-2 w-full shadow-2xl ">
                 {selectedBook.saleInfo.listPrice ? (
                   <Button
-                    onClick={addToCart}
+                    onClick={handleAddToCart}
                     className=" bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none"
                   >
                     Add To Cart

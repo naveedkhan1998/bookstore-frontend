@@ -20,6 +20,10 @@ import UserBooklistPage from "./UserBooklistPage";
 import PublicBooklistsPage from "./PublicBooklistsPage";
 import PublicBookPage from "./PublicBookPage";
 import AuthentiatedBooklistPage from "./AuthenticatedBooklistPage";
+import CheckoutPage from "./CheckoutPage";
+import OrderItemsPage from "./OrderItemsPage";
+import AdminPage from "./AdminPage";
+import AdminUserPage from "./AdminUserPage";
 
 const MainPage = () => {
   const access_token = useAppSelector(getCurrentToken);
@@ -41,10 +45,26 @@ const MainPage = () => {
                   <Route path="/account" element={<UserProfile />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/order-history" element={<OrderHistoryPage />} />
-                  <Route path="/public-booklists" element={access_token?<AuthentiatedBooklistPage/>:<PublicBooklistsPage />} />
+                  <Route path="/order-items" element={<OrderItemsPage />} />
+                  <Route path="/checkout" element={<CheckoutPage />} />
+                  <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/admin-user-page" element={<AdminUserPage />} />
+                  <Route
+                    path="/public-booklists"
+                    element={
+                      access_token ? (
+                        <AuthentiatedBooklistPage />
+                      ) : (
+                        <PublicBooklistsPage />
+                      )
+                    }
+                  />
                   <Route path="/public-booklist" element={<PublicBookPage />} />
                   <Route path="/booklists" element={<BooklistPageAuth />} />
-                  <Route path="/user-booklist/:id" element={<UserBooklistPage />} />
+                  <Route
+                    path="/user-booklist/:id"
+                    element={<UserBooklistPage />}
+                  />
                   <Route path="/book/:id" element={<BookPage />} />
                   <Route path="/item/:id" element={<ItemPage />} />
                   <Route path="/setting" element={<UserSettings />} />
