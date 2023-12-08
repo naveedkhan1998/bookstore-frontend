@@ -42,7 +42,7 @@ const BookComponent: React.FC<BookID> = ({ book_id }) => {
             </h2>
             <p className="text-black mb-2">
               <span className="font-semibold">Authors:</span>{" "}
-              {book.volumeInfo.authors.join(", ")}
+              {book.volumeInfo.authors?.join(", ")}
             </p>
             <p className="text-black">
               <span className="font-semibold">Publication Date:</span>{" "}
