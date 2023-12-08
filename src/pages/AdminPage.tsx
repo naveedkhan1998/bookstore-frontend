@@ -49,6 +49,12 @@ const AdminPage = () => {
                     // onClick={() => handleBooklistClick(bookList)}
                     className="flex flex-col p-6 rounded-lg shadow-lg bg-zinc-400 hover:bg-zinc-500 w-full "
                   >
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}`}
+                      alt="profile"
+                      className="mx-auto w-24 h-24 rounded-full object-cover"
+                    />
+
                     <h2 className="text-lg font-semibold mb-2">
                       Name: {user.given_name}
                     </h2>
@@ -57,8 +63,7 @@ const AdminPage = () => {
                       Is Admin: {user.isAdmin ? "🟢" : "🔴"}
                     </h2>
                     <h2 className="text-small font-semibold mb-2">
-                      Is Verified:{" "}
-                      {user.isVerified ? "🟢" : "🔴"}
+                      Is Verified: {user.isVerified ? "🟢" : "🔴"}
                     </h2>
                   </div>
                 </Link>
@@ -83,6 +88,11 @@ const AdminPage = () => {
                     // onClick={() => handleBooklistClick(bookList)}
                     className="flex flex-col p-6 rounded-lg shadow-lg bg-zinc-400 hover:bg-zinc-500 w-full "
                   >
+                    <img
+                      src={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}`}
+                      alt="profile"
+                      className="mx-auto w-24 h-24 rounded-full object-cover"
+                    />
                     <h2 className="text-lg font-semibold mb-2">
                       Name: {user.given_name}
                     </h2>
@@ -91,8 +101,7 @@ const AdminPage = () => {
                       Is Admin: {user.isAdmin ? "🟢" : "🔴"}
                     </h2>
                     <h2 className="text-small font-semibold mb-2">
-                      Is Verified:{" "}
-                      {user.isVerified ? "🟢" : "🔴"}
+                      Is Verified: {user.isVerified ? "🟢" : "🔴"}
                     </h2>
                   </div>
                 </Link>
