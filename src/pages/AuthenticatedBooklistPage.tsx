@@ -48,7 +48,7 @@ const AuthentiatedBooklistPage = () => {
     <div className="flex flex-col w-full items-center justify-center p-6 mt-10">
       <div className="grid grid-cols-[auto,fr] flex-grow-1  w-[80dvw]  shadow-2xl p-6 rounded-2xl">
         <h1 className="pt-6 text-2xl font-bold pb-6">
-          Authenticated User BookLists No Limit
+          Authenticated User BookLists 20 Books
         </h1>
 
         {data && (

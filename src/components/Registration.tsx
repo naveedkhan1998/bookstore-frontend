@@ -1,11 +1,12 @@
 // src/components/Registration.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   useRegisterUserMutation,
   useGetLoggedUserQuery,
+  useLazySendEmailQuery,
 } from "../services/userAuthService";
 import { setCredentials, getCurrentToken } from "../features/authSlice";
 import { getToken, storeToken } from "../services/LocalStorageService";
@@ -31,6 +32,7 @@ const Registration: React.FC = () => {
   });
 
   const [registerUser, isSuccess] = useRegisterUserMutation();
+  const [sendEmail, { isSuccess: EmailSent }] = useLazySendEmailQuery();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,8 +46,10 @@ const Registration: React.FC = () => {
         // 'data' is present, safe to access
         const userData: UserData = res.data;
 
+        sendEmail({ access_token: userData.access });
         storeToken({ value: { access: userData.access } });
         dispatch(setCredentials({ access: userData.access }));
+        toast.success("Registered");
         navigate("/");
       } else {
         // 'error' is present, handle the error
@@ -57,6 +61,12 @@ const Registration: React.FC = () => {
     // Handle registration logic
     //console.log("Form submitted:", res);
   };
+
+  useEffect(() => {
+    if (EmailSent) {
+      toast.success("Email sent");
+    }
+  }, [EmailSent]);
 
   return (
     <div className="flex items-top justify-center bg-stone-400 mt-16">

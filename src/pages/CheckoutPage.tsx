@@ -22,8 +22,33 @@ const CheckoutPage = () => {
     { isSuccess: CheckoutDone },
   ] = useAddToTransactionsMutation();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const cardNumber = event.currentTarget.cardNumber.value;
+    const expiryDate = event.currentTarget.expiryDate.value;
+    const cvv = event.currentTarget.cvv.value;
+
+    if (!/^[0-9]+$/.test(cardNumber)) {
+      toast.error("Invalid card number. Please enter a valid card number.");
+      return;
+    }
+
+    if (!/^(0[1-9]|1[0-2])\/\d{4}$/.test(expiryDate)) {
+      toast.error(
+        "Invalid expiry date. Please enter a valid MM/YYYY expiry date."
+      );
+      return;
+    }
+
+    if (!/^[0-9]+$/.test(cvv)) {
+      toast.error("Invalid CVV. Please enter a valid CVV.");
+      return;
+    }
+
     const data = { ...to };
+
+    // Call the API only if the form is valid
     await addToTransactions({ data, access_token });
   };
 
@@ -32,7 +57,7 @@ const CheckoutPage = () => {
       dispatch(unSetUserCart());
       dispatch(unsetLoadedBook());
       toast.success("Items Bought");
-      navigate('/')
+      navigate("/");
     }
   }, [CheckoutDone]);
 
@@ -40,7 +65,7 @@ const CheckoutPage = () => {
     <div className="flex justify-center items-center min-h-screen">
       <div className="bg-white p-8 rounded-xl shadow-md w-96">
         <h1 className="text-2xl font-bold mb-4">Checkout</h1>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="cardNumber"
@@ -90,7 +115,7 @@ const CheckoutPage = () => {
             />
           </div>
           <Button
-            onClick={handleSubmit}
+            type="submit"
             className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
           >
             Pay Now
