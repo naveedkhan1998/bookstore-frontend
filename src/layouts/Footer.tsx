@@ -7,7 +7,7 @@ const Footer = () => {
         <p>
           &copy; 2023
           <a
-            href="https://www.linkedin.com/in/ahmed-abdalla/"
+            href="https://www.linkedin.com/in/ahmxdgamal"
             target="_blank"
             rel="noopener noreferrer"
             className="ml-2 text-blue-100"
