@@ -10,7 +10,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="flex flex-col items-center w-[70dvw] h-[70dvh] mx-auto mt-10 p-6 bg-zinc-400 shadow-2xl rounded-2xl">
+    <div className="flex flex-col items-center w-[70dvw] h-[70dvh] mx-auto mt-10 p-6 bg-main-secondary dark:bg-dark-secondary shadow-2xl rounded-2xl">
       <div className="text-center mb-4">
         <img
           src={user.avatarUrl}

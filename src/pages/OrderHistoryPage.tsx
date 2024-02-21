@@ -4,13 +4,13 @@ import { useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import { TransactionObject, Transactions } from "../comman-types";
 import { Link } from "react-router-dom";
-import Button from "../components/Button";
+import { Button, Card } from "flowbite-react";
 
 const OrderHistoryPage = () => {
   const access_token = useAppSelector(getCurrentToken);
   const { data, isSuccess } = useGetTransactionsQuery(access_token);
 
-  const itemsPerPage = 5; // Adjust as needed
+  const itemsPerPage = 3; // Adjust as needed
   const [currentPage, setCurrentPage] = useState(1);
 
   let transactions: Transactions = {};
@@ -37,8 +37,6 @@ const OrderHistoryPage = () => {
           (_, index) => (
             <Button
               key={index}
-              size={"icon"}
-              variant={"default"}
               className={`mx-2 p-2 border ${
                 currentPage === index + 1 ? "bg-blue-500 text-white" : ""
               }`}
@@ -53,27 +51,21 @@ const OrderHistoryPage = () => {
         currentTransactions.map((key) => {
           const entry = transactions[key];
           return (
-            <div
-              className="grid grid-cols-[auto,fr] flex-grow-1 items-center shadow-2xl p-6 rounded-2xl bg-zinc-400"
-              key={key}
-            >
-              <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] m-6">
-                <div className="flex flex-col">
-                  <h3>
-                    Transaction ID: <b>{key}</b>
-                  </h3>
-                  <p>
-                    Amount Paid: <b>${entry.price.toFixed(2)}</b>
-                  </p>
-
-                  <p>
-                    Items:{" "}
-                    <Link to="/order-items" state={{ items: entry }}>
-                      <Button>Click to View Items</Button>
-                    </Link>
-                  </p>
-                </div>
-              </div>
+            <div>
+              <Card
+                className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))] overflow-hidden pb-12 pt-12 items-center shadow-2xl p-6 rounded-2xl bg-main-secondary dark:bg-dark-secondary"
+                
+              >
+                <h5 className="text-2xl font-bold tracking-tight text-gray-900 ">
+                  Transaction ID: <b>{key}</b>
+                </h5>
+                <p className="font-normal text-gray-700 dark:text-gray-400">
+                  Amount Paid: <b>${entry.price.toFixed(2)}</b>
+                </p>
+                <Link to="/order-items" state={{ items: entry }}>
+                  <Button>Click to View Items</Button>
+                </Link>
+              </Card>
             </div>
           );
         })}

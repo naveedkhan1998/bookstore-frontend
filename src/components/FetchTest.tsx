@@ -95,7 +95,7 @@ const FetchTest = () => {
             <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
               {paginatedData.map((elixir: Elixirs) => (
                 <div
-                  className="bg-zinc-400 rounded-lg p-4 shadow-md mb-4"
+                  className="bg-main-secondary dark:bg-dark-secondary rounded-lg p-4 shadow-md mb-4"
                   key={elixir.id}
                   onClick={() => handleItemClick(elixir.id)}
                 >

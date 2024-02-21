@@ -28,7 +28,7 @@ const Modal = ({ children }: { children: ReactNode }) => {
       className="flex flex-col fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/80  max-h-screen items-center justify-center"
       onClick={handleClick}
     >
-      <div className="flex flex-col items-center justify-center bg-zinc-400 w-full lg:w-[60dvw] z-50 p-5 mt-24 rounded-t-3xl shadow-2xl">
+      <div className="flex flex-col items-center justify-center bg-main-secondary dark:bg-dark-secondary w-full lg:w-[60dvw] z-50 p-5 mt-24 rounded-t-3xl shadow-2xl">
         <Button
           variant={"default"}
           size={"default"}
@@ -40,7 +40,7 @@ const Modal = ({ children }: { children: ReactNode }) => {
       </div>
       <div
         ref={wrapper}
-        className="flex flex-col justify-center items-center w-full lg:w-[60dvw] flex-grow bg-zinc-400 overflow-auto " /////// Fixxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        className="flex flex-col justify-center items-center w-full lg:w-[60dvw] flex-grow bg-main-secondary dark:bg-dark-secondary overflow-auto " /////// Fixxxxxxxxxxxxxxxxxxxxxxxxxxxx
       >
         {children}
       </div>

@@ -44,7 +44,7 @@ const LoginReg: React.FC = () => {
     <div className="flex flex-col w-[100vw] rounded-xl shadow-xl h-[90vh] items-center justify-center">
       <div className="p-8 rounded-md w-full">
         {isLogin ? <Login /> : <Registration />}
-        {/* <div className="p-8 bg-zinc-400 shadow-md rounded-md flex flex-col items-center justify-center mt-4 w-full max-w-md mx-auto">
+        {/* <div className="p-8 bg-main-secondary dark:bg-dark-secondary shadow-md rounded-md flex flex-col items-center justify-center mt-4 w-full max-w-md mx-auto">
           <GoogleLogin
             clientId="534036280006-aop5b27af2nnk8tj0i6fr7v43mobm8gf.apps.googleusercontent.com"
             buttonText="Login with Google"
@@ -52,7 +52,7 @@ const LoginReg: React.FC = () => {
             onFailure={responseGoogleFailure}
           />
         </div> */}
-        <div className="p-8 bg-zinc-400 shadow-md rounded-md flex flex-col items-center justify-center mt-4 w-full max-w-md mx-auto">
+        <div className="p-8 bg-main-secondary dark:bg-dark-secondary shadow-md rounded-md flex flex-col items-center justify-center mt-4 w-full max-w-md mx-auto">
           {formMessage}
           <Button
             variant={"ghost"}

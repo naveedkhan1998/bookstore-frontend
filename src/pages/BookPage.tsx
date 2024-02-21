@@ -161,29 +161,25 @@ const BookPage = () => {
                 {selectedBook.saleInfo.listPrice ? (
                   <Button
                     onClick={handleAddToCart}
-                    outline
                     gradientDuoTone="cyanToBlue"
-                    className="text-black"
                   >
                     Add To Cart
                   </Button>
                 ) : (
-                  <Button
-                    outline
-                    gradientDuoTone="pinkToOrange"
-                    className="text-black"
-                  >
-                    Sold Out
-                  </Button>
+                  <Button gradientDuoTone="pinkToOrange">Sold Out</Button>
                 )}
                 <div className="flex flex-wrap gap-2">
                   <Button.Group>
                     <select
                       value={selectedBooklistID}
                       onChange={(e) => setSelectedBooklistID(e.target.value)}
-                      className="bg-slate-500 text-white p-2 rounded mx-2  "
+                      className=" bg-black/30 text-black  dark:text-white p-2 rounded-l-md  "
                     >
-                      <option className="text-black" value="" disabled>
+                      <option
+                        className="text-black dark:text-white"
+                        value=""
+                        disabled
+                      >
                         Name | Type
                       </option>
                       {userBooklists.bookLists?.map((booklist) => (

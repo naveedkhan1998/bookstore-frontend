@@ -7,7 +7,7 @@ import DefaultImage from "../assets/pp.jpg";
 import { Card, Pagination, Spinner } from "flowbite-react";
 
 const BooksList = () => {
-  const pageSize = 15;
+  const pageSize = 10;
   const [currentPage, setCurrentPage] = useState(1);
 
   const dataFromStore = useAppSelector(getBooks);
@@ -29,14 +29,12 @@ const BooksList = () => {
 
   const renderBook = (book: BookVolume) => (
     <Card
-      className="max-w-sm relative group bg-zinc-400 rounded-md overflow-hidden shadow-md mb-4 hover:shadow-2xl transition-shadow ease-in-out delay-250 text-sm"
+      className="max-w-sm relative bg-main-secondary dark:bg-dark-secondary rounded-md overflow-hidden hover:shadow-2xl transition-shadow ease-in delay-250 text-sm hover:shadow-black"
       key={book.id}
       id={book.id}
       onClick={() => handleDivClick(book.id)}
       renderImage={() => (
         <img
-          width={500}
-          height={500}
           src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage}
           alt={book.volumeInfo.title}
           className="w-full h-80 object-fill"
@@ -44,44 +42,46 @@ const BooksList = () => {
       )}
     >
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-        Title: {book.volumeInfo.title}
+        Title:{" "}
+        {book.volumeInfo.title.length > 20
+          ? `${book.volumeInfo.title.substring(0, 20)}...`
+          : book.volumeInfo.title}
       </h5>
-      <p className="font-normal text-gray-700 dark:text-gray-400">
+      <p className="font-normal text-gray-700 dark:text-white">
         Authors: {book.volumeInfo.authors}
       </p>
-      <p className="font-normal text-gray-700 dark:text-gray-400">
+      <p className="font-normal text-gray-700 dark:text-white">
         Published: {book.volumeInfo.publishedDate}
       </p>
     </Card>
   );
 
   return (
-    <div className="flex flex-col w-full ">
+    <div className="flex flex-col w-full pb-6 ">
       {/* max-h-screen */}
       {paginatedData.length > 0 ? (
-        <div className="">
-          <div className="flex overflow-x-auto sm:justify-center p-6">
+        <>
+          <div className="flex text-xs justify-center pt-12 dark:text-black">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
-              showIcons
             />
           </div>
 
-          <div className="grid grid-cols-[auto,fr] flex-grow-1 overflow-auto">
-            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+          <div className="grid grid-cols-[auto,fr] flex-grow-1 overflow-auto pb-12 pt-12">
+            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">
               {paginatedData.map(renderBook)}
             </div>
           </div>
-          <div className="flex overflow-x-auto sm:justify-center p-6">
+          <div className="flex text-xs justify-center dark:text-black">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
           </div>
-        </div>
+        </>
       ) : (
         <div className="text-center flex items-center justify-center">
           <Spinner aria-label="Center-aligned spinner example" size="xl" />

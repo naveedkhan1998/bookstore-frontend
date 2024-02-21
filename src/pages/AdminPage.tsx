@@ -4,6 +4,7 @@ import { getCurrentToken } from "../features/authSlice";
 import { useAdminGetUsersQuery } from "../services/adminServices";
 import { Link, useLocation } from "react-router-dom";
 import { UserType } from "../features/userSlice";
+import { Card } from "flowbite-react";
 import { getRefresh, setRefresh } from "../features/refreshSlice";
 
 const AdminPage = () => {
@@ -32,80 +33,61 @@ const AdminPage = () => {
   }, [refresh]);
 
   return (
-    <div className="flex flex-col w-full items-center justify-center p-6 mt-10">
-      <div className="grid grid-cols-[auto,fr] flex-grow-1  w-[80dvw]  shadow-2xl p-6 rounded-2xl m-6">
+    <div className="flex flex-col w-full items-center justify-center p-6 mt-10 ">
+      <div className="grid grid-cols-[auto,fr] flex-grow-1 w-[95dvw] sm:w-[80dvw]  shadow-2xl p-6 rounded-2xl m-6 border">
         <h1 className="pt-6 text-2xl font-bold pb-6">Active Users</h1>
 
         {isSuccess && (
-          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))] ">
             {activeUsers.map((user: UserType) => (
-              <div className="flex flex-row" key={user.family_name}>
-                <Link
-                  to="/admin-user-page"
-                  state={{ user: user, isActive: true }}
+              <Link
+                to="/admin-user-page"
+                state={{ user: user, isActive: true }}
+              >
+                <Card
+                  className="max-w-sm bg-main-secondary dark:bg-dark-secondary"
+                  imgSrc={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}`}
                 >
-                  <div
-                    id={user._id}
-                    // onClick={() => handleBooklistClick(bookList)}
-                    className="flex flex-col p-6 rounded-lg shadow-lg bg-zinc-400 hover:bg-zinc-500 w-full "
-                  >
-                    <img
-                      src={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}`}
-                      alt="profile"
-                      className="mx-auto w-24 h-24 rounded-full object-cover"
-                    />
-
-                    <h2 className="text-lg font-semibold mb-2">
-                      Name: {user.given_name}
-                    </h2>
-
-                    <h2 className="text-small font-semibold mb-2">
-                      Is Admin: {user.isAdmin ? "🟢" : "🔴"}
-                    </h2>
-                    <h2 className="text-small font-semibold mb-2">
-                      Is Verified: {user.isVerified ? "🟢" : "🔴"}
-                    </h2>
-                  </div>
-                </Link>
-              </div>
+                  <h5 className="text-2xl font-bold tracking-tight text-gray-900">
+                    Name: {user.given_name}
+                  </h5>
+                  <p className="font-normal text-gray-700 dark:text-gray-400">
+                    Is Admin: {user.isAdmin ? "🟢" : "🔴"}
+                  </p>
+                  <p className="font-normal text-gray-700 dark:text-gray-400">
+                    Is Verified: {user.isVerified ? "🟢" : "🔴"}
+                  </p>
+                </Card>
+              </Link>
             ))}
           </div>
         )}
       </div>
-      <div className="grid grid-cols-[auto,fr] flex-grow-1  w-[80dvw]  shadow-2xl p-6 rounded-2xl">
+      <div className="grid grid-cols-[auto,fr] flex-grow-1 w-[95dvw] sm:w-[80dvw]  shadow-2xl p-6 rounded-2xl border">
         <h1 className="pt-6 text-2xl font-bold pb-6">Deactivated Users</h1>
 
         {isSuccess && (
-          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
             {inactiveUsers.map((user: UserType) => (
-              <div className="flex flex-row" key={user.family_name}>
-                <Link
-                  to="/admin-user-page"
-                  state={{ user: user, isActive: false }}
+              <Link
+                to="/admin-user-page"
+                state={{ user: user, isActive: true }}
+              >
+                <Card
+                  className="max-w-sm bg-main-secondary dark:bg-dark-secondary"
+                  imgSrc={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}`}
                 >
-                  <div
-                    id={user._id}
-                    // onClick={() => handleBooklistClick(bookList)}
-                    className="flex flex-col p-6 rounded-lg shadow-lg bg-zinc-400 hover:bg-zinc-500 w-full "
-                  >
-                    <img
-                      src={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}`}
-                      alt="profile"
-                      className="mx-auto w-24 h-24 rounded-full object-cover"
-                    />
-                    <h2 className="text-lg font-semibold mb-2">
-                      Name: {user.given_name}
-                    </h2>
-
-                    <h2 className="text-small font-semibold mb-2">
-                      Is Admin: {user.isAdmin ? "🟢" : "🔴"}
-                    </h2>
-                    <h2 className="text-small font-semibold mb-2">
-                      Is Verified: {user.isVerified ? "🟢" : "🔴"}
-                    </h2>
-                  </div>
-                </Link>
-              </div>
+                  <h5 className="text-2xl font-bold tracking-tight text-gray-900">
+                    Name: {user.given_name}
+                  </h5>
+                  <p className="font-normal text-gray-700 dark:text-gray-400">
+                    Is Admin: {user.isAdmin ? "🟢" : "🔴"}
+                  </p>
+                  <p className="font-normal text-gray-700 dark:text-gray-400">
+                    Is Verified: {user.isVerified ? "🟢" : "🔴"}
+                  </p>
+                </Card>
+              </Link>
             ))}
           </div>
         )}

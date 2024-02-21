@@ -23,7 +23,7 @@ const ProfileMenu = () => {
     dispatch(unSetUserInfo());
     dispatch(logOut());
     dispatch(unSetUserBooklist());
-    dispatch(unSetPublicBooklist())
+    dispatch(unSetPublicBooklist());
     window.location.reload();
     toast.success("Logged Out");
     //console.log("hello world");
@@ -76,14 +76,14 @@ const ProfileMenu = () => {
 
             <div className="flex flex-col gap-3 pt-10 items-start w-full">
               <Menu.Item>
-                <Button className="w-full">
+                <Button className="w-full bg-main-primary dark:bg-dark-primary ">
                   <Link to={`/setting`} className="text-sm">
                     Settings
                   </Link>
                 </Button>
               </Menu.Item>
               <Menu.Item>
-                <Button className="w-full">
+                <Button className="w-full bg-main-primary dark:bg-dark-primary">
                   <Link to={`/account`} className="text-sm">
                     Profile
                   </Link>
@@ -92,7 +92,10 @@ const ProfileMenu = () => {
             </div>
             <div className="w-full flexStart border-t border-nav-border mt-5 pt-5">
               <Menu.Item>
-                <Button className="text-sm w-full" onClick={() => signOut()}>
+                <Button
+                  className="text-sm w-full bg-main-primary dark:bg-dark-primary"
+                  onClick={() => signOut()}
+                >
                   Sign out
                 </Button>
               </Menu.Item>

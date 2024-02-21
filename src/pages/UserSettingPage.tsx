@@ -54,7 +54,7 @@ const UserSettings = () => {
 
   // render the User Setting page
   return (
-    <div className="w-full h-fit mx-auto mt-10 p-6 bg-zinc-400 shadow-2xl rounded-2xl">
+    <div className="w-full h-fit mx-auto mt-10 p-6 bg-main-secondary dark:bg-dark-secondary shadow-2xl rounded-2xl">
       <h2 className="text-3xl font-semibold mb-4">User Settings</h2>
 
       <div className="mb-4">
@@ -71,7 +71,6 @@ const UserSettings = () => {
       </div>
 
       <div className="mb-4">
-        <DarkThemeToggle />
         <span className="text-sm">Enable dark mode</span>
       </div>
 

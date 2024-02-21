@@ -69,8 +69,8 @@ const Registration: React.FC = () => {
   }, [EmailSent]);
 
   return (
-    <div className="flex items-top justify-center bg-stone-400 mt-16">
-      <div className="bg-zinc-400 p-8 shadow-md rounded-md w-full max-w-md">
+    <div className="flex items-top justify-center bg-main-primary dark:bg-dark-primary dark:text-white mt-16">
+      <div className="bg-main-secondary dark:bg-dark-secondary p-8 shadow-md rounded-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">Registration</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">

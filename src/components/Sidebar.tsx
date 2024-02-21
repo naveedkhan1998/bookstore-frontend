@@ -29,7 +29,7 @@ const Sidebar = () => {
   return (
     <>
       <aside
-        className={`sticky top-0 overflow-y-auto scrollbar-hidden pb-4 flex flex-col ml-1 ${
+        className={`sticky top-0 overflow-y-auto scrollbar-hidden flex flex-col ml-1 ${
           isLargeOpen ? "lg:hidden" : "lg:flex"
         }`}
       ></aside>
@@ -40,11 +40,15 @@ const Sidebar = () => {
         />
       )}
       <aside
-        className={`w-56 max-h-screen lg:sticky absolute top-0 overflow-y-full scrollbar-hidden pb-4 flex-col gap-2 px-2 py-4 shadow-2xl  ${
+        className={`w-56 max-h-screen lg:sticky absolute top-0 overflow-y-full scrollbar-hidden flex-col  border-r ${
           isLargeOpen ? "lg:flex" : "lg:hidden"
-        } ${isSmallOpen ? "flex z-[999] bg-stone-400 min-h-screen" : "hidden"}`}
+        } ${
+          isSmallOpen
+            ? "flex z-[999] bg-main-primary dark:bg-dark-primary dark:text-white min-h-screen"
+            : "hidden"
+        }`}
       >
-        <div className="lg:hidden pt-2 pb-4 sticky gap-2 px-4 py-4">
+        <div className="lg:hidden border-b p-2 sticky ">
           <PageHeaderFirstSection />
         </div>
         <LargeSidebarSection>
@@ -69,10 +73,10 @@ const Sidebar = () => {
               />
               {user.isAdmin && (
                 <LargeSidebarItem
-                Icon={ShieldCheckIcon}
-                title="Admin Panel"
-                url="/admin"
-              />
+                  Icon={ShieldCheckIcon}
+                  title="Admin Panel"
+                  url="/admin"
+                />
               )}
             </>
           )}

@@ -23,19 +23,19 @@ import { useGetUserBooklistsQuery } from "../services/booklistsServices";
 import { useGetCartQuery } from "../services/cartServices";
 import { getUserCart, setUserCart } from "../features/cartSlice";
 import Spinner from "../components/Spinner";
+import { DarkThemeToggle } from "flowbite-react";
 
 const PageHeader = () => {
   const access_token = useAppSelector(getCurrentToken);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("ALL");
+  const [searchTerm, setSearchTerm] = useState("Time");
 
   const [searchResults, setSearchResults] = useState([]);
 
-  const { data: cartData, isSuccess: CartSuccess } = useGetCartQuery(
-    access_token
-  );
+  const { data: cartData, isSuccess: CartSuccess } =
+    useGetCartQuery(access_token);
 
   useEffect(() => {
     if (CartSuccess) {
@@ -43,17 +43,14 @@ const PageHeader = () => {
     }
   }, [CartSuccess]);
 
-  const { data, isSuccess, isLoading, refetch } = useGetVolumesQuery(
-    searchTerm
-  );
+  const { data, isSuccess, isLoading, refetch } =
+    useGetVolumesQuery(searchTerm);
 
   const cart_data = useAppSelector(getUserCart);
 
   /// initial booklist set
-  const {
-    data: booklistData,
-    isSuccess: booklistISuccess,
-  } = useGetUserBooklistsQuery(access_token);
+  const { data: booklistData, isSuccess: booklistISuccess } =
+    useGetUserBooklistsQuery(access_token);
 
   if (booklistISuccess) {
     dispatch(setUserBookslist(booklistData));
@@ -104,7 +101,7 @@ const PageHeader = () => {
           refetch();
         }
 
-        if (searchTerm === "ALL") {
+        if (searchTerm === "Time") {
           setSearchResults([]);
           handleSearch();
 
@@ -140,7 +137,7 @@ const PageHeader = () => {
   }, []);
 
   return (
-    <div className="flex gap-10 lg:gap-20 justify-between p-2  mx-4 mt-4 shadow-2xl rounded-full">
+    <div className="flex gap-10 lg:gap-20 justify-between p-2 border-b ">
       <PageHeaderFirstSection hidden={showFullWidthSearch} />
 
       <form
@@ -169,7 +166,7 @@ const PageHeader = () => {
           <input
             type="search"
             placeholder="Search Books"
-            className="rounded-l-full border border-secondary-border shadow-inner placeholder-black bg-zinc-400 py-2 px-4 text-lg w-full focus:border-blue-500 outline-none z-50"
+            className="rounded-l-xl placeholder-black bg-main-secondary dark:bg-dark-secondary py-2 px-4 text-md w-full z-50"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onFocus={() => {
@@ -178,7 +175,7 @@ const PageHeader = () => {
             aria-label="Search Input"
           />
           <Button
-            className="py-2 px-4 rounded-r-full border-secondary-border border border-l-0 mr-3 flex-shrink-0 z-50"
+            className="py-2 px-4 rounded-r-full bg-main-secondary dark:bg-dark-secondary  mr-3 flex-shrink-0 z-50"
             type="submit"
             aria-label="Submit Search"
           >
@@ -192,7 +189,7 @@ const PageHeader = () => {
           className="fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/80 flex justify-center items-center "
           onClick={handleOverlayClick}
         >
-          <div className="flex justify-start items-center top-15 flex-col absolute h-[80%] w-[80%]  bg-zinc-400 rounded-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto z-50">
+          <div className="flex justify-start items-center top-15 flex-col absolute h-[80%] w-[80%]  bg-main-secondary dark:bg-dark-secondary rounded-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto z-50">
             <table
               className="w-full items-start justify-start "
               aria-label="Search Results"
@@ -208,7 +205,7 @@ const PageHeader = () => {
                   <tr
                     key={obj.id}
                     id={obj.id}
-                    className="hover:bg-stone-400 rounded-2xl"
+                    className="hover:bg-main-primary dark:bg-dark-primary dark:text-white rounded-2xl"
                     onClick={() => handleSearchClick(obj.id)}
                   >
                     <td className="py-2 px-4 rounded-2xl">
@@ -238,6 +235,7 @@ const PageHeader = () => {
         >
           <Search />
         </Button>
+
         <Button
           size="icon"
           onClick={() => navigate("/")}
@@ -245,6 +243,9 @@ const PageHeader = () => {
           className="hidden sm:flex"
         >
           <HomeIcon />
+        </Button>
+        <Button size="icon" variant="ghost" className="">
+          <DarkThemeToggle />
         </Button>
 
         {!access_token && (

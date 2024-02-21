@@ -11,11 +11,12 @@ import { getUserCart, setUserCart } from "../features/cartSlice";
 import BookLoaderComponent from "../components/BookLoaderComponent";
 import { getLoadedBooks, unsetLoadedBook } from "../features/loadBookSlice";
 import DefaultPic from "../assets/pp.jpg";
-import Button from "../components/Button";
+
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { useAddToTransactionsMutation } from "../services/transactionsServices";
-import { Trash2 } from "lucide-react";
+import { Trash2, Plus, Minus } from "lucide-react";
+import { Button } from "flowbite-react";
 
 const CartPage = () => {
   const access_token = useAppSelector(getCurrentToken);
@@ -31,19 +32,13 @@ const CartPage = () => {
     refetch: refetchCart,
   } = useGetCartQuery(access_token);
 
-  const [
-    addToTransactions,
-    { isLoading: CheckoutDone },
-  ] = useAddToTransactionsMutation();
+  const [addToTransactions, { isLoading: CheckoutDone }] =
+    useAddToTransactionsMutation();
 
-  const [
-    removeFromCart,
-    { isLoading: RemovingFromCart },
-  ] = useRemoveFromCartMutation();
-  const [
-    removeWholeItemFromCart,
-    { isLoading: RemovingItemFromCart },
-  ] = useRemoveWholeItemFromCartMutation();
+  const [removeFromCart, { isLoading: RemovingFromCart }] =
+    useRemoveFromCartMutation();
+  const [removeWholeItemFromCart, { isLoading: RemovingItemFromCart }] =
+    useRemoveWholeItemFromCartMutation();
 
   const [total, setTotal] = useState(0);
   const [subTotal, setSubTotal] = useState(0);
@@ -125,8 +120,8 @@ const CartPage = () => {
         Object.keys(cart.books).map((obj) => (
           <BookLoaderComponent book_id={obj} />
         ))}
-      <div className="flex md:flex-row flex-col items center justify-center w-full p-6 ">
-        <div className="flex flex-col w-[80dvw] md:w-[60dvw] rounded-md shadow-xl p-6  m-3 ">
+      <div className="flex md:flex-row flex-col items-center md:items-start justify-center w-full p-6">
+        <div className="flex flex-col w-[97dvw] sm:w-[60dvw] rounded-md shadow-xl p-6 border m-3  gap-4">
           <div className="p-6 font-bold text-2xl">Shopping Cart</div>
           {books &&
             books.map((book) => (
@@ -134,7 +129,7 @@ const CartPage = () => {
                 {cart.books[book.id] && (
                   <div
                     key={book.id}
-                    className="flex flex-row justify-start items-start rounded-md hover:bg-zinc-500 bg-zinc-400 p-4"
+                    className="flex flex-row justify-start items-start rounded-md hover:bg-black/20 dark:hover:bg-black/20 bg-main-secondary dark:bg-dark-secondary p-4 border"
                   >
                     <img
                       src={book.volumeInfo.imageLinks?.thumbnail || DefaultPic}
@@ -171,26 +166,26 @@ const CartPage = () => {
                           : "Not available"}
                       </h3>
                     </div>
-                    <div className="flex items-center mt-2 flex-shrink">
+                    <div className="flex flex-wrap p-2 gap-4">
                       <Button
-                        className="ml-2"
-                        size={"icon"}
+                        pill
+                        size={60}
                         onClick={() => handleClick(book.id)}
                       >
-                        +
+                        <Plus />
                       </Button>
                       <Button
-                        className="ml-2"
-                        size={"icon"}
+                        pill
+                        size={60}
                         onClick={() => handleDecrementClick(book.id)}
                       >
-                        -
+                        <Minus />
                       </Button>
                       <Button
-                        className="ml-2 bg-red-600 hover:bg-red-500"
-                        size={"icon"}
+                        pill
+                        size={60}
+                        className=" bg-red-600 hover:bg-red-400"
                         onClick={() => handleRemoveClick(book.id)}
-                
                       >
                         <Trash2 />
                       </Button>
@@ -200,7 +195,7 @@ const CartPage = () => {
               </>
             ))}
         </div>
-        <div className="flex flex-col w-[80dvw] md:w-[40dvw] rounded-md shadow-xl p-6 m-3 space-y-8 h-full">
+        <div className="flex flex-col w-[97dvw] sm:w-[40dvw] rounded-md shadow-xl p-6 m-3 border space-y-8 h-full">
           <div className="text-2xl font-bold mb-4">Checkout</div>
 
           <div className="flex justify-between">

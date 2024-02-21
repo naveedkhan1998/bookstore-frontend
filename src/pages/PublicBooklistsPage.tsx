@@ -7,6 +7,7 @@ import {
   setPublicBookslist,
 } from "../features/publicBooklistSlice";
 import { Link } from "react-router-dom";
+import { Card } from "flowbite-react";
 
 const PublicBooklistsPage = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +36,7 @@ const PublicBooklistsPage = () => {
 
   return (
     <div className="flex flex-col w-full items-center justify-center p-6 mt-10">
-      <div className="grid grid-cols-[auto,fr] flex-grow-1  w-[80dvw]  shadow-2xl p-6 rounded-2xl">
+      <div className="grid grid-cols-[auto,fr] flex-grow-1  w-[80dvw]  shadow-2xl p-6 rounded-2xl border">
         <h1 className="pt-6 text-2xl font-bold pb-6">
           Public BookLists Limit 10
         </h1>
@@ -44,22 +45,21 @@ const PublicBooklistsPage = () => {
           <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
             {booklists &&
               booklists.map((bookList) => (
-                <div className="flex flex-row" key={bookList.name}>
-                  <Link to="/public-booklist" state={{ from: bookList }}>
+                <Link to="/public-booklist" state={{ from: bookList }}>
+                  <Card className="max-w-sm bg-main-secondary dark:bg-dark-secondary">
                     <div
-                      id={bookList.name}
-                      //onClick={() => handleBooklistClick(bookList)}
-                      className="flex flex-col p-6 rounded-lg shadow-lg bg-zinc-400 hover:bg-zinc-500 w-full "
+                      className="flex flex-wrap w-[250px] h-[100px]"
+                      key={bookList.name}
                     >
-                      <h2 className="text-lg font-semibold mb-2">
+                      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         Name: {bookList.name}
-                      </h2>
-                      <p className="text-gray-600">
+                      </h5>
+                      <p className="font-normal text-gray-700 dark:text-gray-400">
                         Created By: {bookList.authorName}
                       </p>
                     </div>
-                  </Link>
-                </div>
+                  </Card>
+                </Link>
               ))}
           </div>
         )}
