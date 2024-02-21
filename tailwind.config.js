@@ -3,14 +3,20 @@ import colors from "tailwindcss/colors";
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
+    "./node_modules/flowbite/**/*.js",
     "./src/**/*.{js,jsx,ts,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "node_modules/flowbite-react/lib/esm/**/*.js",
   ],
   theme: {
     extend: {
       colors: {
+        main: {
+          primary: "#590EB0",
+          secondary: "#FFFFFF",
+        },
         secondary: {
           DEFAULT: colors.neutral[200],
           hover: colors.neutral[300],
@@ -43,5 +49,6 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("flowbite/plugin")],
+  darkMode: "class",
 };

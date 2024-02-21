@@ -6,7 +6,7 @@ import { BookVolume } from "../comman-types";
 import { useGetVolumeQuery } from "../services/googleBooksServices";
 import DefaultPic from "../assets/pp.jpg";
 import { getCurrentToken } from "../features/authSlice";
-import Button from "../components/Button";
+import { Button } from "flowbite-react";
 import { toast } from "react-toastify";
 import { getUserBooklists } from "../features/booklistSlice";
 import { useState, useEffect } from "react";
@@ -27,10 +27,8 @@ const BookPage = () => {
   const { id } = useParams();
   const books = useAppSelector(getBooks);
   const { refetch } = useGetUserBooklistsQuery(access_token);
-  const [
-    addBookToBooklist,
-    { isSuccess: bookAdded },
-  ] = useAddBookToBooklistMutation();
+  const [addBookToBooklist, { isSuccess: bookAdded }] =
+    useAddBookToBooklistMutation();
 
   const [addToCart, { isLoading: addedToCart }] = useAddToCartMutation();
 
@@ -159,41 +157,49 @@ const BookPage = () => {
           </div>
           {access_token && (
             <>
-              <div className="flex flex-row items-center justify-between px-12 py-2 w-full shadow-2xl ">
+              <div className="flex flex-row items-center justify-between px-12 py-2 w-full shadow-2xl">
                 {selectedBook.saleInfo.listPrice ? (
                   <Button
                     onClick={handleAddToCart}
-                    className=" bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none"
+                    outline
+                    gradientDuoTone="cyanToBlue"
+                    className="text-black"
                   >
                     Add To Cart
                   </Button>
                 ) : (
-                  <Button className=" bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none">
+                  <Button
+                    outline
+                    gradientDuoTone="pinkToOrange"
+                    className="text-black"
+                  >
                     Sold Out
                   </Button>
                 )}
-                <div className="flex flex-col sm:flex-row my-2 ">
-                  <select
-                    value={selectedBooklistID}
-                    onChange={(e) => setSelectedBooklistID(e.target.value)}
-                    className="bg-slate-500 text-white p-2 rounded mx-2  "
-                  >
-                    <option className="text-black" value="" disabled>
-                      Name | Type
-                    </option>
-                    {userBooklists.bookLists?.map((booklist) => (
-                      <option key={booklist.name} value={booklist._id}>
-                        {booklist.name} |{" "}
-                        {booklist.isPrivate ? "Private" : "Public"}
+                <div className="flex flex-wrap gap-2">
+                  <Button.Group>
+                    <select
+                      value={selectedBooklistID}
+                      onChange={(e) => setSelectedBooklistID(e.target.value)}
+                      className="bg-slate-500 text-white p-2 rounded mx-2  "
+                    >
+                      <option className="text-black" value="" disabled>
+                        Name | Type
                       </option>
-                    ))}
-                  </select>
-                  <Button
-                    onClick={handleAddToBooklist}
-                    className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none  "
-                  >
-                    Add To Selected Booklist
-                  </Button>
+                      {userBooklists.bookLists?.map((booklist) => (
+                        <option key={booklist.name} value={booklist._id}>
+                          {booklist.name} |{" "}
+                          {booklist.isPrivate ? "Private" : "Public"}
+                        </option>
+                      ))}
+                    </select>
+                    <Button
+                      onClick={handleAddToBooklist}
+                      className="text-white"
+                    >
+                      Add To Selected Booklist
+                    </Button>
+                  </Button.Group>
                 </div>
               </div>
             </>

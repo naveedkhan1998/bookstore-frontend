@@ -6,19 +6,21 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { DarkModeProvider } from "./context/DarkModeContext";
-import 'react-toastify/dist/ReactToastify.css';
-
+import "react-toastify/dist/ReactToastify.css";
+import { Flowbite } from "flowbite-react";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <Provider store={store}>
-    <DarkModeProvider>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </DarkModeProvider>
+    <Flowbite>
+      <DarkModeProvider>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </DarkModeProvider>
+    </Flowbite>
   </Provider>
 );
 

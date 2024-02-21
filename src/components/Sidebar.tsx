@@ -47,7 +47,7 @@ const Sidebar = () => {
         <div className="lg:hidden pt-2 pb-4 sticky gap-2 px-4 py-4">
           <PageHeaderFirstSection />
         </div>
-        <LargeSidebarSection visibleItemCount={3}>
+        <LargeSidebarSection>
           <LargeSidebarItem isActive Icon={Home} title="Home" url="/" />
           {access_token && (
             <>
