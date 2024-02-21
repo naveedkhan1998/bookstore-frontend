@@ -54,7 +54,7 @@ const FetchTest = () => {
         variant={"default"}
         onClick={() => handlePageChange(page)}
         className={`mx-1 my-1 p-2 ${
-          page === currentPage ? " text-slate-600" : "bg-gray-200 text-black"
+          page === currentPage ? " text-slate-600" : "bg-gray-200 text-grey"
         } sm:mx-2 sm:my-0`}
       >
         {page}

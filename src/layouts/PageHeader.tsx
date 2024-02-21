@@ -166,7 +166,7 @@ const PageHeader = () => {
           <input
             type="search"
             placeholder="Search Books"
-            className="rounded-l-xl placeholder-black bg-main-secondary dark:bg-dark-secondary py-2 px-4 text-md w-full z-50"
+            className="rounded-l-full placeholder-black bg-main-secondary dark:bg-dark-secondary py-2 px-4 text-md w-full z-50"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onFocus={() => {
@@ -175,7 +175,7 @@ const PageHeader = () => {
             aria-label="Search Input"
           />
           <Button
-            className="py-2 px-4 rounded-r-full bg-main-secondary dark:bg-dark-secondary  mr-3 flex-shrink-0 z-50"
+            className="py-2 px-4 rounded-r-full bg-main-secondary dark:bg-dark-secondary hover:bg-main-secondary mr-3 flex-shrink-0 z-50"
             type="submit"
             aria-label="Submit Search"
           >
@@ -189,13 +189,13 @@ const PageHeader = () => {
           className="fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/80 flex justify-center items-center "
           onClick={handleOverlayClick}
         >
-          <div className="flex justify-start items-center top-15 flex-col absolute h-[80%] w-[80%]  bg-main-secondary dark:bg-dark-secondary rounded-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto z-50">
+          <div className="flex justify-normal items-normal top-15 flex-col absolute h-[80dvh] w-[90dvw]  bg-main-secondary dark:bg-dark-secondary rounded-md  overflow-auto z-50">
             <table
-              className="w-full items-start justify-start "
+              className="w-full items-normal justify-normal p-6 "
               aria-label="Search Results"
             >
               <thead>
-                <tr>
+                <tr className="bg-black/20">
                   <th className="py-2 px-4">Book Name</th>
                   <th className="py-2 px-4">Author</th>
                 </tr>
@@ -205,13 +205,15 @@ const PageHeader = () => {
                   <tr
                     key={obj.id}
                     id={obj.id}
-                    className="hover:bg-main-primary dark:bg-dark-primary dark:text-white rounded-2xl"
+                    className="hover:bg-main-primary dark:hover:bg-dark-primary rounded-md"
                     onClick={() => handleSearchClick(obj.id)}
                   >
-                    <td className="py-2 px-4 rounded-2xl">
-                      {obj.volumeInfo.title}
+                    <td className="py-2 px-4 ">
+                      {obj.volumeInfo.title.length > 30
+                        ? `${obj.volumeInfo.title.substring(0, 30)}...`
+                        : obj.volumeInfo.title}
                     </td>
-                    <td className="py-2 px-4 rounded-2xl">
+                    <td className="py-2 px-4 ">
                       {obj.volumeInfo?.authors?.join(" , ") || "None"}
                     </td>
                   </tr>
@@ -244,8 +246,8 @@ const PageHeader = () => {
         >
           <HomeIcon />
         </Button>
-        <Button size="icon" variant="ghost" className="">
-          <DarkThemeToggle />
+        <Button size="icon" variant="ghost" className="z-50">
+          <DarkThemeToggle className=" rounded-full hover:bg-black/20" />
         </Button>
 
         {!access_token && (

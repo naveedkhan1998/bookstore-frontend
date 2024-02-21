@@ -20,7 +20,6 @@ module.exports = {
         dark: {
           primary: "#2f4858",
           secondary: "#33658a",
-          text:'#fffffff'
         },
         secondary: {
           DEFAULT: colors.neutral[200],

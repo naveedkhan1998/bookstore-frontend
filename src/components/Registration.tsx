@@ -69,7 +69,7 @@ const Registration: React.FC = () => {
   }, [EmailSent]);
 
   return (
-    <div className="flex items-top justify-center bg-main-primary dark:bg-dark-primary dark:text-white mt-16">
+    <div className="flex items-top justify-center bg-main-primary dark:bg-dark-primary dark:text-slate-400 mt-16">
       <div className="bg-main-secondary dark:bg-dark-secondary p-8 shadow-md rounded-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">Registration</h2>
         <form onSubmit={handleSubmit}>
@@ -131,7 +131,7 @@ const Registration: React.FC = () => {
           </div>
           <Button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 focus:outline-none"
+            className="w-full bg-blue-500 text-gray p-2 rounded hover:bg-blue-600 focus:outline-none"
           >
             Register
           </Button>

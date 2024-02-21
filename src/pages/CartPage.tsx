@@ -169,22 +169,24 @@ const CartPage = () => {
                     <div className="flex flex-wrap p-2 gap-4">
                       <Button
                         pill
-                        size={60}
+                        size={100}
+                        className=" p-2"
                         onClick={() => handleClick(book.id)}
                       >
                         <Plus />
                       </Button>
                       <Button
                         pill
-                        size={60}
+                        size={100}
+                        className=" p-2"
                         onClick={() => handleDecrementClick(book.id)}
                       >
                         <Minus />
                       </Button>
                       <Button
                         pill
-                        size={60}
-                        className=" bg-red-600 hover:bg-red-400"
+                        size={100}
+                        className=" bg-red-600  dark:bg-red-600 p-2"
                         onClick={() => handleRemoveClick(book.id)}
                       >
                         <Trash2 />
@@ -236,7 +238,7 @@ const CartPage = () => {
               to="/checkout"
               state={{ to: { items: cart.books, price: total } }}
             >
-              <Button className="bg-blue-500 w-full text-white p-2 rounded hover:bg-blue-600 focus:outline-none">
+              <Button className="bg-blue-500 w-full text-gray-50 p-2 rounded hover:bg-blue-600 focus:outline-none">
                 Checkout
               </Button>
             </Link>

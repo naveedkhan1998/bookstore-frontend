@@ -1,16 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { getCurrentUserDetails } from "../features/userSlice";
+import { Spinner } from "flowbite-react";
 
 const UserProfile = () => {
   const user = useSelector(getCurrentUserDetails);
 
   if (!user) {
-    return <div className="text-center mt-8">Loading...</div>;
+    return <Spinner />;
   }
 
   return (
-    <div className="flex flex-col items-center w-[70dvw] h-[70dvh] mx-auto mt-10 p-6 bg-main-secondary dark:bg-dark-secondary shadow-2xl rounded-2xl">
+    <div className="container mx-auto p-8 mt-10 rounded-md bg-main-secondary dark:bg-dark-secondary border">
       <div className="text-center mb-4">
         <img
           src={user.avatarUrl}

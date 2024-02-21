@@ -173,10 +173,10 @@ const BookPage = () => {
                     <select
                       value={selectedBooklistID}
                       onChange={(e) => setSelectedBooklistID(e.target.value)}
-                      className=" bg-black/30 text-black  dark:text-white p-2 rounded-l-md  "
+                      className=" bg-black/30 text-grey  dark:text-slate-400 p-2 rounded-l-md  "
                     >
                       <option
-                        className="text-black dark:text-white"
+                        className="text-grey dark:text-slate-400"
                         value=""
                         disabled
                       >
@@ -191,7 +191,7 @@ const BookPage = () => {
                     </select>
                     <Button
                       onClick={handleAddToBooklist}
-                      className="text-white"
+                      className="text-gray"
                     >
                       Add To Selected Booklist
                     </Button>

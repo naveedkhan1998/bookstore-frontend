@@ -206,7 +206,7 @@ const PublicBookPage = () => {
                       <Button
                         type="submit"
                         onClick={() => handleClick(book2._id)}
-                        className="bg-blue-500 text-white p-2 flex items-center justify-center rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+                        className="bg-blue-500 text-gray p-2 flex items-center justify-center rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
                       >
                         <Plus />
                       </Button>

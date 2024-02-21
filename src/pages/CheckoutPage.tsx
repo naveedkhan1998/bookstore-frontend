@@ -116,7 +116,7 @@ const CheckoutPage = () => {
           </div>
           <Button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
+            className="bg-blue-500 text-gray py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
           >
             Pay Now
           </Button>

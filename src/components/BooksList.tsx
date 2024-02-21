@@ -41,16 +41,16 @@ const BooksList = () => {
         />
       )}
     >
-      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-400">
         Title:{" "}
         {book.volumeInfo.title.length > 20
           ? `${book.volumeInfo.title.substring(0, 20)}...`
           : book.volumeInfo.title}
       </h5>
-      <p className="font-normal text-gray-700 dark:text-white">
+      <p className="font-normal text-gray-700 dark:text-slate-400">
         Authors: {book.volumeInfo.authors}
       </p>
-      <p className="font-normal text-gray-700 dark:text-white">
+      <p className="font-normal text-gray-700 dark:text-slate-400">
         Published: {book.volumeInfo.publishedDate}
       </p>
     </Card>
@@ -61,7 +61,7 @@ const BooksList = () => {
       {/* max-h-screen */}
       {paginatedData.length > 0 ? (
         <>
-          <div className="flex text-xs justify-center pt-12 dark:text-black">
+          <div className="flex text-xs justify-center pt-12 dark:text-grey">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -74,7 +74,7 @@ const BooksList = () => {
               {paginatedData.map(renderBook)}
             </div>
           </div>
-          <div className="flex text-xs justify-center dark:text-black">
+          <div className="flex text-xs justify-center dark:text-grey">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

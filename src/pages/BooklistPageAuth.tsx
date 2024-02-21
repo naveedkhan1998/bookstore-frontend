@@ -91,7 +91,7 @@ const BooklistPageAuth: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-6 gap-6 mt-6 w-full">
-      <div className="flex flex-col w-[80dvw] shadow-2xl p-6 rounded-2xl border">
+      <div className="flex flex-col md:w-[80dvw] w-[95dvw] shadow-2xl p-6 rounded-2xl border">
         <h1 className="pt-6 text-lg">Create New BookList</h1>
         <form onSubmit={handleSubmit}>
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -126,13 +126,13 @@ const BooklistPageAuth: React.FC = () => {
 
           <Button
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600"
+            className="bg-blue-500 text-gray px-4 py-2 rounded mt-4 hover:bg-blue-600"
           >
             Create Booklist
           </Button>
         </form>
       </div>
-      <div className="grid grid-cols-[auto,fr] flex-grow-1  w-[80dvw]  shadow-2xl p-6 rounded-2xl border">
+      <div className="grid grid-cols-[auto,fr] flex-grow-1  md:w-[80dvw] w-[95dvw]  shadow-2xl p-6 rounded-2xl border">
         <h1 className="pt-6 text-2xl font-bold">Your BookLists</h1>
 
         {storeData && (

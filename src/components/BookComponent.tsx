@@ -37,14 +37,14 @@ const BookComponent: React.FC<BookID> = ({ book_id }) => {
             className="rounded-xl w-full h-80 object-fill"
           />
           <div className="absolute bottom-0 flex flex-col justify-center px-2 py-2 items-left w-full bg-main-secondary dark:bg-dark-secondary bg-opacity-70 rounded-t-xl opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
-            <h2 className="text-black text-lg font-semibold mb-2 z-10">
+            <h2 className="text-grey text-lg font-semibold mb-2 z-10">
               Title: {book.volumeInfo.title}
             </h2>
-            <p className="text-black mb-2">
+            <p className="text-grey mb-2">
               <span className="font-semibold">Authors:</span>{" "}
               {book.volumeInfo.authors?.join(", ")}
             </p>
-            <p className="text-black">
+            <p className="text-grey">
               <span className="font-semibold">Publication Date:</span>{" "}
               {book.volumeInfo.publishedDate}
             </p>

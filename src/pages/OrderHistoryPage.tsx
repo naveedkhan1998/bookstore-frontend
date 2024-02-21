@@ -38,7 +38,7 @@ const OrderHistoryPage = () => {
             <Button
               key={index}
               className={`mx-2 p-2 border ${
-                currentPage === index + 1 ? "bg-blue-500 text-white" : ""
+                currentPage === index + 1 ? "bg-blue-500 text-gray" : ""
               }`}
               onClick={() => setCurrentPage(index + 1)}
             >

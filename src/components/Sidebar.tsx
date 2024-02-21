@@ -6,7 +6,6 @@ import {
   ShoppingCart,
   UserCircle2 as UserCircle2Icon,
   History as HistoryIcon,
-  TestTube,
   BookTextIcon,
   InfoIcon,
   BookOpen,
@@ -16,7 +15,7 @@ import Button, { buttonStyles } from "./Button";
 import { twMerge } from "tailwind-merge";
 import { useSidebarContext } from "../context/SidebarContext";
 import { PageHeaderFirstSection } from "../layouts/PageHeader";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import { getCurrentUserDetails } from "../features/userSlice";
@@ -25,6 +24,9 @@ const Sidebar = () => {
   const access_token = useAppSelector(getCurrentToken);
   const { isLargeOpen, isSmallOpen, close } = useSidebarContext();
   const user = useAppSelector(getCurrentUserDetails);
+  const location = useLocation();
+  const currentPath = location.pathname;
+  console.log(currentPath);
 
   return (
     <>
@@ -44,7 +46,7 @@ const Sidebar = () => {
           isLargeOpen ? "lg:flex" : "lg:hidden"
         } ${
           isSmallOpen
-            ? "flex z-[999] bg-main-primary dark:bg-dark-primary dark:text-white min-h-screen"
+            ? "flex z-[999] bg-main-primary dark:bg-dark-primary dark:text-slate-400 min-h-screen"
             : "hidden"
         }`}
       >
@@ -52,27 +54,41 @@ const Sidebar = () => {
           <PageHeaderFirstSection />
         </div>
         <LargeSidebarSection>
-          <LargeSidebarItem isActive Icon={Home} title="Home" url="/" />
+          <LargeSidebarItem
+            isActive={currentPath === "/"}
+            Icon={Home}
+            title="Home"
+            url="/"
+          />
           {access_token && (
             <>
-              <LargeSidebarItem Icon={ShoppingCart} title="Cart" url="/cart" />
               <LargeSidebarItem
+                isActive={currentPath === "/cart"}
+                Icon={ShoppingCart}
+                title="Cart"
+                url="/cart"
+              />
+              <LargeSidebarItem
+                isActive={currentPath === "/account"}
                 Icon={UserCircle2Icon}
                 title="Account"
                 url="/account"
               />
               <LargeSidebarItem
+                isActive={currentPath === "/order-history"}
                 Icon={HistoryIcon}
                 title="Order History"
                 url="/order-history"
               />
               <LargeSidebarItem
+                isActive={currentPath === "/booklists"}
                 Icon={BookTextIcon}
                 title="My Booklists"
                 url="/booklists"
               />
               {user.isAdmin && (
                 <LargeSidebarItem
+                  isActive={currentPath === "/admin"}
                   Icon={ShieldCheckIcon}
                   title="Admin Panel"
                   url="/admin"
@@ -81,11 +97,17 @@ const Sidebar = () => {
             </>
           )}
           <LargeSidebarItem
+            isActive={currentPath === "/public-booklists"}
             Icon={BookOpen}
             title="Public Booklists"
             url="/public-booklists"
           />
-          <LargeSidebarItem Icon={InfoIcon} title="About Us" url="/about" />
+          <LargeSidebarItem
+            isActive={currentPath === "/about"}
+            Icon={InfoIcon}
+            title="About Us"
+            url="/about"
+          />
         </LargeSidebarSection>
         <hr />
       </aside>
@@ -153,8 +175,8 @@ function LargeSidebarItem({ Icon, title, url, isActive = false }: LargeProps) {
       //onClick={close}
       className={twMerge(
         buttonStyles({ variant: "ghost" }),
-        `w-full flex items-center rounded-lg gap-4 p-3 ${
-          isActive ? "font-bold hover:bg-secondary" : ""
+        `w-full flex items-center rounded-sm gap-4 p-3 transition-all ease-in-out ${
+          isActive ? " text-lg bg-black/20" : ""
         }`
       )}
     >

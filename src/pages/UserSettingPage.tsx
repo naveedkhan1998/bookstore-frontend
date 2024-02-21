@@ -54,7 +54,7 @@ const UserSettings = () => {
 
   // render the User Setting page
   return (
-    <div className="w-full h-fit mx-auto mt-10 p-6 bg-main-secondary dark:bg-dark-secondary shadow-2xl rounded-2xl">
+    <div className="container mx-auto p-8 mt-10 rounded-md bg-main-secondary dark:bg-dark-secondary border">
       <h2 className="text-3xl font-semibold mb-4">User Settings</h2>
 
       <div className="mb-4">
@@ -68,10 +68,6 @@ const UserSettings = () => {
           onChange={() => handleSettingChange("emailNotifications")}
         />
         <span className="text-sm">Receive email notifications</span>
-      </div>
-
-      <div className="mb-4">
-        <span className="text-sm">Enable dark mode</span>
       </div>
 
       <div className="mb-4">
