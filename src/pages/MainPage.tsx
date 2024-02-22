@@ -37,8 +37,8 @@ const MainPage = () => {
           overflow-auto"
           >
             <Sidebar />
-            <div className="overflow-x-hidden px-4 pb-4">
-              <div className="flex flex-col items-center px-4 pb-20 min-h-screen">
+            <div className="overflow-x-hidden">
+              <div className="flex flex-col items-center px-4 pb-10 min-h-[92dvh]">
                 <Routes>
                   <Route path="/" element={<BooksList />} />
                   <Route path="/cart" element={<CartPage />} />

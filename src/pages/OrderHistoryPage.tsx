@@ -51,22 +51,17 @@ const OrderHistoryPage = () => {
         currentTransactions.map((key) => {
           const entry = transactions[key];
           return (
-            <div>
-              <Card
-                className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))] overflow-hidden pb-12 pt-12 items-center shadow-2xl p-6 rounded-2xl bg-main-secondary dark:bg-dark-secondary"
-                
-              >
-                <h5 className="text-2xl font-bold tracking-tight text-gray-900 ">
-                  Transaction ID: <b>{key}</b>
-                </h5>
-                <p className="font-normal text-gray-700 dark:text-gray-400">
-                  Amount Paid: <b>${entry.price.toFixed(2)}</b>
-                </p>
-                <Link to="/order-items" state={{ items: entry }}>
-                  <Button>Click to View Items</Button>
-                </Link>
-              </Card>
-            </div>
+            <Card className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))] overflow-hidden pb-12 pt-12 items-center shadow-2xl p-6 rounded-2xl bg-main-secondary dark:bg-dark-secondary">
+              <h5 className="text-2xl font-bold tracking-tight text-gray-900 ">
+                Transaction ID: <b>{key}</b>
+              </h5>
+              <p className="font-normal text-gray-700 dark:text-gray-400">
+                Amount Paid: <b>${entry.price.toFixed(2)}</b>
+              </p>
+              <Link to="/order-items" state={{ items: entry }}>
+                <Button>Click to View Items</Button>
+              </Link>
+            </Card>
           );
         })}
     </div>

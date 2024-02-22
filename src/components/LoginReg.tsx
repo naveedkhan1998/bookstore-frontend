@@ -41,8 +41,8 @@ const LoginReg: React.FC = () => {
   const buttonText = isLogin ? "Register here" : "Login here";
 
   return (
-    <div className="flex flex-col w-[100vw] rounded-xl shadow-xl h-[90vh] items-center justify-center">
-      <div className="p-8 rounded-md w-full">
+    <div className="container justify-center h-full pt-12 items-center">
+      <div className=" w-full">
         {isLogin ? <Login /> : <Registration />}
         {/* <div className="p-8 bg-main-secondary dark:bg-dark-secondary shadow-md rounded-md flex flex-col items-center justify-center mt-4 w-full max-w-md mx-auto">
           <GoogleLogin
@@ -56,7 +56,7 @@ const LoginReg: React.FC = () => {
           {formMessage}
           <Button
             variant={"ghost"}
-            className="text-blue-500 cursor-pointer ml-1"
+            className="text-blue-500 "
             onClick={toggleForm}
           >
             {buttonText}

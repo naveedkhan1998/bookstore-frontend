@@ -10,7 +10,7 @@ import { getUserBooklists, setUserBookslist } from "../features/booklistSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDeleteBooklistMutation } from "../services/booklistsServices";
-import { Card } from "flowbite-react";
+import { Card, FloatingLabel } from "flowbite-react";
 import { Trash2 } from "lucide-react";
 
 const BooklistPageAuth: React.FC = () => {
@@ -93,16 +93,14 @@ const BooklistPageAuth: React.FC = () => {
     <div className="flex flex-col items-center justify-center p-6 gap-6 mt-6 w-full">
       <div className="flex flex-col md:w-[80dvw] w-[95dvw] shadow-2xl p-6 rounded-2xl border">
         <h1 className="pt-6 text-lg">Create New BookList</h1>
-        <form onSubmit={handleSubmit}>
-          <label className="block text-gray-700 text-sm font-bold mb-2">
-            Booklist Name
-          </label>
-          <input
+        <form onSubmit={handleSubmit} className="pt-6">
+          <FloatingLabel
+            variant="standard"
+            label="Booklist Name"
             type="text"
             name="booklist_name"
             value={formData.booklist_name}
             onChange={handleInputChange}
-            className="rounded-lg border border-secondary-border shadow-inner shadow-secondary py-2 px-4 text-lg w-full focus:border-blue-500 outline-none"
             required
           />
 
@@ -117,7 +115,7 @@ const BooklistPageAuth: React.FC = () => {
                   name="isPrivate"
                   checked={formData.isPrivate}
                   onChange={handleInputChange}
-                  className="mr-2"
+                  className="mr-2 rounded-full"
                 />
                 Private
               </label>
@@ -126,7 +124,7 @@ const BooklistPageAuth: React.FC = () => {
 
           <Button
             type="submit"
-            className="bg-blue-500 text-gray px-4 py-2 rounded mt-4 hover:bg-blue-600"
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600"
           >
             Create Booklist
           </Button>

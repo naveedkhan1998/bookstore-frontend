@@ -6,6 +6,7 @@ import { setCredentials, getCurrentToken } from "../features/authSlice";
 import { getToken, storeToken } from "../services/LocalStorageService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FloatingLabel } from "flowbite-react";
 
 interface FormData {
   email: string;
@@ -27,8 +28,8 @@ const Login: React.FC = () => {
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    const { id, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [id]: value }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -43,7 +44,6 @@ const Login: React.FC = () => {
         navigate("/");
         toast.success("Logged In");
       } else if ("error" in res) {
-        
         toast.error(JSON.stringify(res.error));
       }
     }
@@ -55,30 +55,24 @@ const Login: React.FC = () => {
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-600">
-              Email
-            </label>
-            <input
-              type="email"
+            <FloatingLabel
+              variant="standard"
+              label="Email"
               id="email"
-              name="email"
+              type="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border p-2 rounded focus:outline-none focus:border-blue-500"
               required
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-600">
-              Password
-            </label>
-            <input
-              type="password"
+            <FloatingLabel
+              variant="standard"
+              label="Password"
               id="password"
-              name="password"
+              type="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full border p-2 rounded focus:outline-none focus:border-blue-500"
               required
             />
           </div>

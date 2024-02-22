@@ -11,6 +11,7 @@ import {
 import { setCredentials, getCurrentToken } from "../features/authSlice";
 import { getToken, storeToken } from "../services/LocalStorageService";
 import { toast } from "react-toastify";
+import { FloatingLabel } from "flowbite-react";
 
 const Registration: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +36,7 @@ const Registration: React.FC = () => {
   const [sendEmail, { isSuccess: EmailSent }] = useLazySendEmailQuery();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,63 +70,51 @@ const Registration: React.FC = () => {
   }, [EmailSent]);
 
   return (
-    <div className="flex items-top justify-center bg-main-primary dark:bg-dark-primary dark:text-slate-400 mt-16">
+    <div className="flex items-top justify-center bg-main-primary dark:bg-dark-primary dark:text-slate-400">
       <div className="bg-main-secondary dark:bg-dark-secondary p-8 shadow-md rounded-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">Registration</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="given_name" className="block text-gray-600">
-              Given Name
-            </label>
-            <input
-              type="text"
+            <FloatingLabel
+              variant="standard"
+              label="Given Name"
               id="given_name"
-              name="given_name"
+              type="given_name"
               value={formData.given_name}
               onChange={handleChange}
-              className="w-full border p-2 rounded focus:outline-none focus:border-blue-500"
               required
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="family_name" className="block text-gray-600">
-              Family Name
-            </label>
-            <input
-              type="text"
+            <FloatingLabel
+              variant="standard"
+              label="Family Name"
               id="family_name"
-              name="family_name"
+              type="family_name"
               value={formData.family_name}
               onChange={handleChange}
-              className="w-full border p-2 rounded focus:outline-none focus:border-blue-500"
               required
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-600">
-              Email
-            </label>
-            <input
-              type="email"
+            <FloatingLabel
+              variant="standard"
+              label="Email"
               id="email"
-              name="email"
+              type="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border p-2 rounded focus:outline-none focus:border-blue-500"
               required
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-600">
-              Password
-            </label>
-            <input
-              type="password"
+            <FloatingLabel
+              variant="standard"
+              label="Password"
               id="password"
-              name="password"
+              type="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full border p-2 rounded focus:outline-none focus:border-blue-500"
               required
             />
           </div>

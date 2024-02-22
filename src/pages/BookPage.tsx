@@ -156,49 +156,37 @@ const BookPage = () => {
             </p>
           </div>
           {access_token && (
-            <>
-              <div className="flex flex-row items-center justify-between px-12 py-2 w-full shadow-2xl">
-                {selectedBook.saleInfo.listPrice ? (
-                  <Button
-                    onClick={handleAddToCart}
-                    gradientDuoTone="cyanToBlue"
+            <div className="flex flex-wrap items-center justify-between px-6 py-1 w-full flex-shrink border-t text-xs ">
+              {selectedBook.saleInfo.listPrice ? (
+                <Button onClick={handleAddToCart} gradientDuoTone="cyanToBlue">
+                  Add To Cart
+                </Button>
+              ) : (
+                <Button gradientDuoTone="pinkToOrange">Sold Out</Button>
+              )}
+              <div className="flex flex-wrap gap-2">
+                <Button.Group>
+                  <select
+                    value={selectedBooklistID}
+                    onChange={(e) => setSelectedBooklistID(e.target.value)}
+                    className=" bg-black/60 text-white   p-2 rounded-l-md  "
                   >
-                    Add To Cart
-                  </Button>
-                ) : (
-                  <Button gradientDuoTone="pinkToOrange">Sold Out</Button>
-                )}
-                <div className="flex flex-wrap gap-2">
-                  <Button.Group>
-                    <select
-                      value={selectedBooklistID}
-                      onChange={(e) => setSelectedBooklistID(e.target.value)}
-                      className=" bg-black/30 text-grey  dark:text-slate-400 p-2 rounded-l-md  "
-                    >
-                      <option
-                        className="text-grey dark:text-slate-400"
-                        value=""
-                        disabled
-                      >
-                        Name | Type
+                    <option className="text-white " value="" disabled>
+                      Name | Type
+                    </option>
+                    {userBooklists.bookLists?.map((booklist) => (
+                      <option key={booklist.name} value={booklist._id}>
+                        {booklist.name} |{" "}
+                        {booklist.isPrivate ? "Private" : "Public"}
                       </option>
-                      {userBooklists.bookLists?.map((booklist) => (
-                        <option key={booklist.name} value={booklist._id}>
-                          {booklist.name} |{" "}
-                          {booklist.isPrivate ? "Private" : "Public"}
-                        </option>
-                      ))}
-                    </select>
-                    <Button
-                      onClick={handleAddToBooklist}
-                      className="text-gray"
-                    >
-                      Add To Selected Booklist
-                    </Button>
-                  </Button.Group>
-                </div>
+                    ))}
+                  </select>
+                  <Button onClick={handleAddToBooklist} className="text-white">
+                    Add To Selected Booklist
+                  </Button>
+                </Button.Group>
               </div>
-            </>
+            </div>
           )}
         </>
       )}

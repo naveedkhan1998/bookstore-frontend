@@ -61,11 +61,19 @@ const BooksList = () => {
       {/* max-h-screen */}
       {paginatedData.length > 0 ? (
         <>
-          <div className="flex text-xs justify-center pt-12 dark:text-grey">
+          <div className="flex text-xs justify-center pt-12 ">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
+              theme={{
+                pages: {
+                  selector: {
+                    active:
+                      "bg-cyan-50 text-cyan-600 hover:bg-cyan-100 hover:text-cyan-700 dark:border-gray-700 dark:bg-gray-700 dark:text-black",
+                  },
+                },
+              }}
             />
           </div>
 
@@ -74,16 +82,24 @@ const BooksList = () => {
               {paginatedData.map(renderBook)}
             </div>
           </div>
-          <div className="flex text-xs justify-center dark:text-grey">
+          <div className="flex text-xs justify-center ">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
+              theme={{
+                pages: {
+                  selector: {
+                    active:
+                      "bg-cyan-50 text-cyan-600 hover:bg-cyan-100 hover:text-cyan-700 dark:border-gray-700 dark:bg-gray-700 dark:text-black",
+                  },
+                },
+              }}
             />
           </div>
         </>
       ) : (
-        <div className="text-center flex items-center justify-center">
+        <div className="text-center flex items-center justify-center h-[90dvh]">
           <Spinner aria-label="Center-aligned spinner example" size="xl" />
         </div>
       )}
