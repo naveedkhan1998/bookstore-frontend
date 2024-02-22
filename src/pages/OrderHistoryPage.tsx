@@ -1,24 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useGetTransactionsQuery } from "../services/transactionsServices";
-import { useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import { TransactionObject, Transactions } from "../comman-types";
 import { Link } from "react-router-dom";
-import { Button, Card } from "flowbite-react";
+import { Button, Card, Pagination } from "flowbite-react";
+import { useAppSelector } from "../app/hooks";
 
 const OrderHistoryPage = () => {
   const access_token = useAppSelector(getCurrentToken);
   const { data, isSuccess } = useGetTransactionsQuery(access_token);
 
-  const itemsPerPage = 3; // Adjust as needed
+  const itemsPerPage = 10; // Adjust as needed
   const [currentPage, setCurrentPage] = useState(1);
 
-  let transactions: Transactions = {};
+  const transactions: Transactions = data?.transactions || {};
 
-  if (isSuccess) {
-    const transactionsData: TransactionObject = data;
-    transactions = transactionsData.transactions;
-  }
+  const totalPages = useMemo(
+    () => Math.ceil(Object.keys(transactions).length / itemsPerPage),
+    [transactions]
+  );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -27,43 +27,42 @@ const OrderHistoryPage = () => {
     .slice(indexOfFirstItem, indexOfLastItem);
 
   return (
-    <div className="flex flex-col p-6 w-full overflow-auto text-gray-800 gap-4 ">
-      {/* Pagination */}
-      <div className="flex justify-center mt-4">
-        {Array.from(
-          {
-            length: Math.ceil(Object.keys(transactions).length / itemsPerPage),
-          },
-          (_, index) => (
-            <Button
-              key={index}
-              className={`mx-2 p-2 border ${
-                currentPage === index + 1 ? "bg-blue-500 text-gray" : ""
-              }`}
-              onClick={() => setCurrentPage(index + 1)}
-            >
-              {index + 1}
-            </Button>
-          )
-        )}
+    <div className="container p-6 w-full overflow-auto text-gray-800 gap-4">
+      <div className="flex text-xs justify-center  ">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => setCurrentPage(page)}
+          theme={{
+            pages: {
+              selector: {
+                active: "",
+              },
+            },
+          }}
+        />
       </div>
-      {isSuccess &&
-        currentTransactions.map((key) => {
-          const entry = transactions[key];
-          return (
-            <Card className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))] overflow-hidden pb-12 pt-12 items-center shadow-2xl p-6 rounded-2xl bg-main-secondary dark:bg-dark-secondary">
-              <h5 className="text-2xl font-bold tracking-tight text-gray-900 ">
-                Transaction ID: <b>{key}</b>
-              </h5>
-              <p className="font-normal text-gray-700 dark:text-gray-400">
-                Amount Paid: <b>${entry.price.toFixed(2)}</b>
-              </p>
-              <Link to="/order-items" state={{ items: entry }}>
-                <Button>Click to View Items</Button>
-              </Link>
-            </Card>
-          );
-        })}
+
+      {isSuccess && (
+        <div className="grid gap-6 grid-cols-[repeat(auto-fill,minmax(auto,1fr))] overflow-hidden items-normal justify-normal border p-6 rounded-md bg-main-secondary dark:bg-dark-secondary">
+          {currentTransactions.map((key) => {
+            const entry = transactions[key];
+            return (
+              <Card key={key} className="bg-main-primary dark:bg-dark-primary">
+                <h5 className="text-2xl font-bold tracking-tight text-gray-900 ">
+                  Transaction ID: <b>{key.slice(10)}</b>
+                </h5>
+                <p className="font-normal text-gray-700 dark:text-gray-400">
+                  Amount Paid: <b>${entry.price.toFixed(2)}</b>
+                </p>
+                <Link to="/order-items" state={{ items: entry }}>
+                  <Button>Click to View Items</Button>
+                </Link>
+              </Card>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

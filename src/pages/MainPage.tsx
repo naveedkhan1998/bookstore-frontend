@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SidebarProvider from "../context/SidebarContext";
 import PageHeader from "../layouts/PageHeader";
@@ -27,6 +27,7 @@ import AdminUserPage from "./AdminUserPage";
 
 const MainPage = () => {
   const access_token = useAppSelector(getCurrentToken);
+
   return (
     <Router>
       <SidebarProvider>
@@ -34,11 +35,11 @@ const MainPage = () => {
           <PageHeader />
           <div
             className="grid grid-cols-[auto,1fr] flex-grow-1 
-          overflow-auto"
+          overflow-y-auto"
           >
             <Sidebar />
             <div className="overflow-x-hidden">
-              <div className="flex flex-col items-center px-4 pb-10 min-h-[92dvh]">
+              <div className="flex flex-wrap items-normal px-8 pb-10 min-h-[92dvh]">
                 <Routes>
                   <Route path="/" element={<BooksList />} />
                   <Route path="/cart" element={<CartPage />} />

@@ -35,6 +35,8 @@ const BooksList = () => {
       onClick={() => handleDivClick(book.id)}
       renderImage={() => (
         <img
+          height={250}
+          width={250}
           src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage}
           alt={book.volumeInfo.title}
           className="w-full h-80 object-fill"
@@ -69,8 +71,7 @@ const BooksList = () => {
               theme={{
                 pages: {
                   selector: {
-                    active:
-                      "bg-cyan-50 text-cyan-600 hover:bg-cyan-100 hover:text-cyan-700 dark:border-gray-700 dark:bg-gray-700 dark:text-black",
+                    active: "",
                   },
                 },
               }}
@@ -90,8 +91,7 @@ const BooksList = () => {
               theme={{
                 pages: {
                   selector: {
-                    active:
-                      "bg-cyan-50 text-cyan-600 hover:bg-cyan-100 hover:text-cyan-700 dark:border-gray-700 dark:bg-gray-700 dark:text-black",
+                    active: "",
                   },
                 },
               }}

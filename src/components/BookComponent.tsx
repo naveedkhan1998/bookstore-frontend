@@ -24,17 +24,19 @@ const BookComponent: React.FC<BookID> = ({ book_id }) => {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex gap-2 flex-cols-[repeat(auto-fill,minmax(250px,fr))]">
       <Card
-        className="relative min-h-[600px] bg-main-secondary dark:bg-dark-secondary rounded-md overflow-hidden hover:shadow-2xl transition-shadow ease-in delay-250 text-sm hover:shadow-black"
+        className="w-[250px] h-[500px] relative bg-main-secondary dark:bg-dark-secondary rounded-md overflow-hidden hover:shadow-2xl transition-shadow ease-in delay-250 text-sm hover:shadow-black"
         key={book.id}
         id={book.id}
         onClick={() => handleDivClick(book.id)}
         renderImage={() => (
           <img
+            height={250}
+            width={250}
             src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage}
             alt={book.volumeInfo.title}
-            className="w-full min-h-[300px] object-fill"
+            className="w-full h-[250px] object-fill"
           />
         )}
       >

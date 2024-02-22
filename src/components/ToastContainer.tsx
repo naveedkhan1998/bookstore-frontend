@@ -5,8 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const Toast: React.FC = () => {
 
   const toastOptions = {
-    autoClose: 1500,
-    position: toast.POSITION.BOTTOM_LEFT,
+    autoClose: 1100,
+    position: toast.POSITION.TOP_CENTER,
   };
 
   return <ToastContainer {...toastOptions} />;

@@ -38,7 +38,7 @@ const Sidebar = () => {
       {isSmallOpen && (
         <div
           onClick={close}
-          className="lg:hidden fixed inset-0 z-[999] bg-black opacity-50 "
+          className="lg:hidden fixed inset-0 z-[999] bg-black/60 "
         />
       )}
       <aside
@@ -46,7 +46,7 @@ const Sidebar = () => {
           isLargeOpen ? "lg:flex" : "lg:hidden"
         } ${
           isSmallOpen
-            ? "flex z-[999] bg-main-primary dark:bg-dark-primary dark:text-slate-400 min-h-screen"
+            ? "flex z-[999] bg-main-primary dark:bg-dark-primary dark:text-slate-400 min-h-screen "
             : "hidden"
         }`}
       >
