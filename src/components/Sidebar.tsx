@@ -42,8 +42,8 @@ const Sidebar = () => {
         />
       )}
       <aside
-        className={`w-56 max-h-screen lg:sticky absolute top-0 overflow-y-full scrollbar-hidden flex-col  border-r ${
-          isLargeOpen ? "lg:flex" : "lg:hidden"
+        className={` w-56 max-h-full lg:sticky absolute top-0  overflow-y-auto scrollbar-hidden flex-col  border-r ${
+          isLargeOpen ? "lg:flex " : "lg:hidden"
         } ${
           isSmallOpen
             ? "flex z-[999] bg-main-primary dark:bg-dark-primary dark:text-slate-400 min-h-screen "
