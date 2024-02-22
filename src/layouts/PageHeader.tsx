@@ -137,7 +137,7 @@ const PageHeader = () => {
   }, []);
 
   return (
-    <div className="flex sticky z-40 top-0 gap-10 lg:gap-20 justify-between p-2 border-b bg-main-primary dark:bg-dark-primary dark:text-slate-400 text-gray ">
+    <div className="flex gap-10 lg:gap-20 justify-between p-2 border-b ">
       <PageHeaderFirstSection hidden={showFullWidthSearch} />
 
       <form
@@ -303,7 +303,6 @@ export function PageHeaderFirstSection({
         <MenuIcon />
       </Button>
 
-      <h2 className="text-lg">Book Store</h2>
       <img src={file} className="h-6" alt="logo" />
     </div>
   );

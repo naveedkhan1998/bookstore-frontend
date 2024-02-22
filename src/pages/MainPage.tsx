@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import SidebarProvider, { useSidebarContext } from "../context/SidebarContext";
+import SidebarProvider from "../context/SidebarContext";
 import PageHeader from "../layouts/PageHeader";
 import Sidebar from "../components/Sidebar";
 import Footer from "../layouts/Footer";
@@ -27,12 +27,11 @@ import AdminUserPage from "./AdminUserPage";
 
 const MainPage = () => {
   const access_token = useAppSelector(getCurrentToken);
-  //const { isLargeOpen } = useSidebarContext();
 
   return (
     <Router>
       <SidebarProvider>
-        <div className="flex flex-col min-h-[100dvh] bg-main-primary dark:bg-dark-primary dark:text-slate-400 text-gray">
+        <div className="flex flex-col max-h-screen bg-main-primary dark:bg-dark-primary dark:text-slate-400 text-gray">
           <PageHeader />
           <div
             className="grid grid-cols-[auto,1fr] flex-grow-1 
@@ -40,9 +39,7 @@ const MainPage = () => {
           >
             <Sidebar />
             <div className="overflow-x-hidden">
-              <div
-                className={`flex flex-wrap items-normal px-8 pb-10 min-h-[92dvh]`}
-              >
+              <div className="flex flex-wrap items-normal px-8 pb-10 min-h-[92dvh]">
                 <Routes>
                   <Route path="/" element={<BooksList />} />
                   <Route path="/cart" element={<CartPage />} />
