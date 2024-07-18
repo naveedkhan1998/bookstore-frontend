@@ -1,12 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import file from "../assets/logo.png";
-import {
-  ArrowLeft,
-  Search,
-  ShoppingCart,
-  MenuIcon,
-  HomeIcon,
-} from "lucide-react";
+import { ArrowLeft, Search, ShoppingCart, MenuIcon, HomeIcon } from "lucide-react";
 import Button from "../components/Button";
 import { useSidebarContext } from "../context/SidebarContext";
 import ProfileMenu from "../components/ProfileMenu";
@@ -14,7 +8,7 @@ import { useGetVolumesQuery } from "../services/googleBooksServices";
 import { BookVolume } from "../comman-types";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setBooks } from "../features/booksSlice";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getCurrentToken } from "../features/authSlice";
 import { UserType, setUserInfo } from "../features/userSlice";
 import { useGetLoggedUserQuery } from "../services/userAuthService";
@@ -25,56 +19,32 @@ import { getUserCart, setUserCart } from "../features/cartSlice";
 import Spinner from "../components/Spinner";
 import { DarkThemeToggle } from "flowbite-react";
 
-const PageHeader = () => {
-  const access_token = useAppSelector(getCurrentToken);
+const PageHeader: React.FC = () => {
+  const accessToken = useAppSelector(getCurrentToken);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("Time");
+  const [showFullWidthSearch, setShowFullWidthSearch] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("Time");
+  const [searchResults, setSearchResults] = useState<BookVolume[]>([]);
 
-  const [searchResults, setSearchResults] = useState([]);
+  const { data: cartData, isSuccess: cartSuccess } = useGetCartQuery(accessToken);
+  const { data, isSuccess, isLoading, refetch } = useGetVolumesQuery(searchTerm);
+  const { data: booklistData, isSuccess: booklistSuccess } = useGetUserBooklistsQuery(accessToken);
+  const { data: userData } = useGetLoggedUserQuery(accessToken);
 
-  const { data: cartData, isSuccess: CartSuccess } =
-    useGetCartQuery(access_token);
+  const cartDataSelector = useAppSelector(getUserCart);
 
   useEffect(() => {
-    if (CartSuccess) {
+    if (cartSuccess) {
       dispatch(setUserCart(cartData));
     }
-  }, [CartSuccess]);
+  }, [cartSuccess, cartData, dispatch]);
 
-  const { data, isSuccess, isLoading, refetch } =
-    useGetVolumesQuery(searchTerm);
-
-  const cart_data = useAppSelector(getUserCart);
-
-  /// initial booklist set
-  const { data: booklistData, isSuccess: booklistISuccess } =
-    useGetUserBooklistsQuery(access_token);
-
-  if (booklistISuccess) {
-    dispatch(setUserBookslist(booklistData));
-  }
-
-  function handleSearchClick(id: String) {
-    setSearchTerm("");
-    navigate(`/book/${id}`);
-  }
-
-  function handleSearch() {
-    if (isSuccess) {
-      setSearchTerm("");
-      navigate("/");
-      dispatch(setBooks(data.items));
+  useEffect(() => {
+    if (booklistSuccess) {
+      dispatch(setUserBookslist(booklistData));
     }
-  }
-
-  const handleOverlayClick = () => {
-    setSearchTerm("");
-  };
-
-  const token = useAppSelector(getCurrentToken);
-  const { data: userData } = useGetLoggedUserQuery(token);
+  }, [booklistSuccess, booklistData, dispatch]);
 
   useEffect(() => {
     if (userData) {
@@ -85,41 +55,53 @@ const PageHeader = () => {
           avatarUrl: `https://ui-avatars.com/api/?name=${newData.given_name}+${newData.family_name}`,
         })
       );
-      //console.log(newData);
     }
-  }, [dispatch, userData, isSuccess]);
+  }, [userData, dispatch]);
 
   useEffect(() => {
     const fetchSearchResults = async () => {
-      if (searchTerm.trim() === "") {
+      if (!searchTerm.trim()) {
         setSearchResults([]);
         return;
       }
 
       try {
         if (isLoading) {
-          refetch();
+          await refetch();
         }
 
         if (searchTerm === "Time") {
           setSearchResults([]);
           handleSearch();
-
           return;
         }
 
-        const list_of_titles = data.items.slice(0, 12);
-        setSearchResults(list_of_titles);
+        setSearchResults(data?.items.slice(0, 12) || []);
       } catch (error) {
         console.error("Error fetching search results:", error);
       }
     };
 
-    // Debounce the API call to avoid making requests on every keystroke
-    const debounceTimer = setTimeout(fetchSearchResults);
-
+    const debounceTimer = setTimeout(fetchSearchResults, 300);
     return () => clearTimeout(debounceTimer);
-  }, [searchTerm, data, isLoading]);
+  }, [searchTerm, data, isLoading, refetch]);
+
+  const handleSearchClick = (id: string) => {
+    setSearchTerm("");
+    navigate(`/book/${id}`);
+  };
+
+  const handleSearch = () => {
+    if (isSuccess) {
+      setSearchTerm("");
+      navigate("/");
+      dispatch(setBooks(data.items));
+    }
+  };
+
+  const handleOverlayClick = () => {
+    setSearchTerm("");
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -128,182 +110,151 @@ const PageHeader = () => {
       }
     };
 
-    handleResize();
     window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
-    <div className="flex gap-10 lg:gap-20 justify-between p-2 border-b ">
+    <div className="flex justify-between gap-10 p-2 border-b lg:gap-20">
       <PageHeaderFirstSection hidden={showFullWidthSearch} />
-
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSearch();
-        }}
-        className={`flex-grow justify-center ${
-          showFullWidthSearch ? "flex" : "hidden md:flex"
-        }`}
-        aria-label="Search Form"
-      >
-        {showFullWidthSearch && (
-          <Button
-            onClick={() => setShowFullWidthSearch(false)}
-            size="icon"
-            variant="ghost"
-            type="button"
-            className="flex-shrink-0"
-            aria-label="Back to Search"
-          >
-            <ArrowLeft />
-          </Button>
-        )}
-        <div className="flex flex-grow max-w-[600px]">
-          <input
-            type="search"
-            placeholder="Search Books"
-            className="rounded-l-full placeholder-black bg-main-secondary dark:bg-dark-secondary py-2 px-4 text-md w-full z-50"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onFocus={() => {
-              //navigate("/");
-            }}
-            aria-label="Search Input"
-          />
-          <Button
-            className="py-2 px-4 rounded-r-full bg-main-secondary dark:bg-dark-secondary hover:bg-main-secondary mr-3 flex-shrink-0 z-50"
-            type="submit"
-            aria-label="Submit Search"
-          >
-            <Search />
-          </Button>
-        </div>
-      </form>
-
-      {isSuccess && (
-        <div
-          className="fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/80 flex justify-center items-center "
-          onClick={handleOverlayClick}
-        >
-          <div className="flex justify-normal items-normal top-15 flex-col absolute h-[80dvh] w-[90dvw]  bg-main-secondary dark:bg-dark-secondary rounded-md  overflow-auto z-50">
-            <table
-              className="w-full items-normal justify-normal p-6 "
-              aria-label="Search Results"
-            >
-              <thead>
-                <tr className="bg-black/20">
-                  <th className="py-2 px-4">Book Name</th>
-                  <th className="py-2 px-4">Author</th>
-                </tr>
-              </thead>
-              <tbody>
-                {searchResults.map((obj: BookVolume) => (
-                  <tr
-                    key={obj.id}
-                    id={obj.id}
-                    className="hover:bg-main-primary dark:hover:bg-dark-primary rounded-md"
-                    onClick={() => handleSearchClick(obj.id)}
-                  >
-                    <td className="py-2 px-4 ">
-                      {obj.volumeInfo.title.length > 30
-                        ? `${obj.volumeInfo.title.substring(0, 30)}...`
-                        : obj.volumeInfo.title}
-                    </td>
-                    <td className="py-2 px-4 ">
-                      {obj.volumeInfo?.authors?.join(" , ") || "None"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      <div
-        className={`flex items-center gap-3.5 xs:gap-6 md:gap-3.5 ${
-          showFullWidthSearch ? "hidden" : "md:flex-shrink-0 xs:flex-shrink"
-        }`}
-      >
-        <Button
-          onClick={() => setShowFullWidthSearch(true)}
-          size="icon"
-          variant={searchTerm ? "default" : "ghost"}
-          className="md:hidden z-50"
-        >
-          <Search />
-        </Button>
-
-        <Button
-          size="icon"
-          onClick={() => navigate("/")}
-          variant="ghost"
-          className="hidden sm:flex"
-        >
-          <HomeIcon />
-        </Button>
-        <Button size="icon" variant="ghost" className="z-50">
-          <DarkThemeToggle className=" rounded-full hover:bg-black/20" />
-        </Button>
-
-        {!access_token && (
-          <Button
-            onClick={() => navigate("/login")}
-            variant="ghost"
-            className=" rounded-full"
-          >
-            Login
-          </Button>
-        )}
-        {access_token && (
-          <>
-            <Button
-              size="icon"
-              onClick={() => navigate("/cart")}
-              className="hidden xs:flex"
-              variant="ghost"
-              number={Object.values(cart_data.books).reduce(
-                (acc, val) => acc + val,
-                0
-              )}
-            >
-              <ShoppingCart />
-            </Button>
-            <Button size="icon" variant="ghost">
-              <ProfileMenu />
-            </Button>
-          </>
-        )}
-      </div>
+      <SearchForm showFullWidthSearch={showFullWidthSearch} searchTerm={searchTerm} setShowFullWidthSearch={setShowFullWidthSearch} setSearchTerm={setSearchTerm} handleSearch={handleSearch} />
+      {isSuccess && <SearchResultsOverlay searchResults={searchResults} handleSearchClick={handleSearchClick} handleOverlayClick={handleOverlayClick} />}
+      <HeaderButtons showFullWidthSearch={showFullWidthSearch} searchTerm={searchTerm} setShowFullWidthSearch={setShowFullWidthSearch} accessToken={accessToken} cartData={cartDataSelector} />
     </div>
   );
 };
-
-export default PageHeader;
 
 type PageHeaderFirstSectionProps = {
   hidden?: boolean;
 };
 
-export function PageHeaderFirstSection({
-  hidden = false,
-}: PageHeaderFirstSectionProps) {
+export const PageHeaderFirstSection: React.FC<PageHeaderFirstSectionProps> = ({ hidden }) => {
   const { toggle } = useSidebarContext();
   return (
-    <div
-      className={`gap-4 items-center flex-shrink-0 ${
-        hidden ? "hidden" : "flex"
-      }`}
-    >
+    <div className={`gap-4 items-center flex-shrink-0 ${hidden ? "hidden" : "flex"}`}>
       <Button onClick={toggle} variant="ghost" size="icon">
         <MenuIcon />
       </Button>
-
       <img src={file} className="h-6" alt="logo" />
     </div>
   );
-}
+};
+
+type SearchFormProps = {
+  showFullWidthSearch: boolean;
+  searchTerm: string;
+  setShowFullWidthSearch: React.Dispatch<React.SetStateAction<boolean>>;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  handleSearch: () => void;
+};
+
+const SearchForm: React.FC<SearchFormProps> = ({ showFullWidthSearch, searchTerm, setShowFullWidthSearch, setSearchTerm, handleSearch }) => (
+  <form
+    onSubmit={(e) => {
+      e.preventDefault();
+      handleSearch();
+    }}
+    className={`flex-grow justify-center ${showFullWidthSearch ? "flex" : "hidden md:flex"}`}
+    aria-label="Search Form"
+  >
+    {showFullWidthSearch && (
+      <Button onClick={() => setShowFullWidthSearch(false)} size="icon" variant="ghost" type="button" className="flex-shrink-0" aria-label="Back to Search">
+        <ArrowLeft />
+      </Button>
+    )}
+    <div className="flex flex-grow max-w-[600px]">
+      <input
+        type="search"
+        placeholder="Search Books"
+        className="z-50 w-full px-4 py-2 placeholder-black rounded-l-full bg-main-secondary dark:bg-dark-secondary text-md"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        aria-label="Search Input"
+      />
+      <Button className="z-50 flex-shrink-0 px-4 py-2 mr-3 rounded-r-full bg-main-secondary dark:bg-dark-secondary hover:bg-main-secondary" type="submit" aria-label="Submit Search">
+        <Search />
+      </Button>
+    </div>
+  </form>
+);
+
+type SearchResultsOverlayProps = {
+  searchResults: BookVolume[];
+  handleSearchClick: (id: string) => void;
+  handleOverlayClick: () => void;
+};
+
+const SearchResultsOverlay: React.FC<SearchResultsOverlayProps> = ({ searchResults, handleSearchClick, handleOverlayClick }) => (
+  <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-70" onClick={handleOverlayClick}>
+    <div className="relative flex flex-col w-full max-w-3xl overflow-hidden rounded-lg shadow-lg h-3/4 bg-light-mode-background dark:bg-dark-mode-background" onClick={(e) => e.stopPropagation()}>
+      <header className="flex items-center justify-between px-6 py-4 bg-light-mode-header dark:bg-dark-mode-header">
+        <h2 className="text-lg font-semibold text-light-mode-text dark:text-dark-mode-text">Search Results</h2>
+        <Button size="icon" variant="ghost" onClick={handleOverlayClick} aria-label="Close">
+          <ArrowLeft />
+        </Button>
+      </header>
+      <div className="flex-grow overflow-y-auto">
+        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-light-mode-table-header dark:bg-dark-mode-table-header">
+            <tr>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-light-mode-text dark:text-dark-mode-text">Book Name</th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-light-mode-text dark:text-dark-mode-text">Author</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 bg-light-mode-background dark:bg-dark-mode-background dark:divide-gray-700">
+            {searchResults.map((obj) => (
+              <tr key={obj.id} id={obj.id} className="cursor-pointer hover:bg-light-mode-hover dark:hover:bg-dark-mode-hover" onClick={() => handleSearchClick(obj.id)}>
+                <td className="px-6 py-4 text-sm text-light-mode-text dark:text-dark-mode-text">
+                  {obj.volumeInfo.title.length > 30 ? `${obj.volumeInfo.title.substring(0, 30)}...` : obj.volumeInfo.title}
+                </td>
+                <td className="px-6 py-4 text-sm text-light-mode-subtext dark:text-dark-mode-subtext">{obj.volumeInfo?.authors?.join(", ") || "None"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+);
+
+type HeaderButtonsProps = {
+  showFullWidthSearch: boolean;
+  searchTerm: string;
+  setShowFullWidthSearch: React.Dispatch<React.SetStateAction<boolean>>;
+  accessToken: string | null | undefined;
+  cartData: ReturnType<typeof getUserCart>;
+};
+
+const HeaderButtons: React.FC<HeaderButtonsProps> = ({ showFullWidthSearch, searchTerm, setShowFullWidthSearch, accessToken, cartData }) => {
+  const navigate = useNavigate();
+  return (
+    <div className={`flex items-center gap-3.5 xs:gap-6 md:gap-3.5 ${showFullWidthSearch ? "hidden" : "md:flex-shrink-0 xs:flex-shrink"}`}>
+      <Button onClick={() => setShowFullWidthSearch(true)} size="icon" variant={searchTerm ? "default" : "ghost"} className="z-50 md:hidden">
+        <Search />
+      </Button>
+      <Button size="icon" onClick={() => navigate("/")} variant="ghost" className="hidden sm:flex">
+        <HomeIcon />
+      </Button>
+      <Button size="icon" variant="ghost" className="z-50">
+        <DarkThemeToggle className="rounded-full hover:bg-light-mode-hover dark:hover:bg-dark-mode-hover" />
+      </Button>
+      {!accessToken && (
+        <Button onClick={() => navigate("/login")} variant="ghost" className="rounded-full text-light-mode-text dark:text-dark-mode-text">
+          Login
+        </Button>
+      )}
+      {accessToken && (
+        <>
+          <Button size="icon" onClick={() => navigate("/cart")} className="hidden xs:flex" variant="ghost" number={Object.values(cartData.books).reduce((acc, val) => acc + val, 0)}>
+            <ShoppingCart />
+          </Button>
+          <Button size="icon" variant="ghost">
+            <ProfileMenu />
+          </Button>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default PageHeader;

@@ -1,124 +1,125 @@
 // CheckoutPage.tsx
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import { useAddToTransactionsMutation } from "../services/transactionsServices";
-import { useGetCartQuery } from "../services/cartServices";
-import { Button } from "flowbite-react";
-import { useDispatch } from "react-redux";
+import { Button, TextInput, Label } from "flowbite-react";
 import { unSetUserCart } from "../features/cartSlice";
 import { toast } from "react-toastify";
 import { unsetLoadedBook } from "../features/loadBookSlice";
 
-const CheckoutPage = () => {
+interface FormData {
+  cardNumber: string;
+  expiryDate: string;
+  cvv: string;
+}
+
+const CheckoutPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const { to } = location.state;
+  const dispatch = useAppDispatch();
+  const { to } = location.state as { to: { items: Record<string, number>; price: number } };
   const access_token = useAppSelector(getCurrentToken);
-  const [
-    addToTransactions,
-    { isSuccess: CheckoutDone },
-  ] = useAddToTransactionsMutation();
+  const [addToTransactions, { isSuccess: checkoutDone }] = useAddToTransactionsMutation();
+
+  const [formData, setFormData] = useState<FormData>({
+    cardNumber: "",
+    expiryDate: "",
+    cvv: "",
+  });
+
+  const [errors, setErrors] = useState<Partial<FormData>>({});
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
+  };
+
+  const validateForm = (): boolean => {
+    const newErrors: Partial<FormData> = {};
+
+    if (!/^[0-9]{16}$/.test(formData.cardNumber)) {
+      newErrors.cardNumber = "Invalid card number. Please enter a 16-digit number.";
+    }
+
+    if (!/^(0[1-9]|1[0-2])\/\d{4}$/.test(formData.expiryDate)) {
+      newErrors.expiryDate = "Invalid expiry date. Please enter MM/YYYY format.";
+    } else {
+      const [month, year] = formData.expiryDate.split("/");
+      const expiryDate = new Date(parseInt(year), parseInt(month) - 1);
+      if (expiryDate < new Date()) {
+        newErrors.expiryDate = "Card has expired. Please use a valid card.";
+      }
+    }
+
+    if (!/^[0-9]{3,4}$/.test(formData.cvv)) {
+      newErrors.cvv = "Invalid CVV. Please enter a 3 or 4 digit number.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const cardNumber = event.currentTarget.cardNumber.value;
-    const expiryDate = event.currentTarget.expiryDate.value;
-    const cvv = event.currentTarget.cvv.value;
-
-    if (!/^[0-9]+$/.test(cardNumber)) {
-      toast.error("Invalid card number. Please enter a valid card number.");
-      return;
+    if (validateForm()) {
+      try {
+        await addToTransactions({ data: to, access_token });
+      } catch (error) {
+        toast.error("An error occurred during checkout. Please try again.");
+      }
     }
-
-    if (!/^(0[1-9]|1[0-2])\/\d{4}$/.test(expiryDate)) {
-      toast.error(
-        "Invalid expiry date. Please enter a valid MM/YYYY expiry date."
-      );
-      return;
-    }
-
-    if (!/^[0-9]+$/.test(cvv)) {
-      toast.error("Invalid CVV. Please enter a valid CVV.");
-      return;
-    }
-
-    const data = { ...to };
-
-    // Call the API only if the form is valid
-    await addToTransactions({ data, access_token });
   };
 
   useEffect(() => {
-    if (CheckoutDone) {
+    if (checkoutDone) {
       dispatch(unSetUserCart());
       dispatch(unsetLoadedBook());
-      toast.success("Items Bought");
+      toast.success("Purchase successful! Thank you for your order.");
       navigate("/");
     }
-  }, [CheckoutDone]);
+  }, [checkoutDone, dispatch, navigate]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <div className="bg-white p-8 rounded-xl shadow-md w-96">
-        <h1 className="text-2xl font-bold mb-4">Checkout</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="cardNumber"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Card Number
-            </label>
-            <input
-              type="text"
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="w-full max-w-md p-8 bg-white shadow-lg dark:bg-gray-800 rounded-xl">
+        <h1 className="mb-6 text-3xl font-bold text-center text-gray-800 dark:text-white">Checkout</h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <Label htmlFor="cardNumber" value="Card Number" />
+            <TextInput
               id="cardNumber"
               name="cardNumber"
-              className="mt-1 p-2 w-full border rounded-md"
-              placeholder="Enter your card number"
-              required
+              type="text"
+              placeholder="1234 5678 9012 3456"
+              value={formData.cardNumber}
+              onChange={handleChange}
+              color={errors.cardNumber ? "failure" : undefined}
+              helperText={errors.cardNumber}
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="expiryDate"
-              className="block text-sm font-medium text-gray-600"
-            >
-              Expiry Date
-            </label>
-            <input
-              type="text"
+          <div>
+            <Label htmlFor="expiryDate" value="Expiry Date" />
+            <TextInput
               id="expiryDate"
               name="expiryDate"
-              className="mt-1 p-2 w-full border rounded-md"
-              placeholder="MM/YYYY"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="cvv"
-              className="block text-sm font-medium text-gray-600"
-            >
-              CVV
-            </label>
-            <input
               type="text"
-              id="cvv"
-              name="cvv"
-              className="mt-1 p-2 w-full border rounded-md"
-              placeholder="Enter CVV"
-              required
+              placeholder="MM/YYYY"
+              value={formData.expiryDate}
+              onChange={handleChange}
+              color={errors.expiryDate ? "failure" : undefined}
+              helperText={errors.expiryDate}
             />
           </div>
-          <Button
-            type="submit"
-            className="bg-blue-500 text-gray py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800"
-          >
-            Pay Now
+          <div>
+            <Label htmlFor="cvv" value="CVV" />
+            <TextInput id="cvv" name="cvv" type="text" placeholder="123" value={formData.cvv} onChange={handleChange} color={errors.cvv ? "failure" : undefined} helperText={errors.cvv} />
+          </div>
+          <Button type="submit" className="w-full">
+            Pay ${to.price.toFixed(2)}
           </Button>
         </form>
       </div>

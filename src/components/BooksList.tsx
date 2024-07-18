@@ -29,32 +29,17 @@ const BooksList = () => {
 
   const renderBook = (book: BookVolume) => (
     <Card
-      className="max-w-sm relative bg-main-secondary dark:bg-dark-secondary rounded-md overflow-hidden hover:shadow-2xl transition-shadow ease-in delay-250 text-sm hover:shadow-black"
+      className="relative max-w-sm overflow-hidden text-sm transition-shadow ease-in rounded-md bg-main-secondary dark:bg-dark-secondary hover:shadow-2xl delay-250 hover:shadow-black"
       key={book.id}
       id={book.id}
       onClick={() => handleDivClick(book.id)}
-      renderImage={() => (
-        <img
-          height={250}
-          width={250}
-          src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage}
-          alt={book.volumeInfo.title}
-          className="w-full h-80 object-fill"
-        />
-      )}
+      renderImage={() => <img height={250} width={250} src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage} alt={book.volumeInfo.title} className="object-fill w-full h-80" />}
     >
       <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-400">
-        Title:{" "}
-        {book.volumeInfo.title.length > 20
-          ? `${book.volumeInfo.title.substring(0, 20)}...`
-          : book.volumeInfo.title}
+        Title: {book.volumeInfo.title.length > 20 ? `${book.volumeInfo.title.substring(0, 20)}...` : book.volumeInfo.title}
       </h5>
-      <p className="font-normal text-gray-700 dark:text-slate-400">
-        Authors: {book.volumeInfo.authors}
-      </p>
-      <p className="font-normal text-gray-700 dark:text-slate-400">
-        Published: {book.volumeInfo.publishedDate}
-      </p>
+      <p className="font-normal text-gray-700 dark:text-slate-400">Authors: {book.volumeInfo.authors}</p>
+      <p className="font-normal text-gray-700 dark:text-slate-400">Published: {book.volumeInfo.publishedDate}</p>
     </Card>
   );
 
@@ -63,7 +48,7 @@ const BooksList = () => {
       {/* max-h-screen */}
       {paginatedData.length > 0 ? (
         <>
-          <div className="flex text-xs justify-center pt-12 ">
+          <div className="flex justify-center pt-12 text-xs ">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -79,11 +64,9 @@ const BooksList = () => {
           </div>
 
           <div className="grid grid-cols-[auto,fr] flex-grow-1 overflow-auto pb-12 pt-12">
-            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">
-              {paginatedData.map(renderBook)}
-            </div>
+            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">{paginatedData.map(renderBook)}</div>
           </div>
-          <div className="flex text-xs justify-center ">
+          <div className="flex justify-center text-xs ">
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}
