@@ -21,14 +21,14 @@ const Modal = ({ children }: { children: ReactNode }) => {
 
   return (
     <div ref={overlay} className="fixed top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center max-h-screen mx-auto bg-black/80" onClick={handleClick}>
-      <div className="flex flex-col items-end justify-center bg-main-secondary dark:bg-dark-secondary w-full lg:w-[80dvw] z-50 p-1 border-b mt-16 rounded-t-3xl shadow-2xl">
-        <Button variant={"default"} size={"default"} onClick={onDismiss} className="p-2 mr-3 bg-gray-200 rounded-full">
+      <div className="z-50 flex flex-col items-end justify-center w-full p-1 mt-16 border-b rounded-t-lg shadow-2xl bg-main-secondary dark:bg-dark-secondary lg:max-w-7xl">
+        <Button onClick={onDismiss} className="p-2 mr-3 rounded-full">
           <X />
         </Button>
       </div>
       <div
         ref={wrapper}
-        className="flex flex-col justify-center items-center w-full lg:w-[80dvw] flex-grow bg-main-secondary dark:bg-dark-secondary overflow-auto " /////// Fixxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        className="flex flex-col items-center justify-center flex-grow w-full overflow-auto lg:max-w-7xl bg-main-secondary dark:bg-dark-secondary " /////// Fixxxxxxxxxxxxxxxxxxxxxxxxxxxx
       >
         {children}
       </div>

@@ -186,28 +186,26 @@ type SearchResultsOverlayProps = {
 
 const SearchResultsOverlay: React.FC<SearchResultsOverlayProps> = ({ searchResults, handleSearchClick, handleOverlayClick }) => (
   <div className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-70" onClick={handleOverlayClick}>
-    <div className="relative flex flex-col w-full max-w-3xl overflow-hidden rounded-lg shadow-lg h-3/4 bg-light-mode-background dark:bg-dark-mode-background" onClick={(e) => e.stopPropagation()}>
-      <header className="flex items-center justify-between px-6 py-4 bg-light-mode-header dark:bg-dark-mode-header">
-        <h2 className="text-lg font-semibold text-light-mode-text dark:text-dark-mode-text">Search Results</h2>
+    <div className="relative flex flex-col w-full max-w-3xl overflow-hidden rounded-lg shadow-lg h-3/4 bg-main-secondary dark:bg-dark-secondary " onClick={(e) => e.stopPropagation()}>
+      <header className="flex items-center justify-between px-6 py-4 bg-main-primary dark:bg-dark-primary">
+        <h2 className="text-lg font-semibold ">Search Results</h2>
         <Button size="icon" variant="ghost" onClick={handleOverlayClick} aria-label="Close">
           <ArrowLeft />
         </Button>
       </header>
       <div className="flex-grow overflow-y-auto">
         <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-light-mode-table-header dark:bg-dark-mode-table-header">
+          <thead className="bg-main-primary/60 dark:bg-dark-primary/60">
             <tr>
-              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-light-mode-text dark:text-dark-mode-text">Book Name</th>
-              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase text-light-mode-text dark:text-dark-mode-text">Author</th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase ">Book Name</th>
+              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase ">Author</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 bg-light-mode-background dark:bg-dark-mode-background dark:divide-gray-700">
+          <tbody className="divide-y divide-gray-200 bg-main-secondary dark:bg-dark-secondary dark:divide-gray-700">
             {searchResults.map((obj) => (
-              <tr key={obj.id} id={obj.id} className="cursor-pointer hover:bg-light-mode-hover dark:hover:bg-dark-mode-hover" onClick={() => handleSearchClick(obj.id)}>
-                <td className="px-6 py-4 text-sm text-light-mode-text dark:text-dark-mode-text">
-                  {obj.volumeInfo.title.length > 30 ? `${obj.volumeInfo.title.substring(0, 30)}...` : obj.volumeInfo.title}
-                </td>
-                <td className="px-6 py-4 text-sm text-light-mode-subtext dark:text-dark-mode-subtext">{obj.volumeInfo?.authors?.join(", ") || "None"}</td>
+              <tr key={obj.id} id={obj.id} className="cursor-pointer hover:bg-main-primary/60 hover:dark:bg-dark-primary/60" onClick={() => handleSearchClick(obj.id)}>
+                <td className="px-6 py-4 text-sm ">{obj.volumeInfo.title.length > 30 ? `${obj.volumeInfo.title.substring(0, 30)}...` : obj.volumeInfo.title}</td>
+                <td className="px-6 py-4 text-sm ">{obj.volumeInfo?.authors?.join(", ") || "None"}</td>
               </tr>
             ))}
           </tbody>
@@ -239,7 +237,7 @@ const HeaderButtons: React.FC<HeaderButtonsProps> = ({ showFullWidthSearch, sear
         <DarkThemeToggle className="rounded-full hover:bg-light-mode-hover dark:hover:bg-dark-mode-hover" />
       </Button>
       {!accessToken && (
-        <Button onClick={() => navigate("/login")} variant="ghost" className="rounded-full text-light-mode-text dark:text-dark-mode-text">
+        <Button onClick={() => navigate("/login")} variant="ghost" className="rounded-full ">
           Login
         </Button>
       )}
