@@ -39,7 +39,7 @@ const MainPage = () => {
           >
             <Sidebar />
             <div className="overflow-x-hidden">
-              <div className="flex flex-wrap items-normal px-8 pb-10 min-h-[92dvh]">
+              <div className="flex flex-wrap px-8 pb-10 items-normal min-h-[100dvh] h-fit">
                 <Routes>
                   <Route path="/" element={<BooksList />} />
                   <Route path="/cart" element={<CartPage />} />
