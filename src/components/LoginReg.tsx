@@ -25,9 +25,9 @@ const LoginReg: React.FC = () => {
   const buttonText = isLogin ? "Register here" : "Login here";
 
   return (
-    <div className="flex w-[75dvw] h-[80dvh] m-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+    <div className="flex w-[75dvw] h-[80dvh] m-auto  rounded-lg shadow-lg overflow-hidden">
       {/* Left Side Section with Gradient */}
-      <div className="items-center justify-center hidden w-1/3 md:flex bg-gradient-to-b from-purple-500 via-indigo-500 to-blue-500">
+      <div className="items-center justify-center hidden w-2/3 md:flex bg-gradient-to-b from-purple-500 via-indigo-500 to-blue-500">
         {/* Add some text or illustration */}
         <div className="p-4 text-center text-white">
           <h2 className="text-2xl font-bold">Welcome Back!</h2>
@@ -36,10 +36,10 @@ const LoginReg: React.FC = () => {
       </div>
 
       {/* Main Form Section */}
-      <div className="flex flex-col items-center justify-center w-full p-8 bg-gray-100 dark:bg-gray-900 md:w-2/3">
-        <div className="w-full max-w-md">
+      <div className="flex flex-col items-center justify-center w-full md:p-8 bg-main-secondary/65 dark:bg-dark-secondary/65 dark:text-slate-400">
+        <div className="w-full">
           {isLogin ? <Login /> : <Registration />}
-          <div className="flex flex-col items-center justify-center w-full p-8 mt-4 rounded-md shadow-md bg-main-secondary dark:bg-dark-secondary">
+          <div className="flex flex-col items-center justify-center w-full max-w-2xl p-8 m-auto mt-4 rounded-md shadow-md bg-main-secondary dark:bg-dark-secondary">
             {formMessage}
             <Button variant={"ghost"} className="text-blue-500 " onClick={toggleForm}>
               {buttonText}
