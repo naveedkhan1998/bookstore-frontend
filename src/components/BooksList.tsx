@@ -5,6 +5,7 @@ import { getBooks } from "../features/booksSlice";
 import { useAppSelector } from "../app/hooks";
 import DefaultImage from "../assets/pp.jpg";
 import { Card, Pagination, Spinner } from "flowbite-react";
+import { customPaginationTheme } from "../custom-themes";
 
 const BooksList = () => {
   const pageSize = 15;
@@ -29,7 +30,7 @@ const BooksList = () => {
 
   const renderBook = (book: BookVolume) => (
     <Card
-      className="relative max-w-sm overflow-hidden text-sm transition-shadow ease-in rounded-md bg-main-secondary dark:bg-dark-secondary hover:shadow-2xl delay-250 hover:shadow-black hover"
+      className="relative max-w-sm overflow-hidden text-sm transition-all ease-in rounded-md bg-main-secondary dark:bg-dark-secondary hover:shadow-2xl delay-250 hover:shadow-black hover:scale-105"
       key={book.id}
       id={book.id}
       onClick={() => handleDivClick(book.id)}
@@ -47,32 +48,7 @@ const BooksList = () => {
       {paginatedData.length > 0 ? (
         <>
           <div className="sticky top-0 z-10 flex justify-center pt-12">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-              showIcons
-              className="text-main-text dark:text-dark-text"
-              theme={{
-                pages: {
-                  base: "xs:mt-0 mt-2 inline-flex items-center -space-x-px",
-                  showIcon: "inline-flex",
-                  previous: {
-                    base: "ml-0 rounded-l-lg border border-gray-300 bg-main-secondary px-3 py-2 leading-tight text-main-text enabled:hover:bg-gray-100 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-dark-secondary dark:text-dark-text enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white",
-                    icon: "h-5 w-5",
-                  },
-                  next: {
-                    base: "rounded-r-lg border border-gray-300 bg-main-secondary px-3 py-2 leading-tight text-main-text enabled:hover:bg-gray-100 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-dark-secondary dark:text-dark-text enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white",
-                    icon: "h-5 w-5",
-                  },
-                  selector: {
-                    base: "w-12 border border-gray-300 bg-main-secondary py-2 leading-tight text-main-text enabled:hover:bg-gray-100 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-dark-secondary dark:text-dark-text enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white",
-                    active: "bg-cyan-50 text-cyan-600 hover:bg-cyan-100 hover:text-cyan-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white",
-                    disabled: "cursor-not-allowed opacity-50",
-                  },
-                },
-              }}
-            />
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} showIcons className="text-main-text dark:text-dark-text" theme={customPaginationTheme} />
           </div>
 
           <div className="grid grid-cols-[auto,fr] flex-grow-1 overflow-auto p-12 ">

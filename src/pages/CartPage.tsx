@@ -95,7 +95,7 @@ const CartPage: React.FC = () => {
         }
       });
 
-      const taxRate = 0.1;
+      const taxRate = 0.13;
       const newTax = newSubtotal * taxRate;
       const newestSubtotal = newSubtotal;
       const newTotal = newSubtotal + newTax;
@@ -173,7 +173,7 @@ const CartPage: React.FC = () => {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-300">Tax (10%):</span>
+                <span className="text-gray-600 dark:text-gray-300">Tax (13%):</span>
                 <span>
                   {tax.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currency}
                 </span>

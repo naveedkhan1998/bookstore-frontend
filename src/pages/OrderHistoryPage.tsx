@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import { Button, Card, Pagination, Spinner, TextInput } from "flowbite-react";
 import { useAppSelector } from "../app/hooks";
 import { ShoppingBag, Calendar } from "lucide-react";
+import { customPaginationTheme } from "../custom-themes";
 
 const OrderHistoryPage: React.FC = () => {
   const access_token = useAppSelector(getCurrentToken);
   const { data, isSuccess, isLoading, isError } = useGetTransactionsQuery(access_token);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -46,9 +47,9 @@ const OrderHistoryPage: React.FC = () => {
 
       {isSuccess && filteredTransactions.length > 0 && !isError ? (
         <>
-          <div className="grid gap-6 mb-6 md:grid-cols-2">
+          <div className="grid gap-6 mb-6 md:grid-cols-1">
             {currentTransactions.map(([key, entry]) => (
-              <Card key={key} className="transition-shadow duration-300 bg-white shadow-lg dark:bg-gray-800 hover:shadow-xl">
+              <Card key={key} className="transition-shadow duration-300 shadow-lg bg-main-secondary dark:bg-dark-secondary text-main-text dark:text-dark-text hover:shadow-xl">
                 <div className="flex items-center justify-between mb-4">
                   <ShoppingBag className="text-blue-500" size={24} />
                   <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -70,7 +71,7 @@ const OrderHistoryPage: React.FC = () => {
             ))}
           </div>
           <div className="flex justify-center mt-6">
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} showIcons={true} />
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} showIcons={true} theme={customPaginationTheme} />
           </div>
         </>
       ) : (
