@@ -31,7 +31,7 @@ const MainPage = () => {
   return (
     <Router>
       <SidebarProvider>
-        <div className="flex flex-col max-h-screen bg-main-primary dark:bg-dark-primary text-main-text dark:text-dark-text">
+        <div className="flex flex-col max-h-screen transition-all duration-300 bg-main-primary dark:bg-dark-primary text-main-text dark:text-dark-text ">
           <PageHeader />
           <div
             className="grid grid-cols-[auto,1fr] flex-grow-1 

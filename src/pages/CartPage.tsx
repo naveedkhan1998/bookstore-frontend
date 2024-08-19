@@ -95,7 +95,7 @@ const CartPage: React.FC = () => {
         }
       });
 
-      const taxRate = 0.13;
+      const taxRate = 0.1;
       const newTax = newSubtotal * taxRate;
       const newestSubtotal = newSubtotal;
       const newTotal = newSubtotal + newTax;
@@ -124,16 +124,21 @@ const CartPage: React.FC = () => {
             books.map(
               (book: BookVolume) =>
                 cart.books[book.id] && (
-                  <div key={book.id} className="mb-6 overflow-hidden rounded-lg shadow-md bg-main-secondary dark:bg-dark-secondary hover:cursor-pointer" onClick={() => handleDivClick(book.id)}>
+                  <div key={book.id} className="mb-6 overflow-hidden rounded-lg shadow-md bg-main-secondary dark:bg-dark-secondary">
                     <div className="flex flex-col sm:flex-row">
-                      <img src={book.volumeInfo.imageLinks?.thumbnail || DefaultPic} alt="Book Thumbnail" className="object-cover w-full h-48 sm:w-32 sm:h-auto" />
+                      <img
+                        src={book.volumeInfo.imageLinks?.thumbnail || DefaultPic}
+                        onClick={() => handleDivClick(book.id)}
+                        alt="Book Thumbnail"
+                        className="object-cover w-full h-48 sm:w-32 sm:h-auto"
+                      />
                       <div className="flex-grow p-4">
                         <h2 className="mb-2 text-xl font-semibold">{book.volumeInfo.title}</h2>
-                        <p className="mb-2 ">Quantity: {cart.books[book.id]}</p>
-                        <p className="mb-2 ">
+                        <p className="mb-2 text-gray-600 dark:text-gray-300">Quantity: {cart.books[book.id]}</p>
+                        <p className="mb-2 text-gray-600 dark:text-gray-300">
                           Price: {book.saleInfo.listPrice ? `${book.saleInfo.listPrice.amount} ${book.saleInfo.listPrice.currencyCode}` : "Not available"}
                         </p>
-                        <p className="mb-4 ">
+                        <p className="mb-4 text-gray-600 dark:text-gray-300">
                           Total:{" "}
                           {book.saleInfo.listPrice
                             ? `${(book.saleInfo.listPrice.amount * cart.books[book.id]).toLocaleString(undefined, {
@@ -173,7 +178,7 @@ const CartPage: React.FC = () => {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600 dark:text-gray-300">Tax (13%):</span>
+                <span className="text-gray-600 dark:text-gray-300">Tax (10%):</span>
                 <span>
                   {tax.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currency}
                 </span>

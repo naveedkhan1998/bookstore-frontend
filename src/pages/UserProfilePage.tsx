@@ -12,7 +12,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="container items-start justify-start p-6 m-auto rounded-lg shadow-lg max-h-md bg-main-secondary dark:bg-dark-secondary">
+    <div className="container items-start justify-start p-6 mx-auto mt-10 rounded-lg shadow-lg max-h-md bg-main-secondary dark:bg-dark-secondary">
       <div className="mb-6 text-center">
         <img src={user.avatarUrl} alt="User Avatar" className="object-cover mx-auto border-4 border-indigo-500 rounded-full shadow-md w-28 h-28 dark:border-indigo-300" />
         <h2 className="mt-3 text-3xl font-semibold text-gray-900 dark:text-gray-200">{`${user.given_name} ${user.family_name}`}</h2>

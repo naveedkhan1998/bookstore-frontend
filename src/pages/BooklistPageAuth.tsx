@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  useGetUserBooklistsQuery,
-  useCreateBooklistMutation,
-} from "../services/booklistsServices";
+import { useGetUserBooklistsQuery, useCreateBooklistMutation } from "../services/booklistsServices";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import Button from "../components/Button";
@@ -10,7 +7,7 @@ import { getUserBooklists, setUserBookslist } from "../features/booklistSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDeleteBooklistMutation } from "../services/booklistsServices";
-import { Card, FloatingLabel } from "flowbite-react";
+import { Card, FloatingLabel, ToggleSwitch, Spinner } from "flowbite-react";
 import { Trash2 } from "lucide-react";
 
 const BooklistPageAuth: React.FC = () => {
@@ -19,8 +16,7 @@ const BooklistPageAuth: React.FC = () => {
   const access_token = useAppSelector(getCurrentToken);
   const { data, isSuccess, refetch } = useGetUserBooklistsQuery(access_token);
 
-  const [deleteBooklist, { isSuccess: booklistDeleted }] =
-    useDeleteBooklistMutation();
+  const [deleteBooklist, { isSuccess: booklistDeleted }] = useDeleteBooklistMutation();
 
   if (isSuccess) {
     dispatch(setUserBookslist(data));
@@ -28,8 +24,7 @@ const BooklistPageAuth: React.FC = () => {
 
   const storeData = useAppSelector(getUserBooklists);
 
-  const [createBooklist, { isSuccess: createBooklistSuccess }] =
-    useCreateBooklistMutation();
+  const [createBooklist, { isSuccess: createBooklistSuccess, isLoading }] = useCreateBooklistMutation();
 
   const [formData, setFormData] = useState({
     booklist_name: "",
@@ -83,84 +78,54 @@ const BooklistPageAuth: React.FC = () => {
     });
   };
 
-  /// handle booklist click
-
-  function handleBooklistClick(id: String) {
+  const handleBooklistClick = (id: String) => {
     navigate(`/user-booklist/${id}`);
-  }
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 gap-6 mt-6 w-full">
-      <div className="flex flex-col md:w-[80dvw] w-[95dvw] shadow-2xl p-6 rounded-2xl border">
-        <h1 className="pt-6 text-lg">Create New BookList</h1>
-        <form onSubmit={handleSubmit} className="pt-6">
-          <FloatingLabel
-            variant="standard"
-            label="Booklist Name"
-            type="text"
-            name="booklist_name"
-            value={formData.booklist_name}
-            onChange={handleInputChange}
-            required
-          />
+    <div className="flex flex-col items-center justify-center w-full h-full max-w-6xl gap-8 p-8 mx-auto mt-10">
+      <div className="flex flex-col w-full p-8 shadow-lg bg-main-secondary rounded-xl dark:bg-dark-secondary">
+        <h1 className="mb-6 text-2xl font-bold ">Create New BookList</h1>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <FloatingLabel variant="standard" label="Booklist Name" type="text" name="booklist_name" value={formData.booklist_name} onChange={handleInputChange} required />
 
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Privacy
-            </label>
-            <div className="flex items-center">
-              <label>
-                <input
-                  type="checkbox"
-                  name="isPrivate"
-                  checked={formData.isPrivate}
-                  onChange={handleInputChange}
-                  className="mr-2 rounded-full"
-                />
-                Private
-              </label>
-            </div>
+            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Privacy</label>
+            <ToggleSwitch checked={formData.isPrivate} label="Private" onChange={(checked) => setFormData({ ...formData, isPrivate: checked })} />
           </div>
 
           <Button
+            disabled={isLoading}
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded mt-4 hover:bg-blue-600"
+            className="w-full py-3 text-lg font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
           >
-            Create Booklist
+            {isLoading ? (
+              <>
+                <Spinner size="sm" className="mr-2" />
+                Creating...
+              </>
+            ) : (
+              "Create Booklist"
+            )}
           </Button>
         </form>
       </div>
-      <div className="grid grid-cols-[auto,fr] flex-grow-1  md:w-[80dvw] w-[95dvw]  shadow-2xl p-6 rounded-2xl border">
-        <h1 className="pt-6 text-2xl font-bold">Your BookLists</h1>
+      <div className="w-full mt-8">
+        <h1 className="mb-6 text-2xl font-bold ">Your BookLists</h1>
 
         {storeData && (
-          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {storeData.bookLists &&
               storeData.bookLists.map((bookList) => (
-                <Card className="max-w-sm bg-main-secondary dark:bg-dark-secondary">
-                  <div className="flex flex-row">
-                    <div
-                      id={bookList._id}
-                      onClick={() => handleBooklistClick(bookList._id)}
-                      className="flex flex-col w-[250px] h-[100px] "
-                    >
-                      <h2 className="text-lg font-semibold mb-2">
-                        Name: {bookList.name}
-                      </h2>
-                      <p className="text-gray-600">
-                        Type: {bookList.isPrivate ? "Private" : "Public"}
-                      </p>
+                <Card key={bookList._id} onClick={() => handleBooklistClick(bookList._id)} className="p-4 rounded-lg shadow bg-main-secondary dark:bg-dark-secondary">
+                  <div className="flex items-center justify-between">
+                    <div id={bookList._id}  className="cursor-pointer">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{bookList.name}</h2>
+                      <p className="text-gray-600 dark:text-gray-400">{bookList.isPrivate ? "Private" : "Public"}</p>
                     </div>
-                    <div>
-                      <Button
-                        onClick={() => handleDelete(bookList._id)}
-                        variant={"default"}
-                        size={"icon"}
-                        className=" bg-red-600 hover:bg-red-400"
-                      >
-                        <Trash2 />
-                      </Button>
-                    </div>
+                    <Button onClick={() => handleDelete(bookList._id)} variant="default" size="icon" className="p-2 text-white bg-red-600 rounded-full hover:bg-red-400">
+                      <Trash2 />
+                    </Button>
                   </div>
                 </Card>
               ))}

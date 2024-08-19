@@ -27,17 +27,15 @@ const UserBooklistPage: React.FC = () => {
 
   return (
     <Modal>
-      <div className="flex flex-col p-6 w-full overflow-auto text-gray-800 ">
-        <div className="flex flex-col mb-4 w-full shadow-2xl p-6 rounded-md border">
-          <p className="text-lg font-bold mb-1">
-            Booklist Name: {booklist?.name}
-          </p>
+      <div className="flex flex-col w-full h-full p-6 mx-auto mt-10 overflow-auto ">
+        <div className="flex flex-col w-full p-6 mb-4 rounded-md shadow-2xl">
+          <p className="mb-1 text-lg font-bold">Booklist Name: {booklist?.name}</p>
           <p>Type: {booklist?.isPrivate ? "Private" : "Public"}</p>
           <p>Created At: {formatDateTime(booklist?.createdAt || "")}</p>
           <p>Last Update At: {formatDateTime(booklist?.updatedAt || "")}</p>
         </div>
-        <div className="grid grid-cols-[auto,fr] flex-grow-1  w-full items-center shadow-2xl p-6 rounded-md border">
-          <h1 className="text-xl font-bold mb-2">Books In the Booklist:</h1>
+        <div className="grid grid-cols-[auto,fr] flex-grow-1  w-full items-center shadow-2xl p-6 rounded-md ">
+          <h1 className="mb-2 text-xl font-bold">Books In the Booklist:</h1>
           <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
             {booklist?.books.map((book_id) => (
               <BookComponent book_id={book_id} />

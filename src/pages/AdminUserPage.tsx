@@ -3,100 +3,80 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { UserType } from "../features/userSlice";
 import Button from "../components/Button";
 import { toast } from "react-toastify";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
-import {
-  useAdminDisableUserMutation,
-  useAdminHideReviewMutation,
-  useAdminMakeAdminMutation,
-} from "../services/adminServices";
-import { useDispatch } from "react-redux";
+import { useAdminDisableUserMutation, useAdminMakeAdminMutation } from "../services/adminServices";
 import { setRefresh } from "../features/refreshSlice";
+import { HiOutlineMail, HiOutlineShieldCheck, HiOutlineBan } from "react-icons/hi";
 
 const AdminUserPage = () => {
   const access_token = useAppSelector(getCurrentToken);
   const location = useLocation();
-  const dispatch = useDispatch();
-  const { user } = location.state;
-  const { isAdmin } = location.state;
-
-  const [adminDisableUser, { isSuccess: UserDisabled }] =
-    useAdminDisableUserMutation();
-  const [adminMakeAdmin, { isSuccess: AdminMade }] =
-    useAdminMakeAdminMutation();
-
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { user, isActive } = location.state;
   const userObj: UserType = user;
 
-  const handleAdmin = async (id: String) => {
-    await adminMakeAdmin({ user_id: id, access_token });
+  const [adminDisableUser, { isSuccess: userDisabled }] = useAdminDisableUserMutation();
+  const [adminMakeAdmin, { isSuccess: adminMade }] = useAdminMakeAdminMutation();
+
+  const handleAdminToggle = async () => {
+    await adminMakeAdmin({ user_id: userObj._id, access_token });
   };
-  const handleDeactivate = async (id: String) => {
-    await adminDisableUser({ user_id: id, access_token });
+
+  const handleDeactivateToggle = async () => {
+    await adminDisableUser({ user_id: userObj._id, access_token });
   };
 
   useEffect(() => {
-    if (AdminMade) {
+    if (adminMade || userDisabled) {
       toast.success("Status Changed");
-      window.history.back();
+      dispatch(setRefresh(true));
+      navigate(-1);
     }
-    if (UserDisabled) {
-      toast.success("Status Changed");
-      window.history.back();
-    }
-    dispatch(setRefresh(true));
-  }, [AdminMade, UserDisabled]);
+  }, [adminMade, userDisabled, dispatch, navigate]);
 
   return (
-    <div className="flex flex-col items-center w-[70dvw] h-[70dvh] mx-auto mt-10 p-6 bg-main-secondary dark:bg-dark-secondary shadow-2xl rounded-2xl">
-      <div className="flex flex-col justify-center items-center w-full h-full">
-        <div className="text-center mb-4">
-          <h2 className="text-3xl font-bold text-zinc-900">
-            User Name: {`${userObj.given_name} ${userObj.family_name}`}
-          </h2>
-        </div>
-
+    <div className="flex flex-col items-center w-full p-8 mx-auto mt-10 shadow-xl max-w-7xl bg-main-secondary dark:bg-dark-secondary rounded-2xl">
+      <div className="mb-6 text-center">
         <img
           src={`https://ui-avatars.com/api/?name=${userObj.given_name}+${userObj.family_name}`}
-          alt="profile"
-          className="mx-auto w-24 h-24 rounded-full object-cover"
+          alt={`${userObj.given_name} ${userObj.family_name}`}
+          className="object-cover mb-4 rounded-full size-48"
         />
-
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-2 text-zinc-800">
-            Contact Information
-          </h3>
-          <p className="text-zinc-700">Email: {userObj.email}</p>
-        </div>
-
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-2 text-zinc-800">
-            User Status
-          </h3>
-          <p className="text-zinc-700">
-            Is Verified: {userObj.isVerified ? "🟢" : "🔴"}
-          </p>
-          <p className="text-zinc-700">
-            Is Admin: {userObj.isAdmin ? "🟢" : "🔴"}
-          </p>
-          <p className="text-zinc-700">
-            Is Deactivated: {isAdmin ? "🟢" : "🔴"}
-          </p>
-        </div>
+        <h2 className="text-3xl font-bold ">{`${userObj.given_name} ${userObj.family_name}`}</h2>
       </div>
 
-      <div className="flex flex-row justify-between m-6 items-center w-full">
-        <Button
-          className="bg-green-500 hover:bg-green-600 text-gray px-4 py-2 rounded-md transition duration-300"
-          onClick={() => handleAdmin(userObj._id)}
-        >
-          Make/Remove Admin
-        </Button>
+      <div className="w-full mb-6 text-center">
+        <h3 className="mb-2 text-lg font-semibold ">Contact Information</h3>
+        <p className="flex items-center justify-center ">
+          <HiOutlineMail className="mr-2" />
+          {userObj.email}
+        </p>
+      </div>
 
-        <Button
-          className="bg-blue-500 hover:bg-blue-600 text-gray px-4 py-2 rounded-md transition duration-300"
-          onClick={() => handleDeactivate(userObj._id)}
-        >
-          Deactivate/Activate User
+      <div className="w-full mb-8 text-center">
+        <h3 className="mb-2 text-lg font-semibold ">User Status</h3>
+        <p className="flex items-center justify-center ">
+          <HiOutlineShieldCheck className={`mr-2 ${userObj.isAdmin ? "text-green-500" : "text-gray-400"}`} />
+          Admin: {userObj.isAdmin ? "Yes" : "No"}
+        </p>
+        <p className="flex items-center justify-center mt-1 ">
+          <HiOutlineBan className={`mr-2 ${userObj.isVerified ? "text-green-500" : "text-red-500"}`} />
+          Verified: {userObj.isVerified ? "Yes" : "No"}
+        </p>
+        <p className="flex items-center justify-center mt-1 ">
+          <HiOutlineBan className={`mr-2 ${isActive ? "text-green-500" : "text-red-500"}`} />
+          Deactivated: {isActive ? "No" : "Yes"}
+        </p>
+      </div>
+
+      <div className="flex space-x-4">
+        <Button className="px-6 py-3 transition duration-300 bg-green-600 rounded-lg hover:bg-green-500" onClick={handleAdminToggle}>
+          {userObj.isAdmin ? "Remove Admin" : "Make Admin"}
+        </Button>
+        <Button className="px-6 py-3 transition duration-300 bg-blue-600 rounded-lg hover:bg-blue-500" onClick={handleDeactivateToggle}>
+          {isActive ? "Deactivate User" : "Activate User"}
         </Button>
       </div>
     </div>

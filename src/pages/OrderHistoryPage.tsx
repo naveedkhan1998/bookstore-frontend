@@ -41,13 +41,28 @@ const OrderHistoryPage: React.FC = () => {
     <div className="container max-w-4xl p-6 mx-auto">
       <h1 className="mb-6 text-3xl font-bold text-center ">Order History</h1>
 
-      <div className="mb-6">
-        <TextInput id="search" type="text" placeholder="Search by Transaction ID or Amount" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+      <div className="relative mb-6">
+        <TextInput
+          id="search"
+          type="text"
+          placeholder="Search by Transaction ID or Amount"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-4 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
+        />
+        {searchTerm && (
+          <button
+            onClick={() => setSearchTerm('')}
+            className="absolute text-gray-500 right-3 top-3 hover:text-gray-700"
+          >
+            &times;
+          </button>
+        )}
       </div>
 
       {isSuccess && filteredTransactions.length > 0 && !isError ? (
         <>
-          <div className="grid gap-6 mb-6 md:grid-cols-1">
+          <div className="grid gap-6 mb-6 md:grid-cols-2">
             {currentTransactions.map(([key, entry]) => (
               <Card key={key} className="transition-shadow duration-300 shadow-lg bg-main-secondary dark:bg-dark-secondary text-main-text dark:text-dark-text hover:shadow-xl">
                 <div className="flex items-center justify-between mb-4">

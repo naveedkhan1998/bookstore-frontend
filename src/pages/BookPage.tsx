@@ -69,7 +69,7 @@ const BookPage = () => {
       toast(`Book Added to ${userBooklists.bookLists?.find((obj) => obj._id === selectedBooklistID)?.name} Booklist`);
       refetch();
     }
-  }, [bookAdded, refetch, selectedBooklistID, userBooklists.bookLists]);
+  }, [bookAdded]);
 
   return (
     <Modal>

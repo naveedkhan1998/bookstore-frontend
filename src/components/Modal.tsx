@@ -32,7 +32,7 @@ const Modal = ({ children, onClose }: { children: ReactNode; onClose?: () => voi
 
   return (
     <div ref={overlay} className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 dark:bg-black/20 backdrop-blur-sm" onClick={handleClick}>
-      <div className="relative w-full max-w-4xl max-h-[90vh]  rounded-lg shadow-xl overflow-auto bg-main-primary dark:bg-dark-primary text-main-text dark:text-dark-text" ref={wrapper}>
+      <div className="relative w-full max-w-7xl max-h-[90vh]  rounded-lg shadow-xl overflow-auto bg-main-primary dark:bg-dark-primary text-main-text dark:text-dark-text" ref={wrapper}>
         <nav className="sticky top-0 z-50 flex justify-end p-4 bg-main-secondary dark:bg-dark-secondary">
           <Button onClick={handleDismiss} className="p-1 transition-colors " aria-label="Close modal">
             <X size={24} />
