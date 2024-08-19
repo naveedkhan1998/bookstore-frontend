@@ -36,7 +36,7 @@ const LoginReg: React.FC = () => {
       </div>
 
       {/* Main Form Section */}
-      <div className="flex flex-col items-center justify-center w-full md:p-8 bg-main-secondary/65 dark:bg-dark-secondary/65 dark:text-slate-400">
+      <div className="flex flex-col items-center justify-center w-full md:p-8 bg-main-secondary/65 dark:bg-dark-secondary/65 ">
         <div className="w-full">
           {isLogin ? <Login /> : <Registration />}
           <div className="flex flex-col items-center justify-center w-full max-w-2xl p-8 m-auto mt-4 rounded-md shadow-md bg-main-secondary dark:bg-dark-secondary">

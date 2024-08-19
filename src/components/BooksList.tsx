@@ -35,11 +35,9 @@ const BooksList = () => {
       onClick={() => handleDivClick(book.id)}
       renderImage={() => <img height={250} width={250} src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage} alt={book.volumeInfo.title} className="object-fill w-full h-80" />}
     >
-      <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-400">
-        Title: {book.volumeInfo.title.length > 20 ? `${book.volumeInfo.title.substring(0, 20)}...` : book.volumeInfo.title}
-      </h5>
-      <p className="font-normal text-gray-700 dark:text-slate-400">Authors: {book.volumeInfo.authors}</p>
-      <p className="font-normal text-gray-700 dark:text-slate-400">Published: {book.volumeInfo.publishedDate}</p>
+      <h5 className="text-2xl font-bold tracking-tight ">Title: {book.volumeInfo.title.length > 20 ? `${book.volumeInfo.title.substring(0, 20)}...` : book.volumeInfo.title}</h5>
+      <p className="font-normal ">Authors: {book.volumeInfo.authors}</p>
+      <p className="font-normal ">Published: {book.volumeInfo.publishedDate}</p>
     </Card>
   );
 
@@ -48,37 +46,12 @@ const BooksList = () => {
       {/* max-h-screen */}
       {paginatedData.length > 0 ? (
         <>
-          <div className="flex justify-center pt-12 text-xs ">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-              theme={{
-                pages: {
-                  selector: {
-                    active: "",
-                  },
-                },
-              }}
-            />
+          <div className="sticky top-0 z-10 flex justify-center pt-12">
+            <Pagination layout="pagination" currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} showIcons className="text-main-text dark:text-dark-text" />
           </div>
 
-          <div className="grid grid-cols-[auto,fr] flex-grow-1 overflow-auto pb-12 pt-12">
+          <div className="grid grid-cols-[auto,fr] flex-grow-1 overflow-auto pb-12 pt-12 ">
             <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">{paginatedData.map(renderBook)}</div>
-          </div>
-          <div className="flex justify-center text-xs ">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-              theme={{
-                pages: {
-                  selector: {
-                    active: "",
-                  },
-                },
-              }}
-            />
           </div>
         </>
       ) : (

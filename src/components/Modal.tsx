@@ -1,36 +1,44 @@
 import { X } from "lucide-react";
-import { useCallback, useRef, ReactNode } from "react";
+import { useCallback, useRef, ReactNode, useEffect } from "react";
 import Button from "./Button";
 
-const Modal = ({ children }: { children: ReactNode }) => {
+const Modal = ({ children, onClose }: { children: ReactNode; onClose?: () => void }) => {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
 
-  const onDismiss = useCallback(() => {
-    window.history.back();
-  }, []);
+  const handleDismiss = useCallback(() => {
+    onClose ? onClose() : window.history.back();
+  }, [onClose]);
 
   const handleClick = useCallback(
     (e: React.MouseEvent) => {
-      if (e.target === overlay.current && onDismiss) {
-        onDismiss();
+      if (e.target === overlay.current) {
+        handleDismiss();
       }
     },
-    [onDismiss, overlay]
+    [handleDismiss]
   );
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        handleDismiss();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [handleDismiss]);
+
   return (
-    <div ref={overlay} className="fixed top-0 bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center max-h-screen mx-auto bg-black/80" onClick={handleClick}>
-      <div className="z-50 flex flex-col items-end justify-center w-full p-1 mt-16 border-b rounded-t-lg shadow-2xl bg-main-secondary dark:bg-dark-secondary lg:max-w-7xl">
-        <Button onClick={onDismiss} className="p-2 mr-3 rounded-full">
-          <X />
-        </Button>
-      </div>
-      <div
-        ref={wrapper}
-        className="flex flex-col items-center justify-center flex-grow w-full overflow-auto lg:max-w-7xl bg-main-secondary dark:bg-dark-secondary " /////// Fixxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      >
-        {children}
+    <div ref={overlay} className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 dark:bg-black/20 backdrop-blur-sm" onClick={handleClick}>
+      <div className="relative w-full max-w-4xl max-h-[90vh]  rounded-lg shadow-xl overflow-auto bg-main-primary dark:bg-dark-primary text-main-text dark:text-dark-text" ref={wrapper}>
+        <nav className="sticky top-0 z-50 flex justify-end p-4 bg-main-secondary dark:bg-dark-secondary">
+          <Button onClick={handleDismiss} className="p-1 transition-colors " aria-label="Close modal">
+            <X size={24} />
+          </Button>
+        </nav>
+        <div className="p-6 overflow-y-auto">{children}</div>
       </div>
     </div>
   );

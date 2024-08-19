@@ -115,12 +115,12 @@ const PageHeader: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex justify-between gap-10 p-2 border-b lg:gap-20">
+    <nav className="flex justify-between gap-10 p-2 lg:gap-20 bg-main-secondary dark:bg-dark-secondary">
       <PageHeaderFirstSection hidden={showFullWidthSearch} />
       <SearchForm showFullWidthSearch={showFullWidthSearch} searchTerm={searchTerm} setShowFullWidthSearch={setShowFullWidthSearch} setSearchTerm={setSearchTerm} handleSearch={handleSearch} />
       {isSuccess && <SearchResultsOverlay searchResults={searchResults} handleSearchClick={handleSearchClick} handleOverlayClick={handleOverlayClick} />}
       <HeaderButtons showFullWidthSearch={showFullWidthSearch} searchTerm={searchTerm} setShowFullWidthSearch={setShowFullWidthSearch} accessToken={accessToken} cartData={cartDataSelector} />
-    </div>
+    </nav>
   );
 };
 
@@ -166,12 +166,12 @@ const SearchForm: React.FC<SearchFormProps> = ({ showFullWidthSearch, searchTerm
       <input
         type="search"
         placeholder="Search Books"
-        className="z-50 w-full px-4 py-2 placeholder-black rounded-l-full bg-main-secondary dark:bg-dark-secondary text-md"
+        className="z-50 w-full px-4 py-2 rounded-l-full placeholder-main-text dark:placeholder-dark-text bg-main-secondary dark:bg-dark-secondary text-md"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         aria-label="Search Input"
       />
-      <Button className="z-50 flex-shrink-0 px-4 py-2 mr-3 rounded-r-full bg-main-secondary dark:bg-dark-secondary hover:bg-main-secondary" type="submit" aria-label="Submit Search">
+      <Button className="z-50 flex-shrink-0 px-4 py-2 mr-3 rounded-r-full " type="submit" aria-label="Submit Search">
         <Search />
       </Button>
     </div>

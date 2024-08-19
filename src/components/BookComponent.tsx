@@ -30,28 +30,13 @@ const BookComponent: React.FC<BookID> = ({ book_id }) => {
         key={book.id}
         id={book.id}
         onClick={() => handleDivClick(book.id)}
-        renderImage={() => (
-          <img
-            height={250}
-            width={250}
-            src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage}
-            alt={book.volumeInfo.title}
-            className="w-full h-[250px] object-fill"
-          />
-        )}
+        renderImage={() => <img height={250} width={250} src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage} alt={book.volumeInfo.title} className="w-full h-[250px] object-fill" />}
       >
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-400">
-          Title:{" "}
-          {book.volumeInfo.title.length > 20
-            ? `${book.volumeInfo.title.substring(0, 20)}...`
-            : book.volumeInfo.title}
+          Title: {book.volumeInfo.title.length > 20 ? `${book.volumeInfo.title.substring(0, 20)}...` : book.volumeInfo.title}
         </h5>
-        <p className="font-normal text-gray-700 dark:text-slate-400">
-          Authors: {book.volumeInfo.authors}
-        </p>
-        <p className="font-normal text-gray-700 dark:text-slate-400">
-          Published: {book.volumeInfo.publishedDate}
-        </p>
+        <p className="font-normal text-gray-700 dark:text-slate-400">Authors: {book.volumeInfo.authors}</p>
+        <p className="font-normal text-gray-700 dark:text-slate-400">Published: {book.volumeInfo.publishedDate}</p>
       </Card>
     </div>
   );

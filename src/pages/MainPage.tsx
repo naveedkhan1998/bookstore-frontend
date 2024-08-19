@@ -31,11 +31,11 @@ const MainPage = () => {
   return (
     <Router>
       <SidebarProvider>
-        <div className="flex flex-col max-h-screen bg-main-primary dark:bg-dark-primary dark:text-slate-400 text-gray">
+        <div className="flex flex-col max-h-screen bg-main-primary dark:bg-dark-primary text-main-text dark:text-dark-text">
           <PageHeader />
           <div
             className="grid grid-cols-[auto,1fr] flex-grow-1 
-          overflow-y-auto"
+          overflow-y-auto "
           >
             <Sidebar />
             <div className="overflow-x-hidden">
@@ -61,8 +61,8 @@ const MainPage = () => {
                 </Routes>
               </div>
             </div>
-            <div className="fixed bottom-0 w-full border-t">
-              <div className="transition-all duration-100 ease-in-out bg-main-primary dark:bg-dark-primary bg-opacity-90">
+            <div className="fixed bottom-0 w-full">
+              <div className="transition-all duration-100 ease-in-out bg-main-secondary dark:bg-dark-secondary bg-opacity-90">
                 <Footer />
               </div>
             </div>
