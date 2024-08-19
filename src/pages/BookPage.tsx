@@ -28,9 +28,7 @@ const BookPage = () => {
 
   const selectedBook = isSuccess ? data : books.find((obj: BookVolume) => obj.id === id);
 
-  const removeHtmlTags = (input: string) => {
-    return input.replace(/<[^>]*>/g, "");
-  };
+  const removeHtmlTags = (input: string) => input.replace(/<[^>]*>/g, "");
 
   const handleAddToCart = () => {
     const book_id = { book_id: id };
@@ -71,64 +69,38 @@ const BookPage = () => {
       toast(`Book Added to ${userBooklists.bookLists?.find((obj) => obj._id === selectedBooklistID)?.name} Booklist`);
       refetch();
     }
-  }, [bookAdded]);
+  }, [bookAdded, refetch, selectedBooklistID, userBooklists.bookLists]);
 
   return (
     <Modal>
       {selectedBook && (
-        <>
-          <div className="flex flex-col w-full p-12 overflow-auto text-main-text dark:text-dark-text ">
-            <img src={selectedBook.volumeInfo.imageLinks?.thumbnail || DefaultPic} alt="Book Thumbnail" className="mb-6 rounded-md shadow-lg" height={300} width={300} />
-            <h2 className="mb-4 text-3xl font-bold">Title: {selectedBook.volumeInfo.title}</h2>
-            {selectedBook.volumeInfo.subtitle && <p className="mb-4 text-main-text/80 dark:text-dark-text/80">{selectedBook.volumeInfo.subtitle}</p>}
-            {selectedBook.saleInfo && (
-              <div className="space-y-2 text-main-text dark:text-dark-text">
-                <p>
-                  <span className="font-semibold">List Price:</span>{" "}
-                  {selectedBook.saleInfo.listPrice ? `${selectedBook.saleInfo.listPrice.amount} ${selectedBook.saleInfo.listPrice.currencyCode}` : "Out of Stock"}
-                </p>
-                <p>
-                  <span className="font-semibold">Retail Price:</span>{" "}
-                  {selectedBook.saleInfo.retailPrice ? `${selectedBook.saleInfo.retailPrice.amount} ${selectedBook.saleInfo.retailPrice.currencyCode}` : "Out of Stock"}
-                </p>
-              </div>
-            )}
-            <p className="text-main-text dark:text-dark-text">
-              <span className="font-semibold">Authors:</span> {selectedBook.volumeInfo.authors?.join(" , ") || "N/A"}
-            </p>
-            <p className="text-main-text dark:text-dark-text">
-              <span className="font-semibold">Publisher:</span> {selectedBook.volumeInfo.publisher || "N/A"}
-            </p>
-            <p className="text-main-text dark:text-dark-text">
-              <span className="font-semibold">Published Date:</span> {selectedBook.volumeInfo.publishedDate || "N/A"}
-            </p>
-            <p className="text-main-text dark:text-dark-text">
-              <span className="font-semibold">Page Count:</span> {selectedBook.volumeInfo.pageCount || "N/A"}
-            </p>
-            <p className="text-main-text dark:text-dark-text">
-              <span className="font-semibold">Description:</span> {removeHtmlTags(selectedBook.volumeInfo.description || "N/A")}
-            </p>
-          </div>
+        <div className="flex flex-col gap-6">
           {access_token && (
-            <div className="flex flex-wrap items-center justify-between w-full px-4 py-2 text-xs border-t">
-              {selectedBook.saleInfo.listPrice ? (
-                <Button onClick={handleAddToCart} gradientDuoTone="cyanToBlue" className="mb-2 md:mb-0">
-                  {addingToCart ? (
-                    <>
-                      <Spinner size="sm" className="mr-2" />
-                      Adding...
-                    </>
-                  ) : (
-                    "Add To Cart"
-                  )}
-                </Button>
-              ) : (
-                <Button gradientDuoTone="pinkToOrange" className="mb-2 md:mb-0">
-                  Sold Out
-                </Button>
-              )}
-              <div className="flex flex-wrap items-center w-full gap-2 md:w-auto">
-                <select value={selectedBooklistID} onChange={(e) => setSelectedBooklistID(e.target.value)} className="w-full p-2 mb-2 rounded-md md:w-auto md:mb-0">
+            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+              <div className="flex flex-wrap items-center gap-2">
+                {selectedBook.saleInfo.listPrice ? (
+                  <Button onClick={handleAddToCart} gradientDuoTone="cyanToBlue" className="w-full md:w-auto">
+                    {addingToCart ? (
+                      <>
+                        <Spinner size="sm" className="mr-2" />
+                        Adding...
+                      </>
+                    ) : (
+                      "Add To Cart"
+                    )}
+                  </Button>
+                ) : (
+                  <Button gradientDuoTone="pinkToOrange" className="w-full md:w-auto">
+                    Sold Out
+                  </Button>
+                )}
+              </div>
+              <div className="flex flex-col gap-2 md:flex-row">
+                <select
+                  value={selectedBooklistID}
+                  onChange={(e) => setSelectedBooklistID(e.target.value)}
+                  className="p-2 border rounded-md dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:text-dark-text dark:bg-dark-primary bg-main-primary"
+                >
                   <option value="" disabled>
                     Name | Type
                   </option>
@@ -151,7 +123,43 @@ const BookPage = () => {
               </div>
             </div>
           )}
-        </>
+          <div className="flex flex-col items-center gap-4 p-4 rounded-lg shadow-lg ">
+            <img src={selectedBook.volumeInfo.imageLinks?.thumbnail || DefaultPic} alt="Book Thumbnail" className="rounded-md shadow-lg" style={{ maxWidth: "300px", maxHeight: "300px" }} />
+            <div className="text-center">
+              <h2 className="text-2xl font-bold">{selectedBook.volumeInfo.title}</h2>
+              {selectedBook.volumeInfo.subtitle && <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">{selectedBook.volumeInfo.subtitle}</p>}
+            </div>
+            {selectedBook.saleInfo && (
+              <div className="space-y-1 text-left">
+                <p>
+                  <span className="font-semibold">List Price:</span>{" "}
+                  {selectedBook.saleInfo.listPrice ? `${selectedBook.saleInfo.listPrice.amount} ${selectedBook.saleInfo.listPrice.currencyCode}` : "Out of Stock"}
+                </p>
+                <p>
+                  <span className="font-semibold">Retail Price:</span>{" "}
+                  {selectedBook.saleInfo.retailPrice ? `${selectedBook.saleInfo.retailPrice.amount} ${selectedBook.saleInfo.retailPrice.currencyCode}` : "Out of Stock"}
+                </p>
+              </div>
+            )}
+            <div className="space-y-1 text-left">
+              <p>
+                <span className="font-semibold">Authors:</span> {selectedBook.volumeInfo.authors?.join(", ") || "N/A"}
+              </p>
+              <p>
+                <span className="font-semibold">Publisher:</span> {selectedBook.volumeInfo.publisher || "N/A"}
+              </p>
+              <p>
+                <span className="font-semibold">Published Date:</span> {selectedBook.volumeInfo.publishedDate || "N/A"}
+              </p>
+              <p>
+                <span className="font-semibold">Page Count:</span> {selectedBook.volumeInfo.pageCount || "N/A"}
+              </p>
+              <p>
+                <span className="font-semibold">Description:</span> {removeHtmlTags(selectedBook.volumeInfo.description || "N/A")}
+              </p>
+            </div>
+          </div>
+        </div>
       )}
     </Modal>
   );

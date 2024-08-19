@@ -124,16 +124,16 @@ const CartPage: React.FC = () => {
             books.map(
               (book: BookVolume) =>
                 cart.books[book.id] && (
-                  <div key={book.id} className="mb-6 overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
+                  <div key={book.id} className="mb-6 overflow-hidden rounded-lg shadow-md bg-main-secondary dark:bg-dark-secondary hover:cursor-pointer" onClick={() => handleDivClick(book.id)}>
                     <div className="flex flex-col sm:flex-row">
                       <img src={book.volumeInfo.imageLinks?.thumbnail || DefaultPic} alt="Book Thumbnail" className="object-cover w-full h-48 sm:w-32 sm:h-auto" />
                       <div className="flex-grow p-4">
                         <h2 className="mb-2 text-xl font-semibold">{book.volumeInfo.title}</h2>
-                        <p className="mb-2 text-gray-600 dark:text-gray-300">Quantity: {cart.books[book.id]}</p>
-                        <p className="mb-2 text-gray-600 dark:text-gray-300">
+                        <p className="mb-2 ">Quantity: {cart.books[book.id]}</p>
+                        <p className="mb-2 ">
                           Price: {book.saleInfo.listPrice ? `${book.saleInfo.listPrice.amount} ${book.saleInfo.listPrice.currencyCode}` : "Not available"}
                         </p>
-                        <p className="mb-4 text-gray-600 dark:text-gray-300">
+                        <p className="mb-4 ">
                           Total:{" "}
                           {book.saleInfo.listPrice
                             ? `${(book.saleInfo.listPrice.amount * cart.books[book.id]).toLocaleString(undefined, {
@@ -163,7 +163,7 @@ const CartPage: React.FC = () => {
           )}
         </div>
         <div className="lg:w-1/3">
-          <div className="p-6 bg-white rounded-lg shadow-md dark:bg-gray-800">
+          <div className="p-6 rounded-lg shadow-md bg-main-secondary dark:bg-dark-secondary">
             <h2 className="mb-6 text-2xl font-semibold">Order Summary</h2>
             <div className="space-y-4">
               <div className="flex justify-between">
