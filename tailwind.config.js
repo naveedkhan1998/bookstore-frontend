@@ -1,5 +1,3 @@
-import colors from "tailwindcss/colors";
-
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -14,27 +12,27 @@ module.exports = {
     extend: {
       colors: {
         main: {
-          primary: "#F8F3E6", // Light mode primary background - warm cream
-          secondary: "#E6DCC8", // Light mode secondary background - light beige
-          text: "#2C1810", // Light mode text color - deep brown
+          primary: "#F1F8E9",   // Pale green
+          secondary: "#DCEDC8", // Light green
+          text: "#33691E",      // Dark green
         },
         dark: {
-          primary: "#1C1713", // Dark mode primary background - rich dark brown
-          secondary: "#2C2420", // Dark mode secondary background - slightly lighter brown
-          text: "#E6DCC8", // Dark mode text color - light beige
+          primary: "#1B3022",   // Forest green
+          secondary: "#2C4A35", // Lighter forest green
+          text: "#DCEDC8",      // Light green
         },
         secondary: {
-          DEFAULT: "#D4A373", // Warm tan for secondary elements
-          hover: "#C68B59", // Slightly darker tan for hover states
-          border: "#B07D56", // Border color with enough contrast
-          text: "#5C4033", // Medium brown for secondary text
-          dark: "#8B5E3C", // Darker brown for dark mode secondary elements
-          "dark-hover": "#A67B5B", // Lighter brown for hover states in dark mode
+          DEFAULT: "#8BC34A",   // Lime green
+          hover: "#9CCC65",     // Lighter lime green
+          border: "#7CB342",    // Darker lime green
+          text: "#33691E",      // Dark green
+          dark: "#689F38",      // Muted green for dark mode
+          "dark-hover": "#7CB342", // Lighter green for dark mode hover
         },
         accent: {
-          DEFAULT: "#7D4F50", // Muted red-brown as an accent color
-          hover: "#9A6263", // Lighter red-brown for hover states
-          text: "#F8F3E6", // Light cream for text on accent backgrounds
+          DEFAULT: "#FF5722",   // Deep orange
+          hover: "#FF7043",     // Lighter orange
+          text: "#F1F8E9",      // Pale green
         },
       },
       boxShadow: {
@@ -51,3 +49,56 @@ module.exports = {
   plugins: [require("flowbite/plugin")],
   darkMode: "class",
 };
+
+// additional colors
+// colors: {
+//   main: {
+//     primary: "#FFF8E1",   // Soft yellow
+//     secondary: "#FFECB3", // Light amber
+//     text: "#3E2723",      // Dark brown
+//   },
+//   dark: {
+//     primary: "#3E2723",   // Dark brown
+//     secondary: "#4E342E", // Lighter brown
+//     text: "#FFF8E1",      // Soft yellow
+//   },
+//   secondary: {
+//     DEFAULT: "#FFCA28",   // Amber
+//     hover: "#FFD54F",     // Light amber
+//     border: "#FFB300",    // Dark amber
+//     text: "#3E2723",      // Dark brown
+//     dark: "#FFA000",      // Muted amber for dark mode
+//     "dark-hover": "#FFC107", // Brighter amber for dark mode hover
+//   },
+//   accent: {
+//     DEFAULT: "#795548",   // Brown
+//     hover: "#8D6E63",     // Lighter brown
+//     text: "#FFF8E1",      // Soft yellow
+//   },
+// }
+
+// colors: {
+//   main: {
+//     primary: "#F1F8E9",   // Pale green
+//     secondary: "#DCEDC8", // Light green
+//     text: "#33691E",      // Dark green
+//   },
+//   dark: {
+//     primary: "#1B3022",   // Forest green
+//     secondary: "#2C4A35", // Lighter forest green
+//     text: "#DCEDC8",      // Light green
+//   },
+//   secondary: {
+//     DEFAULT: "#8BC34A",   // Lime green
+//     hover: "#9CCC65",     // Lighter lime green
+//     border: "#7CB342",    // Darker lime green
+//     text: "#33691E",      // Dark green
+//     dark: "#689F38",      // Muted green for dark mode
+//     "dark-hover": "#7CB342", // Lighter green for dark mode hover
+//   },
+//   accent: {
+//     DEFAULT: "#FF5722",   // Deep orange
+//     hover: "#FF7043",     // Lighter orange
+//     text: "#F1F8E9",      // Pale green
+//   },
+// }

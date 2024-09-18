@@ -25,32 +25,24 @@ const LoginReg: React.FC = () => {
   const buttonText = isLogin ? "Register here" : "Login here";
 
   return (
-    <div className="flex w-[75dvw] h-[80dvh] m-auto rounded-lg shadow-lg overflow-hidden">
-      {/* Left Side Section with Redesigned Gradient */}
-      <div
-        className="items-center justify-center hidden w-2/3 md:flex"
-        style={{
-          background: "linear-gradient(60deg, #2C1810, #7D4F50, #D4A373, #F8F3E6, #E6DCC8)",
-          backgroundSize: "300% 300%",
-          animation: "gradient-animation 8s ease infinite",
-        }}
-      >
-        {/* Add some text or illustration */}
-        <div className="p-4 text-center text-main-text dark:text-dark-text">
-          <h2 className="text-2xl font-bold">Welcome Back!</h2>
-          <p className="mt-2">Please login to access your account or sign up if you're new.</p>
+    <div className="flex w-full min-h-screen bg-gradient-to-br from-main-primary to-main-secondary dark:from-dark-primary dark:to-dark-secondary">
+      <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto my-8 rounded-xl shadow-2xl overflow-hidden transition-all duration-500 ease-in-out transform hover:scale-[1.02]">
+        <div className="items-center justify-center hidden w-full md:w-1/2 md:flex bg-gradient-to-br from-accent-DEFAULT to-secondary-DEFAULT">
+          <div className="p-8 text-center text-white">
+            <h2 className="mb-4 text-4xl font-bold animate-fade-in-down">{isLogin ? "Welcome Back!" : "Join Us Today!"}</h2>
+            <p className="mt-2 text-lg animate-fade-in-up">{isLogin ? "Please login to access your account." : "Sign up to start your journey with us."}</p>
+          </div>
         </div>
-      </div>
 
-      {/* Main Form Section */}
-      <div className="flex flex-col items-center justify-center w-full md:p-8 bg-main-secondary/65 dark:bg-dark-secondary/65">
-        <div className="w-full">
-          {isLogin ? <Login /> : <Registration />}
-          <div className="flex flex-col items-center justify-center w-full max-w-2xl p-8 m-auto mt-4 rounded-md shadow-md bg-main-secondary dark:bg-dark-secondary">
-            {formMessage}
-            <Button variant={"ghost"} className="text-blue-500" onClick={toggleForm}>
-              {buttonText}
-            </Button>
+        <div className="flex flex-col items-center justify-center w-full p-8 transition-all duration-300 bg-white md:w-1/2 dark:bg-dark-secondary rounded-xl md:rounded-l-none">
+          <div className="w-full max-w-md">
+            {isLogin ? <Login /> : <Registration />}
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400">{formMessage}</p>
+              <Button variant="ghost" className="transition-colors duration-300 text-accent-DEFAULT hover:text-accent-hover" onClick={toggleForm}>
+                {buttonText}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
