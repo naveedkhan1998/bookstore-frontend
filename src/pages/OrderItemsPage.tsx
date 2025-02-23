@@ -20,7 +20,9 @@ const OrderItemsPage = () => {
             </div>
           ))}
         </div>
-        <h1 className="p-6 mt-10 text-2xl font-bold border rounded-md ">Total Price: {entry.price.toFixed(2)} $</h1>
+        <h1 className="p-6 mt-10 text-2xl font-bold border rounded-md ">
+          Total Price: {entry.price.toFixed(2)} $
+        </h1>
       </div>
     </Modal>
   );

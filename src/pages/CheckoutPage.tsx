@@ -74,7 +74,7 @@ const CheckoutPage: React.FC = () => {
     if (validateForm()) {
       try {
         await addToTransactions({ data: to, access_token });
-      } catch (error) {
+      } catch {
         toast.error("An error occurred during checkout. Please try again.");
       }
     }

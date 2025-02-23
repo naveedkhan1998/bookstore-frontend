@@ -14,32 +14,10 @@ import DefaultPic from "../assets/pp.jpg";
 
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import { useAddToTransactionsMutation } from "../services/transactionsServices";
+
 import { Trash2, Plus, Minus, ShoppingCart } from "lucide-react";
 import { Button } from "flowbite-react";
 import { BookVolume } from "../comman-types";
-
-interface Book {
-  id: string;
-  volumeInfo: {
-    title: string;
-    imageLinks?: {
-      thumbnail: string;
-    };
-  };
-  saleInfo: {
-    listPrice?: {
-      amount: number;
-      currencyCode: string;
-    };
-  };
-}
-
-interface Cart {
-  books: {
-    [key: string]: number;
-  };
-}
 
 const CartPage: React.FC = () => {
   const access_token = useAppSelector(getCurrentToken);
@@ -50,7 +28,6 @@ const CartPage: React.FC = () => {
   const [addToCart] = useAddToCartMutation();
   const {
     data: cartData,
-    isSuccess: CartSuccess,
     isFetching,
     refetch: refetchCart,
   } = useGetCartQuery(access_token);

@@ -19,8 +19,7 @@ const BooklistPageAuth: React.FC = () => {
   const access_token = useAppSelector(getCurrentToken);
   const { data, isSuccess, refetch } = useGetUserBooklistsQuery(access_token);
 
-  const [deleteBooklist, { isSuccess: booklistDeleted }] =
-    useDeleteBooklistMutation();
+  const [deleteBooklist] = useDeleteBooklistMutation();
 
   if (isSuccess) {
     dispatch(setUserBookslist(data));
@@ -73,6 +72,7 @@ const BooklistPageAuth: React.FC = () => {
       booklist,
     });
     if ("data" in res) {
+      toast.success("Booklist Created");
     } else if ("error" in res) {
       toast.error(JSON.stringify(res.error));
     }
