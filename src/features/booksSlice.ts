@@ -8,7 +8,7 @@ export const bookSlice = createSlice({
   name: "books",
   initialState,
   reducers: {
-    setBooks: (state, action: PayloadAction<BookVolume[]>) => {
+    setBooks: (_state, action: PayloadAction<BookVolume[]>) => {
       return action.payload;
     },
   },

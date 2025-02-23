@@ -32,22 +32,30 @@ const AdminUserPage = lazy(() => import("./pages/AdminUserPage"));
 const ItemPage = lazy(() => import("./pages/ItemPage"));
 const Login = lazy(() => import("./components/Login"));
 const Registration = lazy(() => import("./components/Registration"));
-
+// Route configurations
 const routes = [
-  { path: "/", element: <BooksList />, protected: false },
+  { path: "/", element: <BooksList /> },
+  { path: "/auth", element: <LoginReg /> },
+  { path: "/login", element: <Login /> },
+  { path: "/registration", element: <Registration /> },
+  { path: "/about", element: <AboutPage /> },
+  { path: "/home", element: <BooksList />, protected: true },
   { path: "/cart", element: <CartPage />, protected: true },
+  { path: "/account", element: <UserProfile />, protected: true },
   { path: "/order-history", element: <OrderHistoryPage />, protected: true },
-  { path: "/settings", element: <UserSettings />, protected: true },
-  { path: "/profile", element: <UserProfile />, protected: true },
-  { path: "/book/:id", element: <BookPage />, protected: false },
-  { path: "/booklist/:id", element: <BooklistPageAuth />, protected: true },
-  { path: "/about", element: <AboutPage />, protected: false },
-  { path: "/user-booklists", element: <UserBooklistPage />, protected: true },
+  { path: "/order-items", element: <OrderItemsPage />, protected: true },
   { path: "/checkout", element: <CheckoutPage />, protected: true },
-  { path: "/order/:id", element: <OrderItemsPage />, protected: true },
   { path: "/admin", element: <AdminPage />, protected: true },
-  { path: "/admin/users", element: <AdminUserPage />, protected: true },
+  { path: "/admin-user-page", element: <AdminUserPage />, protected: true },
+  { path: "/booklists", element: <BooklistPageAuth />, protected: true },
+  {
+    path: "/user-booklist/:id",
+    element: <UserBooklistPage />,
+    protected: true,
+  },
+  { path: "/book/:id", element: <BookPage />, protected: false },
   { path: "/item/:id", element: <ItemPage />, protected: true },
+  { path: "/setting", element: <UserSettings />, protected: true },
 ];
 
 function LoadingFallback() {
@@ -58,7 +66,7 @@ function LoadingFallback() {
   );
 }
 
-const App: React.FC = () => {
+function App() {
   const access_token = useAppSelector(getCurrentToken);
 
   return (
@@ -72,9 +80,6 @@ const App: React.FC = () => {
               <div className="min-h-full px-8 pb-20">
                 <Suspense fallback={<LoadingFallback />}>
                   <Routes>
-                    <Route path="/auth" element={<LoginReg />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Registration />} />
                     {routes.map(({ path, element, protected: isProtected }) => (
                       <Route
                         key={path}
@@ -119,6 +124,6 @@ const App: React.FC = () => {
       </SidebarProvider>
     </Router>
   );
-};
+}
 
 export default App;

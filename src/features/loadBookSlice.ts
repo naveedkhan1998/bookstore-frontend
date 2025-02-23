@@ -15,7 +15,7 @@ export const loadBookSlice = createSlice({
       }
       return state;
     },
-    unsetLoadedBook: (state) => {
+    unsetLoadedBook: (_state) => {
       return initialState;
     },
   },
