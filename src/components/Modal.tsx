@@ -1,6 +1,6 @@
 import { X } from "lucide-react";
 import { useCallback, useRef, ReactNode, useEffect } from "react";
-import Button from "./Button";
+import Button from "./ui/Button";
 
 const Modal = ({
   children,

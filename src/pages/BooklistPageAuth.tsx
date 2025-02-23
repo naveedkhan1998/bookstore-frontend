@@ -5,7 +5,7 @@ import {
 } from "../services/booklistsServices";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
-import Button from "../components/Button";
+import Button from "../components/ui/Button";
 import { getUserBooklists, setUserBookslist } from "../features/booklistSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";

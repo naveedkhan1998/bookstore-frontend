@@ -11,7 +11,7 @@ import {
   BookOpen,
   ShieldCheckIcon,
 } from "lucide-react";
-import Button, { buttonStyles } from "./Button";
+import Button, { buttonStyles } from "./ui/Button";
 import { twMerge } from "tailwind-merge";
 import { useSidebarContext } from "../context/SidebarContext";
 import { PageHeaderFirstSection } from "../layouts/PageHeader";

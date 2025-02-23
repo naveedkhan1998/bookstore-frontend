@@ -1,16 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
-import {
-  useAddBooklistReviewMutation,
-  useGetALLBooklistsQuery,
-} from "../services/booklistsServices";
-import {
-  getPublicBooklists,
-  setPublicBookslist,
-} from "../features/publicBooklistSlice";
+import { useGetALLBooklistsQuery } from "../services/booklistsServices";
+import { setPublicBookslist } from "../features/publicBooklistSlice";
 import { Link } from "react-router-dom";
-import Button from "../components/Button";
 import { getRefresh, setRefresh } from "../features/refreshSlice";
 import { BookCategory } from "../comman-types";
 import { Card } from "flowbite-react";
@@ -21,8 +14,7 @@ const AuthentiatedBooklistPage = () => {
 
   const refresh = useAppSelector(getRefresh);
 
-  const { data, isSuccess, isLoading, refetch } =
-    useGetALLBooklistsQuery(access_token);
+  const { data, isSuccess, refetch } = useGetALLBooklistsQuery(access_token);
 
   // Update data in the Redux store if the query is successful
   useEffect(() => {

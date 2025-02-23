@@ -1,12 +1,13 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import Button from "./Button";
+
 import { useLoginUserMutation } from "../services/userAuthService";
 import { useAppDispatch } from "../app/hooks";
 import { setCredentials } from "../features/authSlice";
 import { storeToken } from "../services/LocalStorageService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FloatingLabel } from "flowbite-react";
+import Input from "./ui/Input";
+import Button from "./ui/Button";
 
 interface FormData {
   email: string;
@@ -53,30 +54,24 @@ const Login: React.FC = () => {
 
   return (
     <div className="w-full">
-      <h2 className="mb-6 text-3xl font-bold text-center ">Login</h2>
+      <h2 className="mb-6 text-3xl font-bold text-center">Login</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="relative">
-          <FloatingLabel
-            variant="standard"
-            label="Email"
-            id="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div className="relative">
-          <FloatingLabel
-            variant="standard"
-            label="Password"
-            id="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <Input
+          label="Email"
+          id="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          label="Password"
+          id="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
         <Button
           type="submit"
           className={`w-full p-3 rounded-full  font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-DEFAULT ${

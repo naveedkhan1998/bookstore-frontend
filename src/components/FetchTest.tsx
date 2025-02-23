@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setElixirs, getElixirs } from "../features/elixirSlice";
 import { useNavigate } from "react-router-dom";
 import { useGetElixirsQuery } from "../services/harryPotterServices";
 import { Elixirs } from "../comman-types";
-import Button from "./Button";
+import Button from "./ui/Button";
 import { MoveLeftIcon, MoveRightIcon } from "lucide-react";
 
 const FetchTest = () => {
-  const { data, isSuccess, refetch } = useGetElixirsQuery("a");
+  const { data, isSuccess } = useGetElixirsQuery("a");
 
   const dispatch = useAppDispatch();
 
@@ -95,14 +95,14 @@ const FetchTest = () => {
             <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
               {paginatedData.map((elixir: Elixirs) => (
                 <div
-                  className="bg-main-secondary dark:bg-dark-secondary rounded-lg p-4 shadow-md mb-4"
+                  className="p-4 mb-4 rounded-lg shadow-md bg-main-secondary dark:bg-dark-secondary"
                   key={elixir.id}
                   onClick={() => handleItemClick(elixir.id)}
                 >
-                  <h3 className="text-base sm:text-lg md:text-lg lg:text-lg xl:text-lg font-bold mb-2">
+                  <h3 className="mb-2 text-base font-bold sm:text-lg md:text-lg lg:text-lg xl:text-lg">
                     Elixir Name: {elixir.name}
                   </h3>
-                  <p className="text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm mb-2">
+                  <p className="mb-2 text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm">
                     Characteristics: {elixir.characteristics}
                   </p>
                   <p className="text-xs sm:text-sm md:text-sm lg:text-sm xl:text-sm">

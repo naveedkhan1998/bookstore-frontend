@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserType } from "../features/userSlice";
-import Button from "../components/Button";
+import Button from "../components/ui/Button";
 import { toast } from "react-toastify";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";

@@ -9,7 +9,7 @@ import {
   MenuIcon,
   HomeIcon,
 } from "lucide-react";
-import Button from "../components/Button";
+import Button from "../components/ui/Button";
 import { useSidebarContext } from "../context/SidebarContext";
 import ProfileMenu from "../components/ProfileMenu";
 import { useGetVolumesQuery } from "../services/googleBooksServices";

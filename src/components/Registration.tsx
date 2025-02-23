@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "./Button";
+import Button from "./ui/Button";
+import Input from "./ui/Input";
 import { useAppDispatch } from "../app/hooks";
 import {
   useRegisterUserMutation,
@@ -9,7 +10,6 @@ import {
 import { setCredentials } from "../features/authSlice";
 import { storeToken } from "../services/LocalStorageService";
 import { toast } from "react-toastify";
-import { FloatingLabel } from "flowbite-react";
 
 const Registration: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -67,53 +67,41 @@ const Registration: React.FC = () => {
   return (
     <div className="w-full">
       <h2 className="mb-6 text-3xl font-bold text-center ">Registration</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="relative">
-            <FloatingLabel
-              variant="standard"
-              label="Given Name"
-              id="given_name"
-              type="text"
-              value={formData.given_name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="relative">
-            <FloatingLabel
-              variant="standard"
-              label="Family Name"
-              id="family_name"
-              type="text"
-              value={formData.family_name}
-              onChange={handleChange}
-              required
-            />
-          </div>
-        </div>
-        <div className="relative">
-          <FloatingLabel
-            variant="standard"
-            label="Email"
-            id="email"
-            type="email"
-            value={formData.email}
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <Input
+            label="Given Name"
+            id="given_name"
+            type="text"
+            value={formData.given_name}
+            onChange={handleChange}
+            required
+          />
+          <Input
+            label="Family Name"
+            id="family_name"
+            type="text"
+            value={formData.family_name}
             onChange={handleChange}
             required
           />
         </div>
-        <div className="relative">
-          <FloatingLabel
-            variant="standard"
-            label="Password"
-            id="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
+        <Input
+          label="Email"
+          id="email"
+          type="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <Input
+          label="Password"
+          id="password"
+          type="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
         <Button
           type="submit"
           className={`w-full p-3 rounded-full  font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-DEFAULT ${
