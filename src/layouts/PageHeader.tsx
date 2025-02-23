@@ -223,7 +223,7 @@ const HeaderButtons: React.FC<{
             onClick={() => navigate("/cart")}
             className="hidden transition-transform duration-300 ease-in-out xs:flex hover:scale-110"
             variant="ghost"
-            number={Object.values(cartData.books).reduce((acc, val) => acc + val, 0)}
+            number={Object.values(cartData.books as Record<string, number>).reduce((acc, val) => acc + val, 0)}
           >
             <ShoppingCart />
           </Button>

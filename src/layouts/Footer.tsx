@@ -1,4 +1,3 @@
-
 const Footer = () => {
   return (
     <footer className="bg-transparent bg-opacity-50 ">

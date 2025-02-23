@@ -1,6 +1,41 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+@theme {
+  /* Colors */
+  /* Main - Warm neutral base */
+  --color-main-primary: #faf6f1; /* Soft cream white */
+  --color-main-secondary: #f5efe6; /* Warm light gray */
+  --color-main-text: #2c1810; /* Deep brown */
+
+  /* Dark mode - Rich dark theme */
+  --color-dark-primary: #1a1a1d; /* Deep charcoal */
+  --color-dark-secondary: #2c2c35; /* Slate gray */
+  --color-dark-text: #e6e6e8; /* Soft white */
+
+  /* Secondary (Base: DEFAULT) - Accent colors */
+  --color-secondary: #8b5e3c; /* Warm brown */
+  --color-secondary-hover: #a37547; /* Lighter brown */
+  --color-secondary-border: #735039; /* Dark brown */
+  --color-secondary-text: #faf6f1; /* Cream white */
+  --color-secondary-dark: #614231; /* Muted brown for dark mode */
+  --color-secondary-dark-hover: #735039; /* Lighter brown for dark mode hover */
+
+  /* Accent - For CTAs and highlights */
+  --color-accent: #c17817; /* Rich gold */
+  --color-accent-hover: #e68a1c; /* Brighter gold */
+  --color-accent-text: #ffffff; /* Pure white */
+
+  /* Box Shadow */
+  --box-shadow-menu: 0px 8px 20px rgba(0, 0, 0, 0.08);
+
+  /* Breakpoints */
+  --breakpoint-xs: 400px;
+
+  /* Max Width */
+  --max-width-10xl: 1680px;
+}
 
 body {
   font-family: "League Spartan", sans-serif;
@@ -12,17 +47,29 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #3a3737;
+  background-color: #8b5e3c;
   border-radius: 10px;
-  border: 3px solid #797878;
+  border: 3px solid #f5efe6;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #2a2a2a;
+  background-color: #faf6f1;
 }
 
 .scrollbar-hidden::-webkit-scrollbar-thumb {
   background-color: transparent;
+}
+
+/* Dark mode scrollbar */
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-thumb {
+    background-color: #614231;
+    border: 3px solid #2c2c35;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #1a1a1d;
+  }
 }
 
 /* Profile Menu */

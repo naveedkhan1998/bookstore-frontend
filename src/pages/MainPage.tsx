@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SidebarProvider from "../context/SidebarContext";
 import PageHeader from "../layouts/PageHeader";
@@ -31,15 +30,12 @@ const MainPage = () => {
   return (
     <Router>
       <SidebarProvider>
-        <div className="flex flex-col max-h-screen transition-all duration-300 bg-main-primary dark:bg-dark-primary text-main-text dark:text-dark-text ">
+        <div className="flex flex-col h-screen bg-main-primary dark:bg-dark-primary text-main-text dark:text-dark-text">
           <PageHeader />
-          <div
-            className="grid grid-cols-[auto,1fr] flex-grow-1 
-          overflow-y-auto "
-          >
+          <div className="flex flex-1 overflow-hidden">
             <Sidebar />
-            <div className="overflow-x-hidden">
-              <div className="flex flex-wrap px-8 pb-10 items-normal min-h-[100dvh] h-fit">
+            <main className="flex-1 overflow-y-auto">
+              <div className="min-h-full px-8 pb-20">
                 <Routes>
                   <Route path="/" element={<BooksList />} />
                   <Route path="/cart" element={<CartPage />} />
@@ -60,13 +56,13 @@ const MainPage = () => {
                   <Route path="/login" element={<LoginReg />} />
                 </Routes>
               </div>
-            </div>
-            <div className="fixed bottom-0 w-full">
-              <div className="transition-all duration-100 ease-in-out bg-main-secondary dark:bg-dark-secondary bg-opacity-90">
-                <Footer />
-              </div>
-            </div>
+            </main>
           </div>
+          <footer className="fixed bottom-0 w-full">
+            <div className="bg-main-secondary dark:bg-dark-secondary bg-opacity-90">
+              <Footer />
+            </div>
+          </footer>
         </div>
       </SidebarProvider>
     </Router>
