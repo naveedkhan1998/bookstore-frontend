@@ -22,11 +22,11 @@ export const store = configureStore({
     elixirs: elixirReducer,
     books: booksReducer,
     setting: settingReducer,
-    userbooklists:booklistsReducer,
-    publicbooklists:publicBooklistReducer,
-    usercart:cartReducer,
-    loadbook:loadBookReducer,
-    refresh:refreshReducer
+    userbooklists: booklistsReducer,
+    publicbooklists: publicBooklistReducer,
+    usercart: cartReducer,
+    loadbook: loadBookReducer,
+    refresh: refreshReducer,
   },
 
   middleware: (getDefaultMiddleware) =>

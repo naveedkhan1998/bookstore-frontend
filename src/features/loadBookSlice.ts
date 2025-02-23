@@ -9,13 +9,13 @@ export const loadBookSlice = createSlice({
   initialState,
   reducers: {
     addBook: (state, action: PayloadAction<BookVolume>) => {
-      const existingBook = state.find(book => book.id === action.payload.id);
+      const existingBook = state.find((book) => book.id === action.payload.id);
       if (!existingBook) {
         state.push(action.payload);
       }
       return state;
     },
-    unsetLoadedBook: (state) => {
+    unsetLoadedBook: (_state) => {
       return initialState;
     },
   },

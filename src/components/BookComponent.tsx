@@ -3,8 +3,8 @@ import { useGetVolumeQuery } from "../services/googleBooksServices";
 import { useNavigate } from "react-router-dom";
 import { BookVolume } from "../comman-types";
 import DefaultImage from "../assets/pp.jpg";
-import { Card } from "flowbite-react";
-
+import Card from "./ui/card/card.component";
+import { motion } from "framer-motion";
 type BookID = {
   book_id: string;
 };
@@ -28,15 +28,30 @@ const BookComponent: React.FC<BookID> = ({ book_id }) => {
       <Card
         className="w-[250px] h-[500px] relative bg-main-secondary dark:bg-dark-secondary rounded-md overflow-hidden hover:shadow-2xl transition-shadow ease-in delay-250 text-sm hover:shadow-black"
         key={book.id}
-        id={book.id}
         onClick={() => handleDivClick(book.id)}
-        renderImage={() => <img height={250} width={250} src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage} alt={book.volumeInfo.title} className="w-full h-[250px] object-fill" />}
+        image={{
+          src: book.volumeInfo.imageLinks?.thumbnail || DefaultImage,
+          alt: book.volumeInfo.title,
+        }}
+        variant="gradient"
       >
-        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-400">
-          Title: {book.volumeInfo.title.length > 20 ? `${book.volumeInfo.title.substring(0, 20)}...` : book.volumeInfo.title}
-        </h5>
-        <p className="font-normal text-gray-700 dark:text-slate-400">Authors: {book.volumeInfo.authors}</p>
-        <p className="font-normal text-gray-700 dark:text-slate-400">Published: {book.volumeInfo.publishedDate}</p>
+        <motion.div
+          className="space-y-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <h3 className="font-semibold line-clamp-1">
+            {book.volumeInfo.title}
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1">
+            By {book.volumeInfo.authors?.join(", ") || "Unknown Author"}
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Published:{" "}
+            {new Date(book.volumeInfo.publishedDate || "").getFullYear()}
+          </p>
+        </motion.div>
       </Card>
     </div>
   );

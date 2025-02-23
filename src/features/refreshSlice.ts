@@ -7,7 +7,7 @@ export const refreshSlice = createSlice({
   name: "refresh",
   initialState,
   reducers: {
-    setRefresh: (state, action: PayloadAction<boolean>) => {
+    setRefresh: (_state, action: PayloadAction<boolean>) => {
       return action.payload;
     },
   },

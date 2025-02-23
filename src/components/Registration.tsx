@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "./Button";
+import { Mail, Lock, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "./ui/button/Button";
+import Input from "./ui/input/input.component";
 import { useAppDispatch } from "../app/hooks";
-import { useRegisterUserMutation, useLazySendEmailQuery } from "../services/userAuthService";
+import {
+  useRegisterUserMutation,
+  useLazySendEmailQuery,
+} from "../services/userAuthService";
 import { setCredentials } from "../features/authSlice";
 import { storeToken } from "../services/LocalStorageService";
 import { toast } from "react-toastify";
-import { FloatingLabel } from "flowbite-react";
 
 const Registration: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -62,43 +66,84 @@ const Registration: React.FC = () => {
   }, [EmailSent]);
 
   return (
-    <div className="w-full">
-      <h2 className="mb-6 text-3xl font-bold text-center ">Registration</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div className="relative">
-            <FloatingLabel variant="standard" label="Given Name" id="given_name" type="text" value={formData.given_name} onChange={handleChange} required />
+    <div className="container flex items-center min-h-screen px-4 py-8 m-auto">
+      <div className="w-full max-w-md mx-auto space-y-8">
+        <div className="text-center">
+          <h2 className="text-3xl font-bold">Create an account</h2>
+          <p className="mt-2 text-gray-600 dark:text-gray-400">
+            Please fill in your information to get started
+          </p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <Input
+              label="Given Name"
+              id="given_name"
+              type="text"
+              value={formData.given_name}
+              onChange={handleChange}
+              required
+              startIcon={<User className="h-5 w-5" />}
+              placeholder="John"
+            />
+            <Input
+              label="Family Name"
+              id="family_name"
+              type="text"
+              value={formData.family_name}
+              onChange={handleChange}
+              required
+              startIcon={<User className="h-5 w-5" />}
+              placeholder="Doe"
+            />
           </div>
-          <div className="relative">
-            <FloatingLabel variant="standard" label="Family Name" id="family_name" type="text" value={formData.family_name} onChange={handleChange} required />
-          </div>
-        </div>
-        <div className="relative">
-          <FloatingLabel variant="standard" label="Email" id="email" type="email" value={formData.email} onChange={handleChange} required />
-        </div>
-        <div className="relative">
-          <FloatingLabel variant="standard" label="Password" id="password" type="password" value={formData.password} onChange={handleChange} required />
-        </div>
-        <Button
-          type="submit"
-          className={`w-full p-3 rounded-full  font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-DEFAULT ${
-            loading ? "bg-gray-400 cursor-not-allowed" : "bg-accent-DEFAULT hover:bg-accent-hover"
-          }`}
-          disabled={loading}
-        >
-          {loading ? (
-            <span className="flex items-center justify-center">
-              <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Registering...
-            </span>
-          ) : (
-            "Register"
-          )}
-        </Button>
-      </form>
+
+          <Input
+            label="Email"
+            id="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            startIcon={<Mail className="h-5 w-5" />}
+            placeholder="john.doe@example.com"
+            helperText="We'll send you a verification email"
+          />
+
+          <Input
+            label="Password"
+            id="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            startIcon={<Lock className="h-5 w-5" />}
+            placeholder="Create a strong password"
+            helperText="Must be at least 8 characters with numbers and special characters"
+          />
+
+          <Button
+            type="submit"
+            variant="default"
+            size="lg"
+            className="w-full"
+            disabled={loading}
+          >
+            {loading ? "Creating account..." : "Create account"}
+          </Button>
+
+          <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+            Already have an account?{" "}
+            <Link
+              to="/auth"
+              className="text-accent-DEFAULT hover:text-accent-hover font-medium"
+            >
+              Back to sign in
+            </Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 };

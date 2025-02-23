@@ -2,8 +2,8 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 
 export enum Language {
-    English = "en",
-    French = "fr",
+  English = "en",
+  French = "fr",
 }
 
 export interface SettingType {
@@ -36,7 +36,7 @@ export const settingSlice = createSlice({
   },
 });
 
-export const { setSettingInfo, unSetSettingInfo} = settingSlice.actions;
+export const { setSettingInfo, unSetSettingInfo } = settingSlice.actions;
 
 export default settingSlice.reducer;
 

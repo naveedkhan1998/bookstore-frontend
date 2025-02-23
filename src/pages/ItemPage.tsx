@@ -14,7 +14,7 @@ const renderValue = (value: any) => {
               <li key={subKey}>
                 <strong>{subKey}:</strong> {renderValue(subValue)}
               </li>
-            )
+            ),
         )}
       </ul>
     );

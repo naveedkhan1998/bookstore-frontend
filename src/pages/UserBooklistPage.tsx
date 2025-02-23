@@ -1,47 +1,94 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useAppSelector } from "../app/hooks";
 import { getUserBooklists } from "../features/booklistSlice";
-import { useGetVolumeQuery } from "../services/googleBooksServices";
-import { BookVolume } from "../comman-types";
 import BookComponent from "../components/BookComponent";
-import Button from "../components/Button";
+import { FaLock, FaGlobe, FaCalendar, FaClock } from "react-icons/fa";
 
 const UserBooklistPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const userBooklists = useAppSelector(getUserBooklists);
   const booklist = userBooklists.bookLists?.find((obj) => obj._id === id);
+  const [sortBy, setSortBy] = useState<"dateAdded" | "title">("dateAdded");
 
   const formatDateTime = (dateTimeString: string): string => {
-    const options: Intl.DateTimeFormatOptions = {
+    return new Intl.DateTimeFormat("en-US", {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
       hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-    };
-    return new Date(dateTimeString).toLocaleString(undefined, options);
+      minute: "2-digit",
+    }).format(new Date(dateTimeString));
   };
+
+  if (!booklist) {
+    return (
+      <Modal>
+        <div className="flex items-center justify-center h-full">
+          <p className="text-xl text-gray-600">Booklist not found</p>
+        </div>
+      </Modal>
+    );
+  }
 
   return (
     <Modal>
-      <div className="flex flex-col w-full h-full p-6 mx-auto mt-10 overflow-auto ">
-        <div className="flex flex-col w-full p-6 mb-4 rounded-md shadow-2xl">
-          <p className="mb-1 text-lg font-bold">Booklist Name: {booklist?.name}</p>
-          <p>Type: {booklist?.isPrivate ? "Private" : "Public"}</p>
-          <p>Created At: {formatDateTime(booklist?.createdAt || "")}</p>
-          <p>Last Update At: {formatDateTime(booklist?.updatedAt || "")}</p>
-        </div>
-        <div className="grid grid-cols-[auto,fr] flex-grow-1  w-full items-center shadow-2xl p-6 rounded-md ">
-          <h1 className="mb-2 text-xl font-bold">Books In the Booklist:</h1>
-          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
-            {booklist?.books.map((book_id) => (
-              <BookComponent book_id={book_id} />
-            ))}
+      <div className="flex flex-col h-full max-w-7xl mx-auto p-6 gap-6">
+        {/* Header Section */}
+        <header className="bg-white rounded-lg shadow-lg p-6">
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold text-gray-800">
+              {booklist.name}
+            </h1>
+            <span className="flex items-center gap-2 text-gray-600">
+              {booklist.isPrivate ? <FaLock /> : <FaGlobe />}
+              {booklist.isPrivate ? "Private" : "Public"}
+            </span>
           </div>
-        </div>
+          <div className="mt-4 flex gap-6 text-sm text-gray-500">
+            <span className="flex items-center gap-1">
+              <FaCalendar /> Created: {formatDateTime(booklist.createdAt)}
+            </span>
+            <span className="flex items-center gap-1">
+              <FaClock /> Updated: {formatDateTime(booklist.updatedAt)}
+            </span>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 bg-white rounded-lg shadow-lg p-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-xl font-semibold text-gray-800">
+              Books ({booklist.books.length})
+            </h2>
+            <select
+              className="px-4 py-2 border rounded-md"
+              value={sortBy}
+              onChange={(e) =>
+                setSortBy(e.target.value as "dateAdded" | "title")
+              }
+            >
+              <option value="dateAdded">Sort by Date Added</option>
+              <option value="title">Sort by Title</option>
+            </select>
+          </div>
+
+          {booklist.books.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+              <p className="text-lg">No books in this list yet</p>
+              <p className="mt-2">
+                Start adding books to build your collection
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
+              {booklist.books.map((book_id) => (
+                <BookComponent key={book_id} book_id={book_id} />
+              ))}
+            </div>
+          )}
+        </main>
       </div>
     </Modal>
   );

@@ -8,16 +8,16 @@ export const booklistSlice = createSlice({
   name: "userbooklists",
   initialState,
   reducers: {
-    setUserBookslist: (state, action: PayloadAction<BookListContainer>) => {
+    setUserBookslist: (_state, action: PayloadAction<BookListContainer>) => {
       return action.payload;
     },
-    unSetUserBooklist: (state) => {
-        return initialState;
-      },
+    unSetUserBooklist: (_state) => {
+      return initialState;
+    },
   },
 });
 
-export const { setUserBookslist,unSetUserBooklist } = booklistSlice.actions;
+export const { setUserBookslist, unSetUserBooklist } = booklistSlice.actions;
 
 export default booklistSlice.reducer;
 

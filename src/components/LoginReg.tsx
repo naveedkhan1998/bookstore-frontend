@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Login from "./Login";
-import Registration from "./Registration";
-import Button from "./Button";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
+import { FaGoogle, FaGithub, FaFacebook } from "react-icons/fa";
 import { useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
+import Button from "./ui/button/Button";
+import BookLogo from "./svgs/BookLogo";
 
 const LoginReg: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [socialLoading, setSocialLoading] = useState<string | null>(null);
   const navigate = useNavigate();
   const token = useAppSelector(getCurrentToken);
 
@@ -17,35 +19,122 @@ const LoginReg: React.FC = () => {
     }
   }, [token, navigate]);
 
-  const toggleForm = () => {
-    setIsLogin(!isLogin);
+  const handleSocialLogin = async (provider: string) => {
+    try {
+      setSocialLoading(provider);
+      // Implement social login logic here
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+      toast.success(`Successfully logged in with ${provider}`);
+    } catch (error) {
+      toast.error(`Failed to login with ${provider}`);
+    } finally {
+      setSocialLoading(null);
+    }
   };
 
-  const formMessage = isLogin ? "Need an account? " : "Already have an account? ";
-  const buttonText = isLogin ? "Register here" : "Login here";
-
   return (
-    <div className="flex w-full min-h-screen bg-gradient-to-br from-main-primary to-main-secondary dark:from-dark-primary dark:to-dark-secondary">
-      <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto my-8 rounded-xl shadow-2xl overflow-hidden transition-all duration-500 ease-in-out transform hover:scale-[1.02]">
-        <div className="items-center justify-center hidden w-full md:w-1/2 md:flex bg-gradient-to-br from-accent-DEFAULT to-secondary-DEFAULT">
-          <div className="p-8 text-center text-white">
-            <h2 className="mb-4 text-4xl font-bold animate-fade-in-down">{isLogin ? "Welcome Back!" : "Join Us Today!"}</h2>
-            <p className="mt-2 text-lg animate-fade-in-up">{isLogin ? "Please login to access your account." : "Sign up to start your journey with us."}</p>
-          </div>
-        </div>
+    <div className="container flex items-center min-h-screen px-4 py-8 m-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col w-full max-w-6xl mx-auto overflow-hidden bg-white shadow-xl md:flex-row dark:bg-dark-secondary rounded-2xl"
+      >
+        {/* Left Panel */}
+        <motion.div className="relative hidden md:flex md:w-5/12 bg-gradient-to-br from-accent-DEFAULT via-secondary-DEFAULT to-primary-DEFAULT">
+          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
+          <div className="relative z-10 flex flex-col justify-center w-full p-12">
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="flex flex-col items-center mb-12"
+            >
+              <div className="p-3 mb-4 bg-white/10 backdrop-blur-sm rounded-2xl">
+                <BookLogo className="w-16 h-16 " />
+              </div>
+              <h1 className="text-3xl font-bold ">BookStore</h1>
+            </motion.div>
 
-        <div className="flex flex-col items-center justify-center w-full p-8 transition-all duration-300 bg-white md:w-1/2 dark:bg-dark-secondary rounded-xl md:rounded-l-none">
-          <div className="w-full max-w-md">
-            {isLogin ? <Login /> : <Registration />}
-            <div className="mt-6 text-center">
-              <p className="text-sm text-gray-600 dark:text-gray-400">{formMessage}</p>
-              <Button variant="ghost" className="transition-colors duration-300 text-accent-DEFAULT hover:text-accent-hover" onClick={toggleForm}>
-                {buttonText}
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="space-y-6 text-center"
+            >
+              <h2 className="text-4xl font-bold leading-tight ">
+                Welcome to BookStore
+              </h2>
+              <p className="max-w-sm mx-auto text-lg leading-relaxed ">
+                Choose how you'd like to continue
+              </p>
+              <div className="w-20 h-1 mx-auto rounded-full bg-white/20"></div>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Right Panel */}
+        <div className="w-full p-4 md:w-7/12 md:p-12">
+          <div className="max-w-md mx-auto space-y-8">
+            <div className="text-center">
+              <h2 className="text-3xl font-bold">Welcome to BookStore</h2>
+              <p className="mt-2 text-gray-600 dark:text-gray-400">
+                Choose how you'd like to continue
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <Button
+                variant="default"
+                size="lg"
+                className="w-full"
+                onClick={() => navigate("/login")}
+              >
+                Sign In
               </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full"
+                onClick={() => navigate("/register")}
+              >
+                Create Account
+              </Button>
+            </div>
+
+            {/* Social Login */}
+            <div className="mt-8">
+              <div className="relative flex items-center my-6">
+                <div className="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+                <span className="flex-shrink-0 mx-4 text-sm text-gray-400">
+                  or continue with
+                </span>
+                <div className="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { name: "Google", icon: FaGoogle },
+                  { name: "GitHub", icon: FaGithub },
+                  { name: "Facebook", icon: FaFacebook },
+                ].map(({ name, icon: Icon }) => (
+                  <button
+                    key={name}
+                    onClick={() => handleSocialLogin(name)}
+                    disabled={!!socialLoading}
+                    aria-label={`Sign in with ${name}`}
+                    className={`flex items-center justify-center p-2.5 border border-gray-200 
+                      dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 
+                      transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed
+                      ${socialLoading === name ? "animate-pulse" : ""}`}
+                  >
+                    <Icon className="w-5 h-5" />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

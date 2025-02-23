@@ -8,10 +8,10 @@ export const publicBooklistSlice = createSlice({
   name: "publicbooklists",
   initialState,
   reducers: {
-    setPublicBookslist: (state, action: PayloadAction<PublicBooklist>) => {
+    setPublicBookslist: (_state, action: PayloadAction<PublicBooklist>) => {
       return action.payload;
     },
-    unSetPublicBooklist: (state) => {
+    unSetPublicBooklist: (_state) => {
       return initialState;
     },
   },

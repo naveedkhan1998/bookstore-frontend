@@ -8,7 +8,7 @@ export const elixirsSlice = createSlice({
   name: "elixirs",
   initialState,
   reducers: {
-    setElixirs: (state, action: PayloadAction<Elixirs[]>) => {
+    setElixirs: (_state, action: PayloadAction<Elixirs[]>) => {
       return action.payload;
     },
   },

@@ -18,7 +18,7 @@ export type Elixirs = {
   time: null | string;
   difficulty: string;
   ingredients: Ingredient[];
-  inventors: any[];
+  inventors: { id: string; name: string }[];
   manufacturer: null | string;
 };
 
@@ -120,7 +120,7 @@ export interface BookListContainer {
 }
 
 export type Reviews = {
-  reviewId:string;
+  reviewId: string;
   reviewText: string;
   reviewerName: string;
   isHidden: boolean;
@@ -143,7 +143,6 @@ export interface UserCart {
   books: BooksInCart;
   __v?: number;
 }
-
 
 type TransactionItem = Record<string, number>;
 

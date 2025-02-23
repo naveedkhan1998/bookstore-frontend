@@ -9,13 +9,12 @@ const storeToken = ({ value }: Prop) => {
     //console.log('Store Token')
     const { access } = value;
     localStorage.setItem("access_token", access);
-
   }
 };
 
 const getToken = () => {
-  let access_token = localStorage.getItem("access_token");
-  return { access_token};
+  const access_token = localStorage.getItem("access_token");
+  return { access_token };
 };
 
 const removeToken = () => {

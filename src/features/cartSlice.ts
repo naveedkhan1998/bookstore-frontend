@@ -3,17 +3,17 @@ import type { RootState } from "../app/store";
 import { UserCart } from "../comman-types";
 
 const initialState: UserCart = {
-    books:{}
+  books: {},
 };
 
 export const cartSlice = createSlice({
   name: "usercart",
   initialState,
   reducers: {
-    setUserCart: (state, action: PayloadAction<UserCart>) => {
+    setUserCart: (_state, action: PayloadAction<UserCart>) => {
       return action.payload;
     },
-    unSetUserCart: (state) => {
+    unSetUserCart: (_state) => {
       return initialState;
     },
   },
