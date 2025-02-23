@@ -6,7 +6,7 @@ import { setPublicBookslist } from "../features/publicBooklistSlice";
 import { Link } from "react-router-dom";
 import { getRefresh, setRefresh } from "../features/refreshSlice";
 import { BookCategory } from "../comman-types";
-import { Card } from "flowbite-react";
+import Card from "../components/ui/card/card.component";
 
 const AuthentiatedBooklistPage = () => {
   const dispatch = useAppDispatch();

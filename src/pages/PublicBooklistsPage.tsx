@@ -7,7 +7,7 @@ import {
   setPublicBookslist,
 } from "../features/publicBooklistSlice";
 import { Link } from "react-router-dom";
-import { Card } from "flowbite-react";
+import Card from "../components/ui/card/card.component";
 
 const PublicBooklistsPage = () => {
   const dispatch = useAppDispatch();

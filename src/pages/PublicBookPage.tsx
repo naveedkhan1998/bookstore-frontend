@@ -3,7 +3,8 @@ import { BookCategory } from "../comman-types";
 import { useLocation } from "react-router-dom";
 import Modal from "../components/Modal";
 import BookComponent from "../components/BookComponent";
-
+import Button from "../components/ui/button/Button";
+import Input from "../components/ui/input/input.component";
 import { Plus } from "lucide-react";
 import {
   useAddBooklistReviewMutation,
@@ -19,27 +20,20 @@ import {
 import { useDispatch } from "react-redux";
 import { getCurrentUserDetails } from "../features/userSlice";
 import { useAdminHideReviewMutation } from "../services/adminServices";
-import { Button, FloatingLabel } from "flowbite-react";
 
 const PublicBookPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const access_token = useAppSelector(getCurrentToken);
-
   const user = useAppSelector(getCurrentUserDetails);
-
   const [inputValue, setInputValue] = useState("");
-
   const booklists = useAppSelector(getPublicBooklists);
-
   const { from } = location.state;
   const book2: BookCategory = from;
 
   const { data, isSuccess, refetch } = useGetALLBooklistsQuery(access_token);
-
   const [addBooklistReview, { isSuccess: ReviewAdded }] =
     useAddBooklistReviewMutation();
-
   const [adminHideReview, { isSuccess: ReviewHidden }] =
     useAdminHideReviewMutation();
 
@@ -47,12 +41,15 @@ const PublicBookPage = () => {
     await adminHideReview({ booklist_id, review_id, access_token });
   };
 
-  const handleClick = async (id: string) => {
-    const body = {
-      booklist_id: id,
-      reviewText: inputValue,
-    };
-    await addBooklistReview({ body, access_token });
+  const handleSubmitReview = async (id: string) => {
+    if (!inputValue.trim()) {
+      toast.error("Review text cannot be empty");
+      return;
+    }
+    await addBooklistReview({
+      body: { booklist_id: id, reviewText: inputValue },
+      access_token,
+    });
   };
 
   const handleRefresh = async () => {
@@ -102,112 +99,91 @@ const PublicBookPage = () => {
       booklists.find((booklist) => booklist._id === book2._id) || book2;
     setBook(foundBook);
   }, [ReviewAdded, ReviewHidden]);
+
   return (
     <Modal>
-      <>
-        <div className="flex flex-col w-full p-6 overflow-auto text-gray-800 ">
-          <div className="flex flex-col w-full p-6 mb-4 border rounded-md shadow-2xl">
-            <p className="mb-1 text-lg font-bold">
-              Booklist Name: {book?.name}
-            </p>
-            <p className="mb-1 text-lg font-bold">
-              Author Name: {book?.authorName}
-            </p>
-          </div>
-          <div className="grid grid-cols-[auto,fr] flex-grow-1  w-full items-center shadow-2xl p-6 rounded-md border">
-            <h1 className="mb-2 text-xl font-bold">Books In the Booklist:</h1>
-            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
-              {book?.books.map((book_id) => (
-                <>
-                  <BookComponent book_id={book_id} />
-                </>
-              ))}
-            </div>
-          </div>
-          <div className="grid grid-cols-[auto,fr] mt-10 w-full items-center shadow-2xl p-6 rounded-md border">
-            <h1 className="mb-6 text-xl font-bold">Reviews:</h1>
+      <div className="flex flex-col w-full gap-6 p-6 overflow-auto text-gray-800 dark:text-gray-200">
+        {/* Booklist Header */}
+        <div className="p-6 rounded-lg shadow-lg bg-main-primary dark:bg-dark-primary">
+          <h1 className="mb-2 text-2xl font-bold">{book?.name}</h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
+            Created by {book?.authorName}
+          </p>
+        </div>
 
-            {user.isAdmin
-              ? book?.reviews &&
-                book.reviews
-                  .filter((review) => review.reviewText)
-                  .map((review, index) => (
-                    <div className="flex flex-row items-center justify-between">
-                      <Button.Group className="w-full">
-                        <div
-                          key={index}
-                          className="w-full p-6 mb-4 rounded-md shadow-md bg-main-primary dark:bg-dark-primary"
-                        >
-                          <p className="mb-2 text-xl font-bold text-gray-800">
-                            Name: {review.reviewerName}
-                          </p>
-                          <p className="text-gray-700">
-                            Review: {review.reviewText}
-                          </p>
-                          <p className="text-gray-700">
-                            Is Hidden: {review.isHidden ? "Yes" : "No"}
-                          </p>
-                        </div>
-                        {user.isAdmin && (
-                          <Button
-                            onClick={() =>
-                              handleHide(book2._id, review.reviewId)
-                            }
-                            className="p-6 mb-4 bg-red-600  dark:bg-red-600"
-                          >
-                            Hide
-                          </Button>
-                        )}
-                      </Button.Group>
-                    </div>
-                  ))
-              : book?.reviews &&
-                book.reviews
-                  .filter((review) => review.reviewText && !review.isHidden)
-                  .map((review, index) => (
-                    <div className="flex flex-row items-center justify-between">
-                      <div
-                        key={index}
-                        className="w-full p-6 mb-4 rounded-lg shadow-md bg-main-primary dark:bg-dark-primary"
-                      >
-                        <p className="mb-2 text-xl font-bold text-gray-800">
-                          Name: {review.reviewerName}
-                        </p>
-                        <p className="text-gray-700">
-                          Review: {review.reviewText}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-
-            {access_token && (
-              <>
-                <div className="flex flex-col p-6 space-y-4 border rounded-md">
-                  <h1 className="mb-2 text-xl font-bold">Add a Review: </h1>
-
-                  <FloatingLabel
-                    variant="standard"
-                    label="Enter Text..."
-                    id="text"
-                    type="text"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    required
-                  />
-
-                  <Button
-                    type="submit"
-                    onClick={() => handleClick(book2._id)}
-                    className="flex items-center justify-center p-2 bg-blue-500 rounded-md text-gray hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
-                  >
-                    <Plus />
-                  </Button>
-                </div>
-              </>
-            )}
+        {/* Books Grid */}
+        <div className="p-6 rounded-lg shadow-lg bg-main-primary dark:bg-dark-primary">
+          <h2 className="mb-4 text-xl font-bold">Books in this list</h2>
+          <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
+            {book?.books.map((book_id) => (
+              <BookComponent key={book_id} book_id={book_id} />
+            ))}
           </div>
         </div>
-      </>
+
+        {/* Reviews Section */}
+        <div className="p-6 rounded-lg shadow-lg bg-main-primary dark:bg-dark-primary">
+          <h2 className="mb-6 text-xl font-bold">Reviews</h2>
+
+          <div className="space-y-4">
+            {/* Reviews List */}
+            {book?.reviews
+              ?.filter(
+                (review) =>
+                  review.reviewText && (!review.isHidden || user.isAdmin),
+              )
+              .map((review) => (
+                <div
+                  key={review.reviewId}
+                  className="flex items-start gap-4 p-4 rounded-lg bg-main-secondary dark:bg-dark-secondary"
+                >
+                  <div className="flex-grow">
+                    <p className="font-semibold">{review.reviewerName}</p>
+                    <p className="mt-1 text-gray-600 dark:text-gray-400">
+                      {review.reviewText}
+                    </p>
+                    {user.isAdmin && (
+                      <p className="mt-1 text-sm text-gray-500">
+                        Status: {review.isHidden ? "Hidden" : "Visible"}
+                      </p>
+                    )}
+                  </div>
+                  {user.isAdmin && (
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={() => handleHide(book2._id, review.reviewId)}
+                    >
+                      {review.isHidden ? "Unhide" : "Hide"}
+                    </Button>
+                  )}
+                </div>
+              ))}
+          </div>
+
+          {/* Add Review Form */}
+          {access_token && (
+            <div className="mt-6 space-y-4">
+              <h3 className="text-lg font-semibold">Add a Review</h3>
+              <div className="flex gap-2">
+                <Input
+                  label=""
+                  placeholder="Write your review..."
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className="flex-grow"
+                />
+                <Button
+                  onClick={() => handleSubmitReview(book2._id)}
+                  className="flex-shrink-0"
+                >
+                  <Plus className="w-5 h-5" />
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
     </Modal>
   );
 };
