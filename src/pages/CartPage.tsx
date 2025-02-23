@@ -113,7 +113,7 @@ const CartItem: React.FC<CartItemProps> = ({
         <div className="flex items-start justify-between">
           <div>
             <h2
-              className="text-lg font-medium cursor-pointer hover:text-secondary"
+              className="text-lg font-medium cursor-pointer truncate max-w-[200px] md:max-w-fit hover:text-secondary"
               onClick={onClick}
             >
               {book.volumeInfo.title}
