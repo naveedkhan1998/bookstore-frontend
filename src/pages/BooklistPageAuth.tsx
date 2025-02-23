@@ -48,7 +48,7 @@ const BooklistPageAuth: React.FC = () => {
     }));
   };
 
-  const handleDelete = async (id: String) => {
+  const handleDelete = async (id: string) => {
     alert("Are you sure you want to delete this booklist?");
     await deleteBooklist({ id, access_token });
     refetch();
@@ -78,7 +78,7 @@ const BooklistPageAuth: React.FC = () => {
     });
   };
 
-  const handleBooklistClick = (id: String) => {
+  const handleBooklistClick = (id: string) => {
     navigate(`/user-booklist/${id}`);
   };
 

@@ -14,7 +14,7 @@ const storeToken = ({ value }: Prop) => {
 };
 
 const getToken = () => {
-  let access_token = localStorage.getItem("access_token");
+  const access_token = localStorage.getItem("access_token");
   return { access_token};
 };
 

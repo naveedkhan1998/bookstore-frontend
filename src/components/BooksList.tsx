@@ -20,7 +20,7 @@ const BooksList = () => {
 
   const navigate = useNavigate();
 
-  function handleDivClick(id: String) {
+  function handleDivClick(id: string) {
     navigate(`/book/${id}`);
   }
 

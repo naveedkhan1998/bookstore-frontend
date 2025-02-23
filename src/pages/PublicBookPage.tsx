@@ -50,7 +50,7 @@ const PublicBookPage = () => {
     await adminHideReview({ booklist_id, review_id, access_token });
   };
 
-  const handleClick = async (id: String) => {
+  const handleClick = async (id: string) => {
     const body = {
       booklist_id: id,
       reviewText: inputValue,
