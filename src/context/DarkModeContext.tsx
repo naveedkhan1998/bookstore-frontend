@@ -7,7 +7,7 @@ interface DarkModeContextProps {
 }
 
 const DarkModeContext = createContext<DarkModeContextProps | undefined>(
-  undefined
+  undefined,
 );
 
 interface DarkModeProviderProps {

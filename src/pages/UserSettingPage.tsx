@@ -1,7 +1,10 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSettingInfo, getCurrentSettingDetails, Language } from "../features/settingSlice";
-import { DarkThemeToggle } from "flowbite-react";
+import {
+  setSettingInfo,
+  getCurrentSettingDetails,
+  Language,
+} from "../features/settingSlice";
+
 import { HiOutlineMail, HiOutlineGlobe, HiSave } from "react-icons/hi";
 
 const UserSettings = () => {
@@ -23,7 +26,7 @@ const UserSettings = () => {
           setSettingInfo({
             ...setting,
             email_notification: !setting.email_notification,
-          })
+          }),
         );
         break;
       case "darkMode":
@@ -54,8 +57,15 @@ const UserSettings = () => {
             <HiOutlineMail className="text-2xl text-indigo-500 dark:text-indigo-300" />
           </div>
           <label className="inline-flex items-center">
-            <input type="checkbox" className="w-5 h-5 text-indigo-600 form-checkbox " checked={setting.email_notification} onChange={() => handleSettingChange("emailNotifications")} />
-            <span className="ml-2 text-gray-700 dark:text-gray-300">Receive email notifications</span>
+            <input
+              type="checkbox"
+              className="w-5 h-5 text-indigo-600 form-checkbox "
+              checked={setting.email_notification}
+              onChange={() => handleSettingChange("emailNotifications")}
+            />
+            <span className="ml-2 text-gray-700 dark:text-gray-300">
+              Receive email notifications
+            </span>
           </label>
         </div>
 
@@ -79,7 +89,10 @@ const UserSettings = () => {
       </div>
 
       <div className="flex justify-center mt-8">
-        <button className="flex items-center px-6 py-3 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-500" onClick={handleSaveClick}>
+        <button
+          className="flex items-center px-6 py-3 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-500"
+          onClick={handleSaveClick}
+        >
           <HiSave className="mr-2 text-xl" />
           Save Settings
         </button>

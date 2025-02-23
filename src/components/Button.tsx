@@ -11,7 +11,15 @@ export const buttonStyles = cva(["transitions-colors"], {
     },
     size: {
       default: ["rounded", "p-2"],
-      icon: ["rounded-full", "w-10", "h-10", "flex", "items-center", "justify-center", "p-2.5"],
+      icon: [
+        "rounded-full",
+        "w-10",
+        "h-10",
+        "flex",
+        "items-center",
+        "justify-center",
+        "p-2.5",
+      ],
     },
   },
   defaultVariants: {
@@ -22,9 +30,18 @@ export const buttonStyles = cva(["transitions-colors"], {
 
 type ButtonProps = VariantProps<typeof buttonStyles> & ComponentProps<"button">;
 
-const BaseButton = ({ variant, size, className, children, ...props }: ButtonProps) => {
+const BaseButton = ({
+  variant,
+  size,
+  className,
+  children,
+  ...props
+}: ButtonProps) => {
   return (
-    <button {...props} className={twMerge(buttonStyles({ variant, size }), className)}>
+    <button
+      {...props}
+      className={twMerge(buttonStyles({ variant, size }), className)}
+    >
       {children}
     </button>
   );
@@ -39,7 +56,11 @@ const Button = ({ number = 0, ...buttonProps }: NumberButtonProps) => {
     <BaseButton {...buttonProps}>
       <div className="relative inline-flex items-center">
         <span>{buttonProps.children}</span>
-        {number > 0 && <span className="absolute -top-4 -right-4 bg-red-600/75 text-xs font-bold rounded-full min-w-[1.5rem] h-6 flex items-center justify-center px-1 hover:animate-pulse">{number}</span>}
+        {number > 0 && (
+          <span className="absolute -top-4 -right-4 bg-red-600/75 text-xs font-bold rounded-full min-w-[1.5rem] h-6 flex items-center justify-center px-1 hover:animate-pulse">
+            {number}
+          </span>
+        )}
       </div>
     </BaseButton>
   );

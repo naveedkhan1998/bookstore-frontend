@@ -3,7 +3,7 @@ import type { RootState } from "../app/store";
 import { UserCart } from "../comman-types";
 
 const initialState: UserCart = {
-    books:{}
+  books: {},
 };
 
 export const cartSlice = createSlice({

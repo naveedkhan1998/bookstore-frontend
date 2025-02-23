@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useGetUserBooklistsQuery, useCreateBooklistMutation } from "../services/booklistsServices";
+import {
+  useGetUserBooklistsQuery,
+  useCreateBooklistMutation,
+} from "../services/booklistsServices";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import Button from "../components/Button";
@@ -16,7 +19,8 @@ const BooklistPageAuth: React.FC = () => {
   const access_token = useAppSelector(getCurrentToken);
   const { data, isSuccess, refetch } = useGetUserBooklistsQuery(access_token);
 
-  const [deleteBooklist, { isSuccess: booklistDeleted }] = useDeleteBooklistMutation();
+  const [deleteBooklist, { isSuccess: booklistDeleted }] =
+    useDeleteBooklistMutation();
 
   if (isSuccess) {
     dispatch(setUserBookslist(data));
@@ -24,7 +28,8 @@ const BooklistPageAuth: React.FC = () => {
 
   const storeData = useAppSelector(getUserBooklists);
 
-  const [createBooklist, { isSuccess: createBooklistSuccess, isLoading }] = useCreateBooklistMutation();
+  const [createBooklist, { isSuccess: createBooklistSuccess, isLoading }] =
+    useCreateBooklistMutation();
 
   const [formData, setFormData] = useState({
     booklist_name: "",
@@ -87,11 +92,27 @@ const BooklistPageAuth: React.FC = () => {
       <div className="flex flex-col w-full p-8 shadow-lg bg-main-secondary rounded-xl dark:bg-dark-secondary">
         <h1 className="mb-6 text-2xl font-bold ">Create New BookList</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <FloatingLabel variant="standard" label="Booklist Name" type="text" name="booklist_name" value={formData.booklist_name} onChange={handleInputChange} required />
+          <FloatingLabel
+            variant="standard"
+            label="Booklist Name"
+            type="text"
+            name="booklist_name"
+            value={formData.booklist_name}
+            onChange={handleInputChange}
+            required
+          />
 
           <div className="mb-4">
-            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">Privacy</label>
-            <ToggleSwitch checked={formData.isPrivate} label="Private" onChange={(checked) => setFormData({ ...formData, isPrivate: checked })} />
+            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+              Privacy
+            </label>
+            <ToggleSwitch
+              checked={formData.isPrivate}
+              label="Private"
+              onChange={(checked) =>
+                setFormData({ ...formData, isPrivate: checked })
+              }
+            />
           </div>
 
           <Button
@@ -117,13 +138,26 @@ const BooklistPageAuth: React.FC = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {storeData.bookLists &&
               storeData.bookLists.map((bookList) => (
-                <Card key={bookList._id} onClick={() => handleBooklistClick(bookList._id)} className="p-4 rounded-lg shadow bg-main-secondary dark:bg-dark-secondary">
+                <Card
+                  key={bookList._id}
+                  onClick={() => handleBooklistClick(bookList._id)}
+                  className="p-4 rounded-lg shadow bg-main-secondary dark:bg-dark-secondary"
+                >
                   <div className="flex items-center justify-between">
-                    <div id={bookList._id}  className="cursor-pointer">
-                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">{bookList.name}</h2>
-                      <p className="text-gray-600 dark:text-gray-400">{bookList.isPrivate ? "Private" : "Public"}</p>
+                    <div id={bookList._id} className="cursor-pointer">
+                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                        {bookList.name}
+                      </h2>
+                      <p className="text-gray-600 dark:text-gray-400">
+                        {bookList.isPrivate ? "Private" : "Public"}
+                      </p>
                     </div>
-                    <Button onClick={() => handleDelete(bookList._id)} variant="default" size="icon" className="p-2 text-white bg-red-600 rounded-full hover:bg-red-400">
+                    <Button
+                      onClick={() => handleDelete(bookList._id)}
+                      variant="default"
+                      size="icon"
+                      className="p-2 text-white bg-red-600 rounded-full hover:bg-red-400"
+                    >
                       <Trash2 />
                     </Button>
                   </div>

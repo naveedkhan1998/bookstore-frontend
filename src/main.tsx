@@ -16,5 +16,5 @@ createRoot(document.getElementById("root")!).render(
         </React.StrictMode>
       </DarkModeProvider>
     </Flowbite>
-  </Provider>
+  </Provider>,
 );

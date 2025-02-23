@@ -34,9 +34,22 @@ const BooksList = () => {
       key={book.id}
       id={book.id}
       onClick={() => handleDivClick(book.id)}
-      renderImage={() => <img height={250} width={250} src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage} alt={book.volumeInfo.title} className="object-fill w-full h-80" />}
+      renderImage={() => (
+        <img
+          height={250}
+          width={250}
+          src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage}
+          alt={book.volumeInfo.title}
+          className="object-fill w-full h-80"
+        />
+      )}
     >
-      <h5 className="text-2xl font-bold tracking-tight ">Title: {book.volumeInfo.title.length > 20 ? `${book.volumeInfo.title.substring(0, 20)}...` : book.volumeInfo.title}</h5>
+      <h5 className="text-2xl font-bold tracking-tight ">
+        Title:{" "}
+        {book.volumeInfo.title.length > 20
+          ? `${book.volumeInfo.title.substring(0, 20)}...`
+          : book.volumeInfo.title}
+      </h5>
       <p className="font-normal ">Authors: {book.volumeInfo.authors}</p>
       <p className="font-normal ">Published: {book.volumeInfo.publishedDate}</p>
     </Card>
@@ -48,11 +61,20 @@ const BooksList = () => {
       {paginatedData.length > 0 ? (
         <>
           <div className="sticky top-0 z-10 flex justify-center pt-12">
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} showIcons className="text-main-text dark:text-dark-text" theme={customPaginationTheme} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+              showIcons
+              className="text-main-text dark:text-dark-text"
+              theme={customPaginationTheme}
+            />
           </div>
 
           <div className="grid grid-cols-[auto,fr] flex-grow-1 overflow-auto p-12 ">
-            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">{paginatedData.map(renderBook)}</div>
+            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">
+              {paginatedData.map(renderBook)}
+            </div>
           </div>
         </>
       ) : (

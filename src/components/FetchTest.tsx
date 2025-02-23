@@ -46,7 +46,7 @@ const FetchTest = () => {
 
     return Array.from(
       { length: endPage - startPage + 1 },
-      (_, index) => startPage + index
+      (_, index) => startPage + index,
     ).map((page) => (
       <Button
         key={page}

@@ -10,8 +10,14 @@ import { Button, Spinner } from "flowbite-react";
 import { toast } from "react-toastify";
 import { getUserBooklists } from "../features/booklistSlice";
 import { useState, useEffect } from "react";
-import { useAddBookToBooklistMutation, useGetUserBooklistsQuery } from "../services/booklistsServices";
-import { useAddToCartMutation, useGetCartQuery } from "../services/cartServices";
+import {
+  useAddBookToBooklistMutation,
+  useGetUserBooklistsQuery,
+} from "../services/booklistsServices";
+import {
+  useAddToCartMutation,
+  useGetCartQuery,
+} from "../services/cartServices";
 import { setUserCart } from "../features/cartSlice";
 
 const BookPage = () => {
@@ -21,12 +27,23 @@ const BookPage = () => {
   const { id } = useParams();
   const books = useAppSelector(getBooks);
   const { refetch } = useGetUserBooklistsQuery(access_token);
-  const [addBookToBooklist, { isLoading: addingToBooklist, isSuccess: bookAdded }] = useAddBookToBooklistMutation();
-  const [addToCart, { isLoading: addingToCart, isSuccess: addedToCart }] = useAddToCartMutation();
-  const { data: cartData, isSuccess: CartSuccess, isFetching, refetch: refetchCart } = useGetCartQuery(access_token);
+  const [
+    addBookToBooklist,
+    { isLoading: addingToBooklist, isSuccess: bookAdded },
+  ] = useAddBookToBooklistMutation();
+  const [addToCart, { isLoading: addingToCart, isSuccess: addedToCart }] =
+    useAddToCartMutation();
+  const {
+    data: cartData,
+    isSuccess: CartSuccess,
+    isFetching,
+    refetch: refetchCart,
+  } = useGetCartQuery(access_token);
   const { data, isSuccess } = useGetVolumeQuery(id);
 
-  const selectedBook = isSuccess ? data : books.find((obj: BookVolume) => obj.id === id);
+  const selectedBook = isSuccess
+    ? data
+    : books.find((obj: BookVolume) => obj.id === id);
 
   const removeHtmlTags = (input: string) => input.replace(/<[^>]*>/g, "");
 
@@ -51,7 +68,9 @@ const BookPage = () => {
   const [selectedBooklistID, setSelectedBooklistID] = useState("");
 
   const handleAddToBooklist = () => {
-    const booklist = userBooklists.bookLists?.find((obj) => obj._id === selectedBooklistID);
+    const booklist = userBooklists.bookLists?.find(
+      (obj) => obj._id === selectedBooklistID,
+    );
     if (booklist) {
       if ("books" in booklist) {
         const books = [...booklist.books, id];
@@ -66,7 +85,9 @@ const BookPage = () => {
 
   useEffect(() => {
     if (bookAdded) {
-      toast(`Book Added to ${userBooklists.bookLists?.find((obj) => obj._id === selectedBooklistID)?.name} Booklist`);
+      toast(
+        `Book Added to ${userBooklists.bookLists?.find((obj) => obj._id === selectedBooklistID)?.name} Booklist`,
+      );
       refetch();
     }
   }, [bookAdded]);
@@ -79,7 +100,11 @@ const BookPage = () => {
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div className="flex flex-wrap items-center gap-2">
                 {selectedBook.saleInfo.listPrice ? (
-                  <Button onClick={handleAddToCart} gradientDuoTone="cyanToBlue" className="w-full md:w-auto">
+                  <Button
+                    onClick={handleAddToCart}
+                    gradientDuoTone="cyanToBlue"
+                    className="w-full md:w-auto"
+                  >
                     {addingToCart ? (
                       <>
                         <Spinner size="sm" className="mr-2" />
@@ -90,7 +115,10 @@ const BookPage = () => {
                     )}
                   </Button>
                 ) : (
-                  <Button gradientDuoTone="pinkToOrange" className="w-full md:w-auto">
+                  <Button
+                    gradientDuoTone="pinkToOrange"
+                    className="w-full md:w-auto"
+                  >
                     Sold Out
                   </Button>
                 )}
@@ -106,11 +134,15 @@ const BookPage = () => {
                   </option>
                   {userBooklists.bookLists?.map((booklist) => (
                     <option key={booklist._id} value={booklist._id}>
-                      {booklist.name} | {booklist.isPrivate ? "Private" : "Public"}
+                      {booklist.name} |{" "}
+                      {booklist.isPrivate ? "Private" : "Public"}
                     </option>
                   ))}
                 </select>
-                <Button onClick={handleAddToBooklist} className="w-full md:w-auto">
+                <Button
+                  onClick={handleAddToBooklist}
+                  className="w-full md:w-auto"
+                >
                   {addingToBooklist ? (
                     <>
                       <Spinner size="sm" className="mr-2" />
@@ -124,38 +156,58 @@ const BookPage = () => {
             </div>
           )}
           <div className="flex flex-col items-center gap-4 p-4 rounded-lg shadow-lg ">
-            <img src={selectedBook.volumeInfo.imageLinks?.thumbnail || DefaultPic} alt="Book Thumbnail" className="rounded-md shadow-lg" style={{ maxWidth: "300px", maxHeight: "300px" }} />
+            <img
+              src={selectedBook.volumeInfo.imageLinks?.thumbnail || DefaultPic}
+              alt="Book Thumbnail"
+              className="rounded-md shadow-lg"
+              style={{ maxWidth: "300px", maxHeight: "300px" }}
+            />
             <div className="text-center">
-              <h2 className="text-2xl font-bold">{selectedBook.volumeInfo.title}</h2>
-              {selectedBook.volumeInfo.subtitle && <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">{selectedBook.volumeInfo.subtitle}</p>}
+              <h2 className="text-2xl font-bold">
+                {selectedBook.volumeInfo.title}
+              </h2>
+              {selectedBook.volumeInfo.subtitle && (
+                <p className="mt-2 text-lg text-gray-600 dark:text-gray-400">
+                  {selectedBook.volumeInfo.subtitle}
+                </p>
+              )}
             </div>
             {selectedBook.saleInfo && (
               <div className="space-y-1 text-left">
                 <p>
                   <span className="font-semibold">List Price:</span>{" "}
-                  {selectedBook.saleInfo.listPrice ? `${selectedBook.saleInfo.listPrice.amount} ${selectedBook.saleInfo.listPrice.currencyCode}` : "Out of Stock"}
+                  {selectedBook.saleInfo.listPrice
+                    ? `${selectedBook.saleInfo.listPrice.amount} ${selectedBook.saleInfo.listPrice.currencyCode}`
+                    : "Out of Stock"}
                 </p>
                 <p>
                   <span className="font-semibold">Retail Price:</span>{" "}
-                  {selectedBook.saleInfo.retailPrice ? `${selectedBook.saleInfo.retailPrice.amount} ${selectedBook.saleInfo.retailPrice.currencyCode}` : "Out of Stock"}
+                  {selectedBook.saleInfo.retailPrice
+                    ? `${selectedBook.saleInfo.retailPrice.amount} ${selectedBook.saleInfo.retailPrice.currencyCode}`
+                    : "Out of Stock"}
                 </p>
               </div>
             )}
             <div className="space-y-1 text-left">
               <p>
-                <span className="font-semibold">Authors:</span> {selectedBook.volumeInfo.authors?.join(", ") || "N/A"}
+                <span className="font-semibold">Authors:</span>{" "}
+                {selectedBook.volumeInfo.authors?.join(", ") || "N/A"}
               </p>
               <p>
-                <span className="font-semibold">Publisher:</span> {selectedBook.volumeInfo.publisher || "N/A"}
+                <span className="font-semibold">Publisher:</span>{" "}
+                {selectedBook.volumeInfo.publisher || "N/A"}
               </p>
               <p>
-                <span className="font-semibold">Published Date:</span> {selectedBook.volumeInfo.publishedDate || "N/A"}
+                <span className="font-semibold">Published Date:</span>{" "}
+                {selectedBook.volumeInfo.publishedDate || "N/A"}
               </p>
               <p>
-                <span className="font-semibold">Page Count:</span> {selectedBook.volumeInfo.pageCount || "N/A"}
+                <span className="font-semibold">Page Count:</span>{" "}
+                {selectedBook.volumeInfo.pageCount || "N/A"}
               </p>
               <p>
-                <span className="font-semibold">Description:</span> {removeHtmlTags(selectedBook.volumeInfo.description || "N/A")}
+                <span className="font-semibold">Description:</span>{" "}
+                {removeHtmlTags(selectedBook.volumeInfo.description || "N/A")}
               </p>
             </div>
           </div>

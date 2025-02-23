@@ -52,4 +52,9 @@ export const cartApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetCartQuery, useAddToCartMutation,useRemoveFromCartMutation,useRemoveWholeItemFromCartMutation } = cartApi;
+export const {
+  useGetCartQuery,
+  useAddToCartMutation,
+  useRemoveFromCartMutation,
+  useRemoveWholeItemFromCartMutation,
+} = cartApi;

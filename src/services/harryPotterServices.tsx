@@ -21,4 +21,4 @@ export const harryPotterApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetElixirsQuery,useGetHousesQuery } = harryPotterApi;
+export const { useGetElixirsQuery, useGetHousesQuery } = harryPotterApi;

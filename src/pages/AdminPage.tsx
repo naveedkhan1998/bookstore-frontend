@@ -29,19 +29,37 @@ const AdminPage = () => {
     );
   }
 
-  const UserListItem = ({ user, isActive }: { user: UserType; isActive: boolean }) => (
-    <Link to="/admin-user-page" state={{ user: user, isActive }} className="block p-4 transition-colors duration-200 rounded-lg hover:bg-main-primary/50 dark:hover:bg-dark-primary/50">
+  const UserListItem = ({
+    user,
+    isActive,
+  }: {
+    user: UserType;
+    isActive: boolean;
+  }) => (
+    <Link
+      to="/admin-user-page"
+      state={{ user: user, isActive }}
+      className="block p-4 transition-colors duration-200 rounded-lg hover:bg-main-primary/50 dark:hover:bg-dark-primary/50"
+    >
       <div className="flex items-center">
-        <img src={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}`} alt={`${user.given_name} ${user.family_name}`} className="w-10 h-10 mr-4 rounded-full" />
+        <img
+          src={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}`}
+          alt={`${user.given_name} ${user.family_name}`}
+          className="w-10 h-10 mr-4 rounded-full"
+        />
         <div className="flex-grow">
           <h5 className="font-medium text-gray-900 text-md dark:text-gray-200">{`${user.given_name} ${user.family_name}`}</h5>
           <div className="flex text-sm text-gray-700 dark:text-gray-400">
             <span className="flex items-center mr-4">
-              <HiOutlineShieldCheck className={`mr-1 ${user.isAdmin ? "text-green-500" : "text-gray-400"}`} />
+              <HiOutlineShieldCheck
+                className={`mr-1 ${user.isAdmin ? "text-green-500" : "text-gray-400"}`}
+              />
               Admin: {user.isAdmin ? "Yes" : "No"}
             </span>
             <span className="flex items-center">
-              <HiOutlineBan className={`mr-1 ${user.isVerified ? "text-green-500" : "text-red-500"}`} />
+              <HiOutlineBan
+                className={`mr-1 ${user.isVerified ? "text-green-500" : "text-red-500"}`}
+              />
               Verified: {user.isVerified ? "Yes" : "No"}
             </span>
           </div>
@@ -56,9 +74,13 @@ const AdminPage = () => {
 
       <div className="flex space-x-4">
         <section className="flex-1 overflow-auto p-4 rounded-lg shadow-md bg-main-secondary dark:bg-dark-secondary max-h-[80vh]">
-          <h2 className="sticky top-0 p-2 mb-4 text-2xl font-semibold rounded bg-main-primary dark:bg-dark-primary">Active Users</h2>
+          <h2 className="sticky top-0 p-2 mb-4 text-2xl font-semibold rounded bg-main-primary dark:bg-dark-primary">
+            Active Users
+          </h2>
           {data.activeUsers.length === 0 ? (
-            <p className="text-gray-700 dark:text-gray-400">No active users found.</p>
+            <p className="text-gray-700 dark:text-gray-400">
+              No active users found.
+            </p>
           ) : (
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {data.activeUsers.map((user: UserType) => (
@@ -71,9 +93,13 @@ const AdminPage = () => {
         </section>
 
         <section className="flex-1 overflow-auto p-4 rounded-lg shadow-md bg-main-secondary dark:bg-dark-secondary max-h-[80vh]">
-          <h2 className="sticky top-0 p-2 mb-4 text-2xl font-semibold rounded bg-main-primary dark:bg-dark-primary">Deactivated Users</h2>
+          <h2 className="sticky top-0 p-2 mb-4 text-2xl font-semibold rounded bg-main-primary dark:bg-dark-primary">
+            Deactivated Users
+          </h2>
           {data.inactiveUsers.length === 0 ? (
-            <p className="text-gray-700 dark:text-gray-400">No deactivated users found.</p>
+            <p className="text-gray-700 dark:text-gray-400">
+              No deactivated users found.
+            </p>
           ) : (
             <ul className="divide-y divide-gray-200 dark:divide-gray-700">
               {data.inactiveUsers.map((user: UserType) => (

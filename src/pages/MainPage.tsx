@@ -46,10 +46,22 @@ const MainPage = () => {
                   <Route path="/checkout" element={<CheckoutPage />} />
                   <Route path="/admin" element={<AdminPage />} />
                   <Route path="/admin-user-page" element={<AdminUserPage />} />
-                  <Route path="/public-booklists" element={access_token ? <AuthentiatedBooklistPage /> : <PublicBooklistsPage />} />
+                  <Route
+                    path="/public-booklists"
+                    element={
+                      access_token ? (
+                        <AuthentiatedBooklistPage />
+                      ) : (
+                        <PublicBooklistsPage />
+                      )
+                    }
+                  />
                   <Route path="/public-booklist" element={<PublicBookPage />} />
                   <Route path="/booklists" element={<BooklistPageAuth />} />
-                  <Route path="/user-booklist/:id" element={<UserBooklistPage />} />
+                  <Route
+                    path="/user-booklist/:id"
+                    element={<UserBooklistPage />}
+                  />
                   <Route path="/book/:id" element={<BookPage />} />
                   <Route path="/item/:id" element={<ItemPage />} />
                   <Route path="/setting" element={<UserSettings />} />

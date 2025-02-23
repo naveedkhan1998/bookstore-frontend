@@ -10,7 +10,8 @@ import { customPaginationTheme } from "../custom-themes";
 
 const OrderHistoryPage: React.FC = () => {
   const access_token = useAppSelector(getCurrentToken);
-  const { data, isSuccess, isLoading, isError } = useGetTransactionsQuery(access_token);
+  const { data, isSuccess, isLoading, isError } =
+    useGetTransactionsQuery(access_token);
 
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,10 +19,17 @@ const OrderHistoryPage: React.FC = () => {
 
   const filteredTransactions = useMemo(() => {
     const transactions: Transactions = data?.transactions || {};
-    return Object.entries(transactions).filter(([key, entry]) => key.toLowerCase().includes(searchTerm.toLowerCase()) || entry.price.toString().includes(searchTerm));
+    return Object.entries(transactions).filter(
+      ([key, entry]) =>
+        key.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        entry.price.toString().includes(searchTerm),
+    );
   }, [data?.transactions, searchTerm]);
 
-  const totalPages = useMemo(() => Math.ceil(filteredTransactions.length / itemsPerPage), [filteredTransactions]);
+  const totalPages = useMemo(
+    () => Math.ceil(filteredTransactions.length / itemsPerPage),
+    [filteredTransactions],
+  );
 
   const currentTransactions = useMemo(() => {
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -52,7 +60,7 @@ const OrderHistoryPage: React.FC = () => {
         />
         {searchTerm && (
           <button
-            onClick={() => setSearchTerm('')}
+            onClick={() => setSearchTerm("")}
             className="absolute text-gray-500 right-3 top-3 hover:text-gray-700"
           >
             &times;
@@ -64,7 +72,10 @@ const OrderHistoryPage: React.FC = () => {
         <>
           <div className="grid gap-6 mb-6 md:grid-cols-2">
             {currentTransactions.map(([key, entry]) => (
-              <Card key={key} className="transition-shadow duration-300 shadow-lg bg-main-secondary dark:bg-dark-secondary text-main-text dark:text-dark-text hover:shadow-xl">
+              <Card
+                key={key}
+                className="transition-shadow duration-300 shadow-lg bg-main-secondary dark:bg-dark-secondary text-main-text dark:text-dark-text hover:shadow-xl"
+              >
                 <div className="flex items-center justify-between mb-4">
                   <ShoppingBag className="text-blue-500" size={24} />
                   <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -72,10 +83,14 @@ const OrderHistoryPage: React.FC = () => {
                   </span>
                 </div>
                 <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  Transaction ID: <span className="text-blue-500">{key.slice(10)}</span>
+                  Transaction ID:{" "}
+                  <span className="text-blue-500">{key.slice(10)}</span>
                 </h5>
                 <p className="mb-4 font-normal text-gray-700 dark:text-gray-400">
-                  Amount Paid: <span className="font-bold text-green-500">${entry.price.toFixed(2)}</span>
+                  Amount Paid:{" "}
+                  <span className="font-bold text-green-500">
+                    ${entry.price.toFixed(2)}
+                  </span>
                 </p>
                 <Link to="/order-items" state={{ items: entry }}>
                   <Button color="blue" className="w-full">
@@ -86,11 +101,19 @@ const OrderHistoryPage: React.FC = () => {
             ))}
           </div>
           <div className="flex justify-center mt-6">
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} showIcons={true} theme={customPaginationTheme} />
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              showIcons={true}
+              theme={customPaginationTheme}
+            />
           </div>
         </>
       ) : (
-        <div className="text-center text-gray-500 dark:text-gray-400">No transactions found.</div>
+        <div className="text-center text-gray-500 dark:text-gray-400">
+          No transactions found.
+        </div>
       )}
     </div>
   );

@@ -3,9 +3,9 @@ import { baseApi } from "./BooksApi";
 export const googleBooksApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getVolumes: builder.query({
-      query: (q,maxResult='40') => {
+      query: (q, maxResult = "40") => {
         return {
-        url: `volumes?q=${q}&maxResults=${maxResult}`,
+          url: `volumes?q=${q}&maxResults=${maxResult}`,
           method: "GET",
         };
       },

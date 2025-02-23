@@ -28,7 +28,7 @@ export const userAuthApi = baseApi.injectEndpoints({
           url: "/auth/me",
           method: "GET",
           headers: {
-            'x-auth-token': `${access_token}`,
+            "x-auth-token": `${access_token}`,
           },
         };
       },
@@ -42,12 +42,12 @@ export const userAuthApi = baseApi.injectEndpoints({
       },
     }),
     sendEmail: builder.query({
-      query: ({access_token}) => {
+      query: ({ access_token }) => {
         return {
           url: "/auth/invoke_verify_email",
           method: "GET",
           headers: {
-            'x-auth-token': `${access_token}`,
+            "x-auth-token": `${access_token}`,
           },
         };
       },
@@ -60,5 +60,5 @@ export const {
   useLoginUserMutation,
   useGetLoggedUserQuery,
   useGoogleLoginQuery,
-  useLazySendEmailQuery
+  useLazySendEmailQuery,
 } = userAuthApi;

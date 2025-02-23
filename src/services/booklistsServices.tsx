@@ -6,9 +6,8 @@ export const booklistsApi = baseApi.injectEndpoints({
       query: ({ booklist, access_token }) => ({
         url: "/booklist/create_booklist",
         method: "POST",
-        body: booklist ,
+        body: booklist,
         headers: {
-
           "x-auth-token": `${access_token}`,
         },
       }),
@@ -79,11 +78,11 @@ export const booklistsApi = baseApi.injectEndpoints({
       },
     }),
     addBooklistReview: builder.mutation({
-      query: ({body,access_token}) => {
+      query: ({ body, access_token }) => {
         return {
           url: `/booklist/add_review/${body.booklist_id}`,
           method: "PUT",
-          body:{reviewText:body.reviewText},
+          body: { reviewText: body.reviewText },
           headers: {
             "x-auth-token": `${access_token}`,
           },

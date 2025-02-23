@@ -5,9 +5,16 @@ import Button from "../components/Button";
 import { toast } from "react-toastify";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
-import { useAdminDisableUserMutation, useAdminMakeAdminMutation } from "../services/adminServices";
+import {
+  useAdminDisableUserMutation,
+  useAdminMakeAdminMutation,
+} from "../services/adminServices";
 import { setRefresh } from "../features/refreshSlice";
-import { HiOutlineMail, HiOutlineShieldCheck, HiOutlineBan } from "react-icons/hi";
+import {
+  HiOutlineMail,
+  HiOutlineShieldCheck,
+  HiOutlineBan,
+} from "react-icons/hi";
 
 const AdminUserPage = () => {
   const access_token = useAppSelector(getCurrentToken);
@@ -17,8 +24,10 @@ const AdminUserPage = () => {
   const { user, isActive } = location.state;
   const userObj: UserType = user;
 
-  const [adminDisableUser, { isSuccess: userDisabled }] = useAdminDisableUserMutation();
-  const [adminMakeAdmin, { isSuccess: adminMade }] = useAdminMakeAdminMutation();
+  const [adminDisableUser, { isSuccess: userDisabled }] =
+    useAdminDisableUserMutation();
+  const [adminMakeAdmin, { isSuccess: adminMade }] =
+    useAdminMakeAdminMutation();
 
   const handleAdminToggle = async () => {
     await adminMakeAdmin({ user_id: userObj._id, access_token });
@@ -58,24 +67,36 @@ const AdminUserPage = () => {
       <div className="w-full mb-8 text-center">
         <h3 className="mb-2 text-lg font-semibold ">User Status</h3>
         <p className="flex items-center justify-center ">
-          <HiOutlineShieldCheck className={`mr-2 ${userObj.isAdmin ? "text-green-500" : "text-gray-400"}`} />
+          <HiOutlineShieldCheck
+            className={`mr-2 ${userObj.isAdmin ? "text-green-500" : "text-gray-400"}`}
+          />
           Admin: {userObj.isAdmin ? "Yes" : "No"}
         </p>
         <p className="flex items-center justify-center mt-1 ">
-          <HiOutlineBan className={`mr-2 ${userObj.isVerified ? "text-green-500" : "text-red-500"}`} />
+          <HiOutlineBan
+            className={`mr-2 ${userObj.isVerified ? "text-green-500" : "text-red-500"}`}
+          />
           Verified: {userObj.isVerified ? "Yes" : "No"}
         </p>
         <p className="flex items-center justify-center mt-1 ">
-          <HiOutlineBan className={`mr-2 ${isActive ? "text-green-500" : "text-red-500"}`} />
+          <HiOutlineBan
+            className={`mr-2 ${isActive ? "text-green-500" : "text-red-500"}`}
+          />
           Deactivated: {isActive ? "No" : "Yes"}
         </p>
       </div>
 
       <div className="flex space-x-4">
-        <Button className="px-6 py-3 transition duration-300 bg-green-600 rounded-lg hover:bg-green-500" onClick={handleAdminToggle}>
+        <Button
+          className="px-6 py-3 transition duration-300 bg-green-600 rounded-lg hover:bg-green-500"
+          onClick={handleAdminToggle}
+        >
           {userObj.isAdmin ? "Remove Admin" : "Make Admin"}
         </Button>
-        <Button className="px-6 py-3 transition duration-300 bg-blue-600 rounded-lg hover:bg-blue-500" onClick={handleDeactivateToggle}>
+        <Button
+          className="px-6 py-3 transition duration-300 bg-blue-600 rounded-lg hover:bg-blue-500"
+          onClick={handleDeactivateToggle}
+        >
           {isActive ? "Deactivate User" : "Activate User"}
         </Button>
       </div>

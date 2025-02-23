@@ -37,7 +37,13 @@ const ProfileMenu = () => {
           //onMouseEnter={() => setOpenModal(true)}
           onClick={() => setOpenModal(!openModal)}
         >
-          {user?.avatarUrl && <img src={user?.avatarUrl} alt="user-profile" className="w-full h-full rounded-full" />}
+          {user?.avatarUrl && (
+            <img
+              src={user?.avatarUrl}
+              alt="user-profile"
+              className="w-full h-full rounded-full"
+            />
+          )}
         </Menu.Button>
 
         <Transition
@@ -50,9 +56,19 @@ const ProfileMenu = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <Menu.Items static className="flexStart profile_menu-items" onMouseLeave={() => setOpenModal(false)}>
+          <Menu.Items
+            static
+            className="flexStart profile_menu-items"
+            onMouseLeave={() => setOpenModal(false)}
+          >
             <div className="flex flex-col items-center gap-y-4">
-              {user?.avatarUrl && <img src={user.avatarUrl} alt="user-profile" className="w-32 h-32 rounded-full" />}
+              {user?.avatarUrl && (
+                <img
+                  src={user.avatarUrl}
+                  alt="user-profile"
+                  className="w-32 h-32 rounded-full"
+                />
+              )}
               <p className="font-semibold">
                 {user?.given_name} {user?.family_name}
               </p>
@@ -77,7 +93,10 @@ const ProfileMenu = () => {
             </div>
             <div className="w-full pt-5 mt-5 border-t flexStart border-nav-border">
               <Menu.Item>
-                <Button className="w-full text-sm bg-main-primary dark:bg-dark-primary" onClick={() => signOut()}>
+                <Button
+                  className="w-full text-sm bg-main-primary dark:bg-dark-primary"
+                  onClick={() => signOut()}
+                >
                   Sign out
                 </Button>
               </Menu.Item>

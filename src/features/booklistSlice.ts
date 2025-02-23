@@ -12,12 +12,12 @@ export const booklistSlice = createSlice({
       return action.payload;
     },
     unSetUserBooklist: (state) => {
-        return initialState;
-      },
+      return initialState;
+    },
   },
 });
 
-export const { setUserBookslist,unSetUserBooklist } = booklistSlice.actions;
+export const { setUserBookslist, unSetUserBooklist } = booklistSlice.actions;
 
 export default booklistSlice.reducer;
 

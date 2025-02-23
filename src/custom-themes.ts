@@ -14,7 +14,8 @@ export const customPaginationTheme: CustomFlowbiteTheme["pagination"] = {
     },
     selector: {
       base: "w-12 border border-gray-300 bg-main-secondary py-2 leading-tight text-main-text enabled:hover:bg-gray-100 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-dark-secondary dark:text-dark-text enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white",
-      active: "bg-cyan-50 text-cyan-600 hover:bg-cyan-100 hover:text-cyan-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white",
+      active:
+        "bg-cyan-50 text-cyan-600 hover:bg-cyan-100 hover:text-cyan-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white",
       disabled: "cursor-not-allowed opacity-50",
     },
   },

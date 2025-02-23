@@ -20,9 +20,12 @@ const CheckoutPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { to } = location.state as { to: { items: Record<string, number>; price: number } };
+  const { to } = location.state as {
+    to: { items: Record<string, number>; price: number };
+  };
   const access_token = useAppSelector(getCurrentToken);
-  const [addToTransactions, { isSuccess: checkoutDone }] = useAddToTransactionsMutation();
+  const [addToTransactions, { isSuccess: checkoutDone }] =
+    useAddToTransactionsMutation();
 
   const [formData, setFormData] = useState<FormData>({
     cardNumber: "",
@@ -42,11 +45,13 @@ const CheckoutPage: React.FC = () => {
     const newErrors: Partial<FormData> = {};
 
     if (!/^[0-9]{16}$/.test(formData.cardNumber)) {
-      newErrors.cardNumber = "Invalid card number. Please enter a 16-digit number.";
+      newErrors.cardNumber =
+        "Invalid card number. Please enter a 16-digit number.";
     }
 
     if (!/^(0[1-9]|1[0-2])\/\d{4}$/.test(formData.expiryDate)) {
-      newErrors.expiryDate = "Invalid expiry date. Please enter MM/YYYY format.";
+      newErrors.expiryDate =
+        "Invalid expiry date. Please enter MM/YYYY format.";
     } else {
       const [month, year] = formData.expiryDate.split("/");
       const expiryDate = new Date(parseInt(year), parseInt(month) - 1);
@@ -87,10 +92,16 @@ const CheckoutPage: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen min-w-[40dvw] m-auto ">
       <Card className="w-full max-w-md p-8 space-y-8 shadow-xl bg-main-secondary dark:bg-dark-secondary rounded-xl">
-        <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white">Checkout</h1>
+        <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white">
+          Checkout
+        </h1>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="cardNumber" value="Card Number" className="flex items-center space-x-2">
+            <Label
+              htmlFor="cardNumber"
+              value="Card Number"
+              className="flex items-center space-x-2"
+            >
               <FaCreditCard className="text-gray-500" />
               <span>Card Number</span>
             </Label>
@@ -108,7 +119,11 @@ const CheckoutPage: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="expiryDate" value="Expiry Date" className="flex items-center space-x-2">
+              <Label
+                htmlFor="expiryDate"
+                value="Expiry Date"
+                className="flex items-center space-x-2"
+              >
                 <FaCalendarAlt className="text-gray-500" />
                 <span>Expiry Date</span>
               </Label>
@@ -125,7 +140,11 @@ const CheckoutPage: React.FC = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="cvv" value="CVV" className="flex items-center space-x-2">
+              <Label
+                htmlFor="cvv"
+                value="CVV"
+                className="flex items-center space-x-2"
+              >
                 <FaLock className="text-gray-500" />
                 <span>CVV</span>
               </Label>
@@ -143,7 +162,10 @@ const CheckoutPage: React.FC = () => {
             </div>
           </div>
           <div className="pt-4">
-            <Button type="submit" className="w-full py-3 font-bold text-white transition duration-300 bg-blue-600 rounded-lg hover:bg-blue-700">
+            <Button
+              type="submit"
+              className="w-full py-3 font-bold text-white transition duration-300 bg-blue-600 rounded-lg hover:bg-blue-700"
+            >
               Pay ${to.price.toFixed(2)}
             </Button>
           </div>

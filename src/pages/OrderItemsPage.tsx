@@ -1,4 +1,3 @@
-
 import { useLocation } from "react-router-dom";
 import Modal from "../components/Modal";
 import BookComponent from "../components/BookComponent";
@@ -7,8 +6,7 @@ const OrderItemsPage = () => {
   const location = useLocation();
   const { items } = location.state;
 
-  const entry: any = items;
-  console.log(entry);
+  const entry = items;
 
   return (
     <Modal>
