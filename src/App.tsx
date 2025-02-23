@@ -50,7 +50,7 @@ const routes = [
     element: <UserBooklistPage />,
     protected: true,
   },
-  { path: "/book/:id", element: <BookPage />, protected: true },
+  { path: "/book/:id", element: <BookPage />, protected: false },
   { path: "/item/:id", element: <ItemPage />, protected: true },
   { path: "/setting", element: <UserSettings />, protected: true },
 ];
