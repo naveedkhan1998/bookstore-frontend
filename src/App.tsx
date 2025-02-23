@@ -26,6 +26,8 @@ import AdminPage from "./pages/AdminPage";
 import AdminUserPage from "./pages/AdminUserPage";
 import SidebarProvider from "./context/SidebarContext";
 import ItemPage from "./pages/ItemPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
   const access_token = useAppSelector(getCurrentToken);
 
@@ -40,14 +42,72 @@ function App() {
               <div className="min-h-full px-8 pb-20">
                 <Routes>
                   <Route path="/" element={<BooksList />} />
-                  <Route path="/cart" element={<CartPage />} />
-                  <Route path="/account" element={<UserProfile />} />
+                  <Route path="/login" element={<LoginReg />} />
                   <Route path="/about" element={<AboutPage />} />
-                  <Route path="/order-history" element={<OrderHistoryPage />} />
-                  <Route path="/order-items" element={<OrderItemsPage />} />
-                  <Route path="/checkout" element={<CheckoutPage />} />
-                  <Route path="/admin" element={<AdminPage />} />
-                  <Route path="/admin-user-page" element={<AdminUserPage />} />
+                  <Route
+                    path="/home"
+                    element={
+                      <ProtectedRoute>
+                        <BooksList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/cart"
+                    element={
+                      <ProtectedRoute>
+                        <CartPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/account"
+                    element={
+                      <ProtectedRoute>
+                        <UserProfile />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/order-history"
+                    element={
+                      <ProtectedRoute>
+                        <OrderHistoryPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/order-items"
+                    element={
+                      <ProtectedRoute>
+                        <OrderItemsPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/checkout"
+                    element={
+                      <ProtectedRoute>
+                        <CheckoutPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute>
+                        <AdminPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin-user-page"
+                    element={
+                      <ProtectedRoute>
+                        <AdminUserPage />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="/public-booklists"
                     element={
@@ -59,15 +119,46 @@ function App() {
                     }
                   />
                   <Route path="/public-booklist" element={<PublicBookPage />} />
-                  <Route path="/booklists" element={<BooklistPageAuth />} />
+                  <Route
+                    path="/booklists"
+                    element={
+                      <ProtectedRoute>
+                        <BooklistPageAuth />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="/user-booklist/:id"
-                    element={<UserBooklistPage />}
+                    element={
+                      <ProtectedRoute>
+                        <UserBooklistPage />
+                      </ProtectedRoute>
+                    }
                   />
-                  <Route path="/book/:id" element={<BookPage />} />
-                  <Route path="/item/:id" element={<ItemPage />} />
-                  <Route path="/setting" element={<UserSettings />} />
-                  <Route path="/login" element={<LoginReg />} />
+                  <Route
+                    path="/book/:id"
+                    element={
+                      <ProtectedRoute>
+                        <BookPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/item/:id"
+                    element={
+                      <ProtectedRoute>
+                        <ItemPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/setting"
+                    element={
+                      <ProtectedRoute>
+                        <UserSettings />
+                      </ProtectedRoute>
+                    }
+                  />
                 </Routes>
               </div>
             </main>
