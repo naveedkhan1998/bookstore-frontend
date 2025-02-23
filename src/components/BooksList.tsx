@@ -1,87 +1,85 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BookVolume } from "../comman-types";
-import { getBooks } from "../features/booksSlice";
 import { useAppSelector } from "../app/hooks";
+import { getBooks } from "../features/booksSlice";
+import { BookVolume } from "../comman-types";
 import DefaultImage from "../assets/pp.jpg";
-import { Card, Pagination, Spinner } from "flowbite-react";
-import { customPaginationTheme } from "../custom-themes";
+
+import { Loader2 } from "lucide-react";
+import Card from "./ui/card/card.component";
+import Pagination from "./ui/pagination/pagination.component";
 
 const BooksList = () => {
   const pageSize = 15;
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
+  const books = useAppSelector(getBooks);
 
-  const dataFromStore = useAppSelector(getBooks);
-
+  // Pagination logic
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedData = dataFromStore.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(dataFromStore.length / pageSize);
+  const paginatedBooks = books.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(books.length / pageSize);
 
-  const navigate = useNavigate();
-
-  function handleDivClick(id: string) {
+  const handleBookClick = (id: string) => {
     navigate(`/book/${id}`);
-  }
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
   };
 
   const renderBook = (book: BookVolume) => (
     <Card
-      className="relative max-w-sm overflow-hidden text-sm transition-all ease-in rounded-md bg-main-secondary dark:bg-dark-secondary hover:shadow-2xl delay-250 hover:shadow-black hover:scale-105"
       key={book.id}
-      id={book.id}
-      onClick={() => handleDivClick(book.id)}
-      renderImage={() => (
-        <img
-          height={250}
-          width={250}
-          src={book.volumeInfo.imageLinks?.thumbnail || DefaultImage}
-          alt={book.volumeInfo.title}
-          className="object-fill w-full h-80"
-        />
-      )}
+      onClick={() => handleBookClick(book.id)}
+      image={{
+        src: book.volumeInfo.imageLinks?.thumbnail || DefaultImage,
+        alt: book.volumeInfo.title,
+      }}
     >
-      <h5 className="text-2xl font-bold tracking-tight ">
-        Title:{" "}
-        {book.volumeInfo.title.length > 20
-          ? `${book.volumeInfo.title.substring(0, 20)}...`
-          : book.volumeInfo.title}
-      </h5>
-      <p className="font-normal ">Authors: {book.volumeInfo.authors}</p>
-      <p className="font-normal ">Published: {book.volumeInfo.publishedDate}</p>
+      <div className="space-y-2">
+        <h3 className="font-semibold line-clamp-1">{book.volumeInfo.title}</h3>
+        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1">
+          By {book.volumeInfo.authors?.join(", ") || "Unknown Author"}
+        </p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          Published:{" "}
+          {new Date(book.volumeInfo.publishedDate || "").getFullYear()}
+        </p>
+      </div>
     </Card>
   );
 
-  return (
-    <div className="flex flex-col w-full pb-6 ">
-      {/* max-h-screen */}
-      {paginatedData.length > 0 ? (
-        <>
-          <div className="sticky top-0 z-10 flex justify-center pt-12">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-              showIcons
-              className="text-main-text dark:text-dark-text"
-              theme={customPaginationTheme}
-            />
-          </div>
-
-          <div className="grid grid-cols-[auto,fr] flex-grow-1 overflow-auto p-12 ">
-            <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(275px,1fr))]">
-              {paginatedData.map(renderBook)}
-            </div>
-          </div>
-        </>
-      ) : (
-        <div className="text-center flex items-center justify-center h-[90dvh]">
-          <Spinner aria-label="Center-aligned spinner example" size="xl" />
+  if (books.length === 0) {
+    return (
+      <div className="flex items-center justify-center h-[80vh]">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="w-12 h-12 animate-spin text-secondary" />
+          <p className="text-lg text-gray-600 dark:text-gray-300">
+            Loading books...
+          </p>
         </div>
-      )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen pb-20">
+      {/* Sticky Pagination Header */}
+      <div className="sticky top-0 z-10 py-4 bg-main-primary/80 dark:bg-dark-primary/80 backdrop-blur">
+        <div className="container flex justify-center mx-auto">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            maxVisible={5}
+          />
+        </div>
+      </div>
+
+      {/* Books Grid */}
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 pt-6">
+          {paginatedBooks.map(renderBook)}
+        </div>
+      </div>
     </div>
   );
 };

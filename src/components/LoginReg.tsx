@@ -7,7 +7,7 @@ import { useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import Login from "./Login";
 import Registration from "./Registration";
-import Button from "./ui/Button";
+import Button from "./ui/button/Button";
 import BookLogo from "./svgs/BookLogo";
 
 const LoginReg: React.FC = () => {

@@ -13,12 +13,13 @@ import {
   BookOpen,
   ShieldCheckIcon,
 } from "lucide-react";
-import Button, { buttonStyles } from "./ui/Button";
+import Button from "./ui/button/Button";
 import { useSidebarContext } from "../context/SidebarContext";
 import { PageHeaderFirstSection } from "../layouts/PageHeader";
 import { useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import { getCurrentUserDetails } from "../features/userSlice";
+import { buttonStyles } from "./ui/button/button.styles";
 
 // Types
 interface SidebarProps {

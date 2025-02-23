@@ -6,8 +6,8 @@ import { setCredentials } from "../features/authSlice";
 import { storeToken } from "../services/LocalStorageService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Input from "./ui/Input";
-import Button from "./ui/Button";
+import Input from "./ui/input/input.component";
+import Button from "./ui/button/Button";
 
 interface FormData {
   email: string;

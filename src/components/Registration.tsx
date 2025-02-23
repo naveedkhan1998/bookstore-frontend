@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "./ui/Button";
-import Input from "./ui/Input";
+import Button from "./ui/button/Button";
+import Input from "./ui/input/input.component";
 import { useAppDispatch } from "../app/hooks";
 import {
   useRegisterUserMutation,

@@ -10,7 +10,7 @@ import {
   HomeIcon,
 } from "lucide-react";
 import { DarkThemeToggle } from "flowbite-react";
-import Button from "../components/ui/Button";
+import Button from "../components/ui/button/Button";
 import ProfileMenu from "../components/ProfileMenu";
 import logoImage from "../assets/logo.png";
 import { useSidebarContext } from "../context/SidebarContext";

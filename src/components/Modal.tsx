@@ -2,7 +2,7 @@ import { X } from "lucide-react";
 import { useCallback, useRef, ReactNode, useEffect, forwardRef } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { twMerge } from "tailwind-merge";
-import Button from "./ui/Button";
+import Button from "./ui/button/Button";
 
 const modalVariants = cva(
   [

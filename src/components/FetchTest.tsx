@@ -4,7 +4,7 @@ import { setElixirs, getElixirs } from "../features/elixirSlice";
 import { useNavigate } from "react-router-dom";
 import { useGetElixirsQuery } from "../services/harryPotterServices";
 import { Elixirs } from "../comman-types";
-import Button from "./ui/Button";
+import Button from "./ui/button/Button";
 import { MoveLeftIcon, MoveRightIcon } from "lucide-react";
 
 const FetchTest = () => {
