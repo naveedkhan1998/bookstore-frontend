@@ -1,4 +1,6 @@
-import React, { Children, ElementType, ReactNode, useState } from "react";
+import React, { Children, ElementType, ReactNode, useState, memo } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
 import {
   ChevronDown,
   ChevronUp,
@@ -12,167 +14,117 @@ import {
   ShieldCheckIcon,
 } from "lucide-react";
 import Button, { buttonStyles } from "./ui/Button";
-import { twMerge } from "tailwind-merge";
 import { useSidebarContext } from "../context/SidebarContext";
 import { PageHeaderFirstSection } from "../layouts/PageHeader";
-import { Link, useLocation } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import { getCurrentUserDetails } from "../features/userSlice";
 
-const Sidebar = () => {
-  const access_token = useAppSelector(getCurrentToken);
-  const { isLargeOpen, isSmallOpen, close } = useSidebarContext();
-  const user = useAppSelector(getCurrentUserDetails);
-  const location = useLocation();
-  const currentPath = location.pathname;
+// Types
+interface SidebarProps {
+  className?: string;
+}
 
-  return (
-    <>
-      <aside
-        className={`sticky top-0 overflow-y-auto scrollbar-hidden flex flex-col ml-1 ${isLargeOpen ? "lg:hidden" : "lg:flex"}`}
-      ></aside>
-      {isSmallOpen && (
-        <div
-          onClick={close}
-          className="lg:hidden fixed inset-0 z-[999] bg-black/60 "
-        />
-      )}
-      <aside
-        className={`w-56 max-h-screen lg:sticky absolute top-0 overflow-y-full scrollbar-hidden flex-col bg-main-secondary dark:bg-dark-secondary text-main-text dark:text-dark-text  ${
-          isLargeOpen ? "lg:flex" : "lg:hidden"
-        } ${isSmallOpen ? "flex z-[999] min-h-screen " : "hidden"}`}
-      >
-        <div className="sticky p-2 lg:hidden ">
-          <PageHeaderFirstSection />
-        </div>
-        <LargeSidebarSection>
-          <LargeSidebarItem
-            isActive={currentPath === "/"}
-            Icon={Home}
-            title="Home"
-            url="/"
-          />
-          {access_token && (
-            <>
-              <LargeSidebarItem
-                isActive={currentPath === "/cart"}
-                Icon={ShoppingCart}
-                title="Cart"
-                url="/cart"
-              />
-              <LargeSidebarItem
-                isActive={currentPath === "/account"}
-                Icon={UserCircle2Icon}
-                title="Account"
-                url="/account"
-              />
-              <LargeSidebarItem
-                isActive={currentPath === "/order-history"}
-                Icon={HistoryIcon}
-                title="Order History"
-                url="/order-history"
-              />
-              <LargeSidebarItem
-                isActive={currentPath === "/booklists"}
-                Icon={BookTextIcon}
-                title="My Booklists"
-                url="/booklists"
-              />
-              {user.isAdmin && (
-                <LargeSidebarItem
-                  isActive={currentPath === "/admin"}
-                  Icon={ShieldCheckIcon}
-                  title="Admin Panel"
-                  url="/admin"
-                />
-              )}
-            </>
-          )}
-          <LargeSidebarItem
-            isActive={currentPath === "/public-booklists"}
-            Icon={BookOpen}
-            title="Public Booklists"
-            url="/public-booklists"
-          />
-          <LargeSidebarItem
-            isActive={currentPath === "/about"}
-            Icon={InfoIcon}
-            title="About Us"
-            url="/about"
-          />
-        </LargeSidebarSection>
-        <hr className="border-main-text dark:border-dark-text" />
-      </aside>
-    </>
-  );
-};
-
-export default Sidebar;
-
-type SectionProps = {
+interface SectionProps {
   children: ReactNode;
   title?: string;
   visibleItemCount?: number;
-};
-
-function LargeSidebarSection({
-  children,
-  title,
-  visibleItemCount = Number.POSITIVE_INFINITY,
-}: SectionProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const childrenArray = Children.toArray(children).flat();
-  const showExpandButton = childrenArray.length > visibleItemCount;
-  const visibleChildren = isExpanded
-    ? childrenArray
-    : childrenArray.slice(0, visibleItemCount);
-  const ButtonIcon = isExpanded ? ChevronUp : ChevronDown;
-
-  return (
-    <div>
-      {title && <div className="mt-2 mb-1 ml-4 text-lg">{title}</div>}
-      {visibleChildren}
-      {showExpandButton && (
-        <Button
-          onClick={() => setIsExpanded((prev) => !prev)}
-          variant="ghost"
-          className="flex items-center w-full gap-4 p-3 rounded-lg"
-        >
-          <div className="flex">
-            <div className="flex flex-col">
-              <ButtonIcon className="w-6 h-6" />
-            </div>
-            <div className="flex flex-col">
-              <div>{isExpanded ? "Show Less" : "Show More"}</div>
-            </div>
-          </div>
-        </Button>
-      )}
-    </div>
-  );
 }
 
-type LargeProps = {
+interface SidebarItemProps {
   Icon: ElementType | string;
   title: string;
   url: string;
   isActive?: boolean;
-};
+  onClick?: () => void;
+}
 
-function LargeSidebarItem({ Icon, title, url, isActive = false }: LargeProps) {
-  const { close } = useSidebarContext();
-  return (
+// Navigation items configuration
+const getNavigationItems = (currentPath: string) => [
+  {
+    Icon: Home,
+    title: "Home",
+    url: "/",
+    isActive: currentPath === "/",
+    showAlways: true,
+  },
+  {
+    Icon: ShoppingCart,
+    title: "Cart",
+    url: "/cart",
+    isActive: currentPath === "/cart",
+    requiresAuth: true,
+  },
+  {
+    Icon: UserCircle2Icon,
+    title: "Account",
+    url: "/account",
+    isActive: currentPath === "/account",
+    requiresAuth: true,
+  },
+  {
+    Icon: HistoryIcon,
+    title: "Order History",
+    url: "/order-history",
+    isActive: currentPath === "/order-history",
+    requiresAuth: true,
+  },
+  {
+    Icon: BookTextIcon,
+    title: "My Booklists",
+    url: "/booklists",
+    isActive: currentPath === "/booklists",
+    requiresAuth: true,
+  },
+  {
+    Icon: ShieldCheckIcon,
+    title: "Admin Panel",
+    url: "/admin",
+    isActive: currentPath === "/admin",
+    requiresAuth: true,
+    requiresAdmin: true,
+  },
+  {
+    Icon: BookOpen,
+    title: "Public Booklists",
+    url: "/public-booklists",
+    isActive: currentPath === "/public-booklists",
+    showAlways: true,
+  },
+  {
+    Icon: InfoIcon,
+    title: "About Us",
+    url: "/about",
+    isActive: currentPath === "/about",
+    showAlways: true,
+  },
+];
+
+// Memoized Components
+const SidebarOverlay = memo<{ onClose: () => void }>(({ onClose }) => (
+  <div
+    onClick={onClose}
+    className="fixed inset-0 z-[999] bg-black/60 lg:hidden"
+  />
+));
+
+const LargeSidebarItem = memo<SidebarItemProps>(
+  ({ Icon, title, url, isActive = false, onClick }) => (
     <Link
       to={url}
-      //onClick={close}
+      onClick={onClick}
       className={twMerge(
         buttonStyles({ variant: "ghost" }),
-        `w-full flex items-center rounded-sm gap-4 p-3 transition-all ease-in-out ${isActive ? " text-lg bg-black/20" : ""}`,
+        "w-full flex items-start h-fit justify-start rounded-sm gap-4 p-3 transition-all ease-in-out",
+        isActive && "text-lg bg-black/20",
       )}
     >
       {typeof Icon === "string" ? (
-        <img src={Icon} alt="icon" className="w-6 h-6 rounded-full" />
+        <img
+          src={Icon}
+          alt={`${title} icon`}
+          className="w-6 h-6 rounded-full"
+        />
       ) : (
         <Icon className="w-6 h-6" />
       )}
@@ -180,5 +132,97 @@ function LargeSidebarItem({ Icon, title, url, isActive = false }: LargeProps) {
         {title}
       </div>
     </Link>
+  ),
+);
+
+const LargeSidebarSection = memo<SectionProps>(
+  ({ children, title, visibleItemCount = Number.POSITIVE_INFINITY }) => {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const childrenArray = Children.toArray(children).flat();
+    const showExpandButton = childrenArray.length > visibleItemCount;
+    const visibleChildren = isExpanded
+      ? childrenArray
+      : childrenArray.slice(0, visibleItemCount);
+    const ButtonIcon = isExpanded ? ChevronUp : ChevronDown;
+
+    return (
+      <div>
+        {title && <div className="mt-2 mb-1 ml-4 text-lg">{title}</div>}
+        {visibleChildren}
+        {showExpandButton && (
+          <Button
+            onClick={() => setIsExpanded((prev) => !prev)}
+            variant="ghost"
+            className="flex items-center w-full gap-4 p-3 rounded-lg"
+          >
+            <ButtonIcon className="w-6 h-6" />
+            <span>{isExpanded ? "Show Less" : "Show More"}</span>
+          </Button>
+        )}
+      </div>
+    );
+  },
+);
+
+const Sidebar: React.FC<SidebarProps> = () => {
+  const location = useLocation();
+  const { isLargeOpen, isSmallOpen, close } = useSidebarContext();
+  const accessToken = useAppSelector(getCurrentToken);
+  const user = useAppSelector(getCurrentUserDetails);
+
+  const navigationItems = getNavigationItems(location.pathname);
+
+  const filteredNavItems = navigationItems.filter(
+    (item) =>
+      item.showAlways ||
+      (accessToken &&
+        item.requiresAuth &&
+        (!item.requiresAdmin || user.isAdmin)),
   );
-}
+
+  const CollapsedSidebar = (
+    <aside
+      className={`sticky top-0 overflow-y-auto scrollbar-hidden flex flex-col ml-1 ${
+        isLargeOpen ? "lg:hidden" : "lg:flex"
+      }`}
+    />
+  );
+
+  const ExpandedSidebar = (
+    <aside
+      className={twMerge(
+        "w-56 max-h-screen lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden flex-col",
+        "bg-main-secondary dark:bg-dark-secondary text-main-text dark:text-dark-text",
+        isLargeOpen ? "lg:flex" : "lg:hidden",
+        isSmallOpen ? "flex z-[999] min-h-screen" : "hidden",
+      )}
+    >
+      <div className="sticky p-2 lg:hidden">
+        <PageHeaderFirstSection />
+      </div>
+      <LargeSidebarSection>
+        {filteredNavItems.map((item) => (
+          <LargeSidebarItem
+            key={item.url}
+            Icon={item.Icon}
+            title={item.title}
+            url={item.url}
+            isActive={item.isActive}
+            onClick={isSmallOpen ? close : undefined}
+          />
+        ))}
+      </LargeSidebarSection>
+      <hr className="border-main-text dark:border-dark-text" />
+    </aside>
+  );
+
+  return (
+    <>
+      {CollapsedSidebar}
+      {isSmallOpen && <SidebarOverlay onClose={close} />}
+      {ExpandedSidebar}
+    </>
+  );
+};
+
+export default memo(Sidebar);

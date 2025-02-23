@@ -1,32 +1,67 @@
-import Toast from "./components/ToastContainer";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
+import Toast from "./components/ToastContainer";
 import PageHeader from "./layouts/PageHeader";
 import Sidebar from "./components/Sidebar";
 import Footer from "./layouts/Footer";
-
-import BooksList from "./components/BooksList";
-import CartPage from "./pages/CartPage";
-import OrderHistoryPage from "./pages/OrderHistoryPage";
-import UserSettings from "./pages/UserSettingPage";
-import UserProfile from "./pages/UserProfilePage";
-import BookPage from "./pages/BookPage";
-import LoginReg from "./components/LoginReg";
-import BooklistPageAuth from "./pages/BooklistPageAuth";
 import { useAppSelector } from "./app/hooks";
 import { getCurrentToken } from "./features/authSlice";
-import AboutPage from "./pages/AboutPage";
-import UserBooklistPage from "./pages/UserBooklistPage";
-import PublicBooklistsPage from "./pages/PublicBooklistsPage";
-import PublicBookPage from "./pages/PublicBookPage";
-import AuthentiatedBooklistPage from "./pages/AuthenticatedBooklistPage";
-import CheckoutPage from "./pages/CheckoutPage";
-import OrderItemsPage from "./pages/OrderItemsPage";
-import AdminPage from "./pages/AdminPage";
-import AdminUserPage from "./pages/AdminUserPage";
 import SidebarProvider from "./context/SidebarContext";
-import ItemPage from "./pages/ItemPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+// Lazy load components for better performance
+import { lazy, Suspense } from "react";
+const BooksList = lazy(() => import("./components/BooksList"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
+const UserSettings = lazy(() => import("./pages/UserSettingPage"));
+const UserProfile = lazy(() => import("./pages/UserProfilePage"));
+const BookPage = lazy(() => import("./pages/BookPage"));
+const LoginReg = lazy(() => import("./components/LoginReg"));
+const BooklistPageAuth = lazy(() => import("./pages/BooklistPageAuth"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const UserBooklistPage = lazy(() => import("./pages/UserBooklistPage"));
+const PublicBooklistsPage = lazy(() => import("./pages/PublicBooklistsPage"));
+const PublicBookPage = lazy(() => import("./pages/PublicBookPage"));
+const AuthentiatedBooklistPage = lazy(
+  () => import("./pages/AuthenticatedBooklistPage"),
+);
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const OrderItemsPage = lazy(() => import("./pages/OrderItemsPage"));
+const AdminPage = lazy(() => import("./pages/AdminPage"));
+const AdminUserPage = lazy(() => import("./pages/AdminUserPage"));
+const ItemPage = lazy(() => import("./pages/ItemPage"));
+
+// Route configurations
+const routes = [
+  { path: "/", element: <BooksList /> },
+  { path: "/login", element: <LoginReg /> },
+  { path: "/about", element: <AboutPage /> },
+  { path: "/home", element: <BooksList />, protected: true },
+  { path: "/cart", element: <CartPage />, protected: true },
+  { path: "/account", element: <UserProfile />, protected: true },
+  { path: "/order-history", element: <OrderHistoryPage />, protected: true },
+  { path: "/order-items", element: <OrderItemsPage />, protected: true },
+  { path: "/checkout", element: <CheckoutPage />, protected: true },
+  { path: "/admin", element: <AdminPage />, protected: true },
+  { path: "/admin-user-page", element: <AdminUserPage />, protected: true },
+  { path: "/booklists", element: <BooklistPageAuth />, protected: true },
+  {
+    path: "/user-booklist/:id",
+    element: <UserBooklistPage />,
+    protected: true,
+  },
+  { path: "/book/:id", element: <BookPage />, protected: true },
+  { path: "/item/:id", element: <ItemPage />, protected: true },
+  { path: "/setting", element: <UserSettings />, protected: true },
+];
+
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
+}
 
 function App() {
   const access_token = useAppSelector(getCurrentToken);
@@ -40,126 +75,39 @@ function App() {
             <Sidebar />
             <main className="flex-1 overflow-y-auto">
               <div className="min-h-full px-8 pb-20">
-                <Routes>
-                  <Route path="/" element={<BooksList />} />
-                  <Route path="/login" element={<LoginReg />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route
-                    path="/home"
-                    element={
-                      <ProtectedRoute>
-                        <BooksList />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/cart"
-                    element={
-                      <ProtectedRoute>
-                        <CartPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/account"
-                    element={
-                      <ProtectedRoute>
-                        <UserProfile />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/order-history"
-                    element={
-                      <ProtectedRoute>
-                        <OrderHistoryPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/order-items"
-                    element={
-                      <ProtectedRoute>
-                        <OrderItemsPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/checkout"
-                    element={
-                      <ProtectedRoute>
-                        <CheckoutPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin"
-                    element={
-                      <ProtectedRoute>
-                        <AdminPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/admin-user-page"
-                    element={
-                      <ProtectedRoute>
-                        <AdminUserPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/public-booklists"
-                    element={
-                      access_token ? (
-                        <AuthentiatedBooklistPage />
-                      ) : (
-                        <PublicBooklistsPage />
-                      )
-                    }
-                  />
-                  <Route path="/public-booklist" element={<PublicBookPage />} />
-                  <Route
-                    path="/booklists"
-                    element={
-                      <ProtectedRoute>
-                        <BooklistPageAuth />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/user-booklist/:id"
-                    element={
-                      <ProtectedRoute>
-                        <UserBooklistPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/book/:id"
-                    element={
-                      <ProtectedRoute>
-                        <BookPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/item/:id"
-                    element={
-                      <ProtectedRoute>
-                        <ItemPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/setting"
-                    element={
-                      <ProtectedRoute>
-                        <UserSettings />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Routes>
+                <Suspense fallback={<LoadingFallback />}>
+                  <Routes>
+                    {routes.map(({ path, element, protected: isProtected }) => (
+                      <Route
+                        key={path}
+                        path={path}
+                        element={
+                          isProtected ? (
+                            <ProtectedRoute>{element}</ProtectedRoute>
+                          ) : (
+                            element
+                          )
+                        }
+                      />
+                    ))}
+
+                    {/* Special route that depends on auth state */}
+                    <Route
+                      path="/public-booklists"
+                      element={
+                        access_token ? (
+                          <AuthentiatedBooklistPage />
+                        ) : (
+                          <PublicBooklistsPage />
+                        )
+                      }
+                    />
+                    <Route
+                      path="/public-booklist"
+                      element={<PublicBookPage />}
+                    />
+                  </Routes>
+                </Suspense>
               </div>
             </main>
           </div>

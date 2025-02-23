@@ -2,34 +2,83 @@
 @custom-variant dark (&:where(.dark, .dark *));
 @theme {
   /* Colors */
-  /* Main - Warm neutral base */
-  --color-main-primary: #faf6f1; /* Soft cream white */
-  --color-main-secondary: #f5efe6; /* Warm light gray */
-  --color-main-text: #2c1810; /* Deep brown */
+  /* Main - Clean, modern base */
+  --color-main-primary: #f8fafc; /* Clean, crisp white with slight blue tint */
+  --color-main-secondary: #f1f5f9; /* Subtle blue-gray */
+  --color-main-text: #0f172a; /* Rich navy */
 
-  /* Dark mode - Rich dark theme */
-  --color-dark-primary: #1a1a1d; /* Deep charcoal */
-  --color-dark-secondary: #2c2c35; /* Slate gray */
-  --color-dark-text: #e6e6e8; /* Soft white */
+  /* Dark mode - Sophisticated dark theme */
+  --color-dark-primary: #0f172a; /* Deep navy */
+  --color-dark-secondary: #1e293b; /* Rich slate blue */
+  --color-dark-text: #f8fafc; /* Bright white */
 
-  /* Secondary (Base: DEFAULT) - Accent colors */
-  --color-secondary: #8b5e3c; /* Warm brown */
-  --color-secondary-hover: #a37547; /* Lighter brown */
-  --color-secondary-border: #735039; /* Dark brown */
-  --color-secondary-text: #faf6f1; /* Cream white */
-  --color-secondary-dark: #614231; /* Muted brown for dark mode */
-  --color-secondary-dark-hover: #735039; /* Lighter brown for dark mode hover */
+  /* Secondary (Base: DEFAULT) - Modern blue accent */
+  --color-secondary: #3b82f6; /* Vibrant blue */
+  --color-secondary-hover: #60a5fa; /* Lighter blue */
+  --color-secondary-border: #2563eb; /* Deeper blue */
+  --color-secondary-text: #ffffff; /* Pure white */
+  --color-secondary-dark: #1d4ed8; /* Dark blue for dark mode */
+  --color-secondary-dark-hover: #2563eb; /* Brighter blue for dark mode hover */
 
   /* Accent - For CTAs and highlights */
-  --color-accent: #c17817; /* Rich gold */
-  --color-accent-hover: #e68a1c; /* Brighter gold */
+  --color-accent: #8b5cf6; /* Rich purple */
+  --color-accent-hover: #a78bfa; /* Lighter purple */
   --color-accent-text: #ffffff; /* Pure white */
 
+  /* Success colors */
+  --color-success: #10b981; /* Emerald */
+  --color-success-hover: #34d399; /* Light emerald */
+  --color-success-text: #ffffff;
+
+  /* Warning colors */
+  --color-warning: #f59e0b; /* Amber */
+  --color-warning-hover: #fbbf24; /* Light amber */
+  --color-warning-text: #ffffff;
+
+  /* Error colors */
+  --color-error: #ef4444; /* Red */
+  --color-error-hover: #f87171; /* Light red */
+  --color-error-text: #ffffff;
+
+  /* Info colors */
+  --color-info: #06b6d4; /* Cyan */
+  --color-info-hover: #22d3ee; /* Light cyan */
+  --color-info-text: #ffffff;
+
+  /* Neutral shades */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+  --color-gray-950: #020617;
+
   /* Box Shadow */
-  --box-shadow-menu: 0px 8px 20px rgba(0, 0, 0, 0.08);
+  --box-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --box-shadow-DEFAULT:
+    0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --box-shadow-md:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --box-shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --box-shadow-xl:
+    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --box-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --box-shadow-menu:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 
   /* Breakpoints */
   --breakpoint-xs: 400px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
 
   /* Max Width */
   --max-width-10xl: 1680px;
@@ -37,21 +86,26 @@
 
 body {
   font-family: "League Spartan", sans-serif;
-  background-color: #000000;
+  background-color: var(--color-main-primary);
+  color: var(--color-main-text);
+}
+
+.dark body {
+  background-color: var(--color-dark-primary);
+  color: var(--color-dark-text);
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #8b5e3c;
-  border-radius: 10px;
-  border: 3px solid #f5efe6;
+  background-color: var(--color-secondary);
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #faf6f1;
+  background-color: var(--color-gray-100);
 }
 
 .scrollbar-hidden::-webkit-scrollbar-thumb {
@@ -59,15 +113,12 @@ body {
 }
 
 /* Dark mode scrollbar */
-@media (prefers-color-scheme: dark) {
-  ::-webkit-scrollbar-thumb {
-    background-color: #614231;
-    border: 3px solid #2c2c35;
-  }
+.dark ::-webkit-scrollbar-thumb {
+  background-color: var(--color-secondary-dark);
+}
 
-  ::-webkit-scrollbar-track {
-    background-color: #1a1a1d;
-  }
+.dark ::-webkit-scrollbar-track {
+  background-color: var(--color-dark-primary);
 }
 
 @keyframes float {
