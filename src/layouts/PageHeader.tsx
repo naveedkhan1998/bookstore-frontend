@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -8,6 +6,9 @@ import {
   ShoppingCart,
   MenuIcon,
   HomeIcon,
+  X,
+  BookOpen,
+  User2,
 } from "lucide-react";
 import { DarkThemeToggle } from "flowbite-react";
 import Button from "../components/ui/button/Button";
@@ -25,6 +26,144 @@ import { setBooks } from "../features/booksSlice";
 import { UserType, setUserInfo } from "../features/userSlice";
 import { setUserBookslist } from "../features/booklistSlice";
 import type { BookVolume } from "../comman-types";
+
+// New SearchDropdown Component
+const SearchDropdown = memo<{
+  searchResults: BookVolume[];
+  handleSearchClick: (id: string) => void;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  handleSearch: () => void;
+}>(
+  ({
+    searchResults,
+    handleSearchClick,
+    searchTerm,
+    setSearchTerm,
+    handleSearch,
+  }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      setIsOpen(searchTerm.length > 0 && searchResults.length > 0);
+    }, [searchTerm, searchResults]);
+
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          dropdownRef.current &&
+          !dropdownRef.current.contains(event.target as Node)
+        ) {
+          setIsOpen(false);
+        }
+      };
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const handleSubmit = (e: React.FormEvent) => {
+      e.preventDefault();
+      handleSearch();
+    };
+
+    return (
+      <div className="relative flex-grow max-w-3xl" ref={dropdownRef}>
+        <form onSubmit={handleSubmit} className="relative w-full">
+          <div className="relative flex items-center w-full">
+            <Search className="absolute left-3 w-5 h-5 text-gray-400" />
+            <input
+              type="search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search for books, authors, or genres..."
+              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 
+                     bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                     shadow-sm transition-all duration-200 [&::-webkit-search-cancel-button]:hidden
+                     [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden
+                     [&::-webkit-search-results-decoration]:hidden"
+            />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm("")}
+                className="absolute right-3 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700
+                       transition-colors duration-200"
+              >
+                <X className="w-4 h-4 text-gray-400" />
+              </button>
+            )}
+          </div>
+        </form>
+
+        {isOpen && (
+          <div
+            className="absolute w-full mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg 
+                      border border-gray-200 dark:border-gray-700 overflow-hidden z-50
+                      transition-all duration-200 ease-in-out transform"
+          >
+            <div className="max-h-[70vh] overflow-y-auto">
+              {searchResults.map((book) => (
+                <div
+                  key={book.id}
+                  onClick={() => handleSearchClick(book.id)}
+                  className="flex items-start gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700
+                         cursor-pointer transition-colors duration-200"
+                >
+                  <div className="flex-shrink-0">
+                    {book.volumeInfo.imageLinks ? (
+                      <img
+                        src={book.volumeInfo.imageLinks.thumbnail}
+                        alt={book.volumeInfo.title}
+                        className="w-16 h-20 object-cover rounded-md shadow-sm"
+                      />
+                    ) : (
+                      <div className="w-16 h-20 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center">
+                        <BookOpen className="w-8 h-8 text-gray-400" />
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-grow min-w-0">
+                    <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                      {book.volumeInfo.title}
+                    </h3>
+                    <div className="flex items-center mt-1 gap-2">
+                      <User2 className="w-4 h-4 text-gray-400" />
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        {book.volumeInfo.authors?.join(", ") ||
+                          "Unknown Author"}
+                      </p>
+                    </div>
+                    {book.volumeInfo.categories && (
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        {book.volumeInfo.categories[0]}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {searchResults.length > 0 && (
+              <div className="p-3 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700">
+                <button
+                  onClick={handleSearch}
+                  className="w-full py-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700
+                         dark:hover:text-blue-300 font-medium transition-colors duration-200"
+                >
+                  View all results
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    );
+  },
+);
 
 // Memoized Header Section Components
 export const PageHeaderFirstSection = memo<{ hidden?: boolean }>(
@@ -52,121 +191,6 @@ export const PageHeaderFirstSection = memo<{ hidden?: boolean }>(
     );
   },
 );
-
-const SearchForm = memo<{
-  showFullWidthSearch: boolean;
-  searchTerm: string;
-  setShowFullWidthSearch: (show: boolean) => void;
-  setSearchTerm: (term: string) => void;
-  handleSearch: () => void;
-}>(
-  ({
-    showFullWidthSearch,
-    searchTerm,
-    setShowFullWidthSearch,
-    setSearchTerm,
-    handleSearch,
-  }) => {
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      handleSearch();
-    };
-
-    return (
-      <form
-        onSubmit={handleSubmit}
-        className={`flex-grow justify-center ${showFullWidthSearch ? "flex" : "hidden md:flex"}`}
-      >
-        {showFullWidthSearch && (
-          <Button
-            onClick={() => setShowFullWidthSearch(false)}
-            size="icon"
-            variant="ghost"
-            type="button"
-            className="flex-shrink-0 transition-transform duration-300 ease-in-out hover:-translate-x-1"
-          >
-            <ArrowLeft />
-          </Button>
-        )}
-        <div className="flex flex-grow max-w-[600px]">
-          <input
-            type="search"
-            placeholder="Search Books"
-            className="z-50 w-full px-4 py-2 transition-all duration-300 ease-in-out rounded-l-full placeholder-main-text dark:placeholder-dark-text bg-main-primary dark:bg-dark-primary text-md focus:ring-2 focus:ring-accent-DEFAULT"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Button
-            className="z-50 flex-shrink-0 px-4 py-2 mr-3 transition-all duration-300 ease-in-out rounded-r-full hover:bg-accent-hover"
-            type="submit"
-          >
-            <Search />
-          </Button>
-        </div>
-      </form>
-    );
-  },
-);
-
-const SearchResultsOverlay = memo<{
-  searchResults: BookVolume[];
-  handleSearchClick: (id: string) => void;
-  handleOverlayClick: () => void;
-}>(({ searchResults, handleSearchClick, handleOverlayClick }) => (
-  <div
-    className="fixed inset-0 z-20 flex items-center justify-center transition-opacity duration-300 ease-in-out bg-black bg-opacity-70"
-    onClick={handleOverlayClick}
-  >
-    <div
-      className="relative flex flex-col w-full max-w-3xl overflow-hidden transition-all duration-300 ease-in-out transform rounded-lg shadow-lg h-3/4 bg-main-secondary dark:bg-dark-secondary hover:scale-105"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <header className="flex items-center justify-between px-6 py-4 bg-main-primary dark:bg-dark-primary">
-        <h2 className="text-lg font-semibold">Search Results</h2>
-        <Button
-          size="icon"
-          variant="ghost"
-          onClick={handleOverlayClick}
-          className="transition-transform duration-300 ease-in-out hover:rotate-180"
-        >
-          <ArrowLeft />
-        </Button>
-      </header>
-      <div className="flex-grow overflow-y-auto">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-main-primary/60 dark:bg-dark-primary/60">
-            <tr>
-              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                Book Name
-              </th>
-              <th className="px-6 py-3 text-xs font-medium tracking-wider text-left uppercase">
-                Author
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 bg-main-secondary dark:bg-dark-secondary dark:divide-gray-700">
-            {searchResults.map((book) => (
-              <tr
-                key={book.id}
-                className="transition-colors duration-300 ease-in-out cursor-pointer hover:bg-main-primary/60 hover:dark:bg-dark-primary/60"
-                onClick={() => handleSearchClick(book.id)}
-              >
-                <td className="px-6 py-4 text-sm">
-                  {book.volumeInfo.title.length > 30
-                    ? `${book.volumeInfo.title.substring(0, 30)}...`
-                    : book.volumeInfo.title}
-                </td>
-                <td className="px-6 py-4 text-sm">
-                  {book.volumeInfo?.authors?.join(", ") || "None"}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-));
 
 const HeaderButtons = memo<{
   showFullWidthSearch: boolean;
@@ -344,20 +368,28 @@ const PageHeader: React.FC = () => {
   return (
     <nav className="sticky top-0 z-50 flex justify-between gap-10 p-2 transition-all duration-300 ease-in-out shadow-md lg:gap-20 bg-main-secondary dark:bg-dark-secondary">
       <PageHeaderFirstSection hidden={showFullWidthSearch} />
-      <SearchForm
-        showFullWidthSearch={showFullWidthSearch}
-        searchTerm={searchTerm}
-        setShowFullWidthSearch={setShowFullWidthSearch}
-        setSearchTerm={setSearchTerm}
-        handleSearch={handleSearch}
-      />
-      {isSuccess && (
-        <SearchResultsOverlay
+      <div
+        className={`flex-grow justify-center ${showFullWidthSearch ? "flex" : "hidden md:flex"}`}
+      >
+        {showFullWidthSearch && (
+          <Button
+            onClick={() => setShowFullWidthSearch(false)}
+            size="icon"
+            variant="ghost"
+            type="button"
+            className="flex-shrink-0 transition-transform duration-300 ease-in-out hover:-translate-x-1"
+          >
+            <ArrowLeft />
+          </Button>
+        )}
+        <SearchDropdown
           searchResults={searchResults}
           handleSearchClick={handleSearchClick}
-          handleOverlayClick={() => setSearchTerm("")}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          handleSearch={handleSearch}
         />
-      )}
+      </div>
       <HeaderButtons
         showFullWidthSearch={showFullWidthSearch}
         searchTerm={searchTerm}

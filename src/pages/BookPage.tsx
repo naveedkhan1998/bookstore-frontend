@@ -1,13 +1,23 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Loader2, Bookmark, ShoppingCart, AlertTriangle } from "lucide-react";
+import {
+  Loader2,
+  Bookmark,
+  ShoppingCart,
+  AlertTriangle,
+  Calendar,
+  Library,
+  Building2,
+  Share2,
+  Heart,
+  Star,
+} from "lucide-react";
 import Modal from "../components/Modal";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getBooks } from "../features/booksSlice";
 import { getCurrentToken } from "../features/authSlice";
 import { getUserBooklists } from "../features/booklistSlice";
-import { BookVolume } from "../comman-types";
 import { useGetVolumeQuery } from "../services/googleBooksServices";
 import {
   useAddBookToBooklistMutation,
@@ -20,56 +30,74 @@ import {
 import { setUserCart } from "../features/cartSlice";
 import DefaultPic from "../assets/pp.jpg";
 
-// Price Tag Component
-const PriceTag = ({
-  amount,
-  currencyCode,
-}: {
+interface PriceTagProps {
   amount: number;
   currencyCode: string;
+  isRetail?: boolean;
+}
+
+interface BookMetaItemProps {
+  icon: React.ElementType;
+  label: string;
+  value: string | number | undefined;
+}
+
+interface ActionButtonProps {
+  onClick: () => void;
+  isLoading?: boolean;
+  icon: React.ElementType;
+  label: string;
+  variant?: "primary" | "secondary" | "danger";
+  disabled?: boolean;
+}
+
+interface RatingStarsProps {
+  rating?: number;
+}
+
+const PriceTag: React.FC<PriceTagProps> = ({
+  amount,
+  currencyCode,
+  isRetail = false,
 }) => (
-  <div className="flex items-center justify-center px-4 py-2 text-lg font-bold text-white bg-secondary rounded-full">
-    {amount} {currencyCode}
+  <div
+    className={`flex items-center gap-2 ${isRetail ? "text-gray-500 text-sm line-through" : "text-2xl font-bold"}`}
+  >
+    <span>{currencyCode}</span>
+    <span>{amount}</span>
   </div>
 );
 
-// Book Info Row Component
-const InfoRow = ({
+const BookMetaItem: React.FC<BookMetaItemProps> = ({
+  icon: Icon,
   label,
   value,
-}: {
-  label: string;
-  value: string | number;
 }) => (
-  <div className="flex flex-col space-y-1">
-    <span className="text-sm text-gray-500 dark:text-gray-400">{label}</span>
-    <span className="font-medium">{value || "N/A"}</span>
+  <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
+    <Icon className="w-5 h-5" />
+    <div className="flex flex-col">
+      <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>
+      <span className="font-medium">{value || "N/A"}</span>
+    </div>
   </div>
 );
 
-// Action Button Component
-const ActionButton = ({
+const ActionButton: React.FC<ActionButtonProps> = ({
   onClick,
-  isLoading,
+  isLoading = false,
   icon: Icon,
   label,
   variant = "primary",
   disabled = false,
-}: {
-  onClick: () => void;
-  isLoading?: boolean;
-  icon: any;
-  label: string;
-  variant?: "primary" | "secondary" | "danger";
-  disabled?: boolean;
 }) => {
   const baseStyles =
-    "flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200";
+    "flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300";
   const variants = {
-    primary: "bg-secondary hover:bg-secondary-hover text-white",
+    primary:
+      "bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl",
     secondary:
-      "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700",
-    danger: "bg-red-500 hover:bg-red-600 text-white",
+      "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 shadow hover:shadow-md",
+    danger: "bg-red-500 hover:bg-red-600 text-white shadow-lg hover:shadow-xl",
   };
 
   return (
@@ -77,7 +105,9 @@ const ActionButton = ({
       onClick={onClick}
       disabled={isLoading || disabled}
       className={`${baseStyles} ${variants[variant]} ${
-        (isLoading || disabled) && "opacity-50 cursor-not-allowed"
+        isLoading || disabled
+          ? "opacity-50 cursor-not-allowed"
+          : "transform hover:scale-105"
       }`}
     >
       {isLoading ? (
@@ -90,16 +120,60 @@ const ActionButton = ({
   );
 };
 
-const BookPage = () => {
-  const { id } = useParams();
+const RatingStars: React.FC<RatingStarsProps> = ({ rating = 4.5 }) => (
+  <div className="flex items-center gap-2">
+    <div className="flex">
+      {[...Array(5)].map((_, i) => (
+        <Star
+          key={i}
+          className={`w-5 h-5 ${i < Math.floor(rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
+        />
+      ))}
+    </div>
+    <span className="text-sm text-gray-600 dark:text-gray-300">{rating}/5</span>
+  </div>
+);
+
+interface SaleInfo {
+  listPrice?: {
+    amount: number;
+    currencyCode: string;
+  };
+  retailPrice?: {
+    amount: number;
+    currencyCode: string;
+  };
+}
+
+interface VolumeInfo {
+  title: string;
+  subtitle?: string;
+  authors?: string[];
+  publisher?: string;
+  publishedDate?: string;
+  description?: string;
+  pageCount?: number;
+  imageLinks?: {
+    thumbnail?: string;
+  };
+}
+
+interface Book {
+  id: string;
+  volumeInfo: VolumeInfo;
+  saleInfo: SaleInfo;
+}
+
+const BookPage: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const access_token = useAppSelector(getCurrentToken);
   const userBooklists = useAppSelector(getUserBooklists);
   const books = useAppSelector(getBooks);
-  const [selectedBooklistID, setSelectedBooklistID] = useState("");
+  const [selectedBooklistID, setSelectedBooklistID] = useState<string>("");
+  const [isLiked, setIsLiked] = useState<boolean>(false);
 
-  // Queries
-  const { data: bookData, isSuccess } = useGetVolumeQuery(id);
+  const { data: bookData, isSuccess } = useGetVolumeQuery(id as string);
   const { refetch: refetchBooklists } = useGetUserBooklistsQuery(access_token);
   const {
     data: cartData,
@@ -108,15 +182,13 @@ const BookPage = () => {
     refetch: refetchCart,
   } = useGetCartQuery(access_token);
 
-  // Mutations
   const [addBookToBooklist, { isLoading: addingToBooklist }] =
     useAddBookToBooklistMutation();
   const [addToCart, { isLoading: addingToCart }] = useAddToCartMutation();
 
-  // Get book data
-  const selectedBook = isSuccess
+  const selectedBook: Book | undefined = isSuccess
     ? bookData
-    : books.find((obj: BookVolume) => obj.id === id);
+    : books.find((obj: Book) => obj.id === id);
 
   useEffect(() => {
     if (!isFetching && cartSuccess) {
@@ -164,64 +236,20 @@ const BookPage = () => {
 
   return (
     <Modal title={volumeInfo.title}>
-      <div className="flex flex-col gap-8">
-        {/* Top Actions */}
-        {access_token && (
-          <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-            <div className="flex gap-2">
-              {saleInfo.listPrice ? (
-                <ActionButton
-                  onClick={handleAddToCart}
-                  isLoading={addingToCart}
-                  icon={ShoppingCart}
-                  label="Add to Cart"
-                />
-              ) : (
-                <ActionButton
-                  onClick={() => {}}
-                  icon={AlertTriangle}
-                  label="Sold Out"
-                  variant="danger"
-                  disabled
-                />
-              )}
-            </div>
-
-            <div className="flex gap-2 items-center">
-              <select
-                value={selectedBooklistID}
-                onChange={(e) => setSelectedBooklistID(e.target.value)}
-                className="p-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-secondary"
-              >
-                <option value="">Select Booklist</option>
-                {userBooklists.bookLists?.map((list) => (
-                  <option key={list._id} value={list._id}>
-                    {list.name} ({list.isPrivate ? "Private" : "Public"})
-                  </option>
-                ))}
-              </select>
-              <ActionButton
-                onClick={handleAddToBooklist}
-                isLoading={addingToBooklist}
-                icon={Bookmark}
-                label="Add to List"
-                variant="secondary"
-              />
-            </div>
+      <div className="grid grid-cols-1 lg:grid-cols-[350px,1fr] gap-12">
+        {/* Left Column */}
+        <div className="space-y-8">
+          {/* Book Cover */}
+          <div className="aspect-[3/4] rounded-xl overflow-hidden shadow-2xl">
+            <img
+              src={volumeInfo.imageLinks?.thumbnail || DefaultPic}
+              alt={volumeInfo.title}
+              className="w-full h-full object-cover"
+            />
           </div>
-        )}
 
-        {/* Book Details */}
-        <div className="grid grid-cols-1 md:grid-cols-[300px,1fr] gap-8">
-          {/* Left Column - Image and Price */}
-          <div className="space-y-4">
-            <div className="aspect-[3/4] rounded-lg overflow-hidden shadow-lg">
-              <img
-                src={volumeInfo.imageLinks?.thumbnail || DefaultPic}
-                alt={volumeInfo.title}
-                className="w-full h-full object-cover"
-              />
-            </div>
+          {/* Price and Actions */}
+          <div className="space-y-6">
             {saleInfo.listPrice && (
               <div className="space-y-2">
                 <PriceTag
@@ -230,51 +258,124 @@ const BookPage = () => {
                 />
                 {saleInfo.retailPrice &&
                   saleInfo.retailPrice.amount !== saleInfo.listPrice.amount && (
-                    <div className="text-sm text-gray-500 dark:text-gray-400 text-center">
-                      Retail: {saleInfo.retailPrice.amount}{" "}
-                      {saleInfo.retailPrice.currencyCode}
-                    </div>
+                    <PriceTag
+                      amount={saleInfo.retailPrice.amount}
+                      currencyCode={saleInfo.retailPrice.currencyCode}
+                      isRetail
+                    />
                   )}
               </div>
             )}
-          </div>
 
-          {/* Right Column - Book Information */}
-          <div className="space-y-6">
-            {volumeInfo.subtitle && (
-              <h2 className="text-xl text-gray-600 dark:text-gray-400">
-                {volumeInfo.subtitle}
-              </h2>
-            )}
+            {access_token && (
+              <div className="flex flex-col gap-4">
+                {saleInfo.listPrice ? (
+                  <ActionButton
+                    onClick={handleAddToCart}
+                    isLoading={addingToCart}
+                    icon={ShoppingCart}
+                    label="Add to Cart"
+                  />
+                ) : (
+                  <ActionButton
+                    onClick={() => {}}
+                    icon={AlertTriangle}
+                    label="Sold Out"
+                    variant="danger"
+                    disabled
+                  />
+                )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <InfoRow
-                label="Authors"
-                value={volumeInfo.authors?.join(", ") || "N/A"}
-              />
-              <InfoRow
-                label="Publisher"
-                value={volumeInfo.publisher || "N/A"}
-              />
-              <InfoRow
-                label="Published Date"
-                value={volumeInfo.publishedDate || "N/A"}
-              />
-              <InfoRow
-                label="Page Count"
-                value={volumeInfo.pageCount || "N/A"}
-              />
-            </div>
-
-            {volumeInfo.description && (
-              <div className="space-y-2">
-                <h3 className="font-semibold">Description</h3>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  {volumeInfo.description.replace(/<[^>]*>/g, "")}
-                </p>
+                <div className="flex gap-3">
+                  <select
+                    value={selectedBooklistID}
+                    onChange={(e) => setSelectedBooklistID(e.target.value)}
+                    className="flex-1 p-3 rounded-full border border-gray-200 dark:border-gray-700 
+                             bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Select Booklist</option>
+                    {userBooklists.bookLists?.map((list) => (
+                      <option key={list._id} value={list._id}>
+                        {list.name} ({list.isPrivate ? "Private" : "Public"})
+                      </option>
+                    ))}
+                  </select>
+                  <ActionButton
+                    onClick={handleAddToBooklist}
+                    isLoading={addingToBooklist}
+                    icon={Bookmark}
+                    variant="secondary"
+                    label=""
+                  />
+                </div>
               </div>
             )}
           </div>
+
+          {/* Quick Actions */}
+          <div className="flex justify-around py-4 border-t border-b border-gray-200 dark:border-gray-700">
+            <button
+              onClick={() => setIsLiked(!isLiked)}
+              className="flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-red-500"
+            >
+              <Heart
+                className={`w-6 h-6 ${isLiked ? "fill-red-500 text-red-500" : ""}`}
+              />
+              <span className="text-sm">Like</span>
+            </button>
+            <button className="flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-500">
+              <Share2 className="w-6 h-6" />
+              <span className="text-sm">Share</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="space-y-8">
+          {volumeInfo.subtitle && (
+            <p className="text-xl text-gray-600 dark:text-gray-400">
+              {volumeInfo.subtitle}
+            </p>
+          )}
+
+          {/* Meta Information */}
+          <div className="grid grid-cols-2 gap-6">
+            <BookMetaItem
+              icon={Library}
+              label="Authors"
+              value={volumeInfo.authors?.join(", ")}
+            />
+            <BookMetaItem
+              icon={Building2}
+              label="Publisher"
+              value={volumeInfo.publisher}
+            />
+            <BookMetaItem
+              icon={Calendar}
+              label="Published Date"
+              value={volumeInfo.publishedDate}
+            />
+            <BookMetaItem
+              icon={Library}
+              label="Pages"
+              value={volumeInfo.pageCount}
+            />
+          </div>
+
+          {/* Rating */}
+          <div className="py-6 border-t border-gray-200 dark:border-gray-700">
+            <RatingStars />
+          </div>
+
+          {/* Description */}
+          {volumeInfo.description && (
+            <div className="space-y-4">
+              <h3 className="text-2xl font-semibold">About this book</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                {volumeInfo.description.replace(/<[^>]*>/g, "")}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </Modal>
