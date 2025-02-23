@@ -243,7 +243,7 @@ const HeaderButtons = memo<{
 
         {!accessToken ? (
           <Button
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/auth")}
             variant="ghost"
             className="transition-all duration-300 ease-in-out rounded-full hover:bg-accent-DEFAULT hover:text-white"
           >
