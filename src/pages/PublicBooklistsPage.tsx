@@ -1,20 +1,20 @@
 import { useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { useGetPublicBooklistsQuery } from "../services/booklistsServices";
+import { Link } from "react-router-dom";
+import { Library, RefreshCw } from "lucide-react";
+import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import {
   getPublicBooklists,
   setPublicBookslist,
-} from "../features/publicBooklistSlice";
-import { Link } from "react-router-dom";
-import { Library, RefreshCw } from "lucide-react";
-import Card from "../components/ui/card/card.component";
-import PageContent from "../layouts/PageContent";
+} from "@/features/booklists/publicBooklistSlice";
+import { useGetPublicBooklistsQuery } from "@/services/api/booklists";
+import Card from "@/shared/ui/card/card.component";
+import PageContent from "@/shared/layouts/PageContent";
 import {
   LoadingState,
   ErrorState,
   EmptyState,
   Grid,
-} from "../layouts/ContentComponents";
+} from "@/shared/layouts/ContentComponents";
 
 const PublicBooklistsPage = () => {
   const dispatch = useAppDispatch();

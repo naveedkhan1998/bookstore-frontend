@@ -1,11 +1,11 @@
-import Modal from "../components/Modal";
 import { useParams } from "react-router-dom";
 import { Beaker } from "lucide-react";
-import { getElixirs } from "../features/elixirSlice";
-import { useAppSelector } from "../app/hooks";
-import { Elixirs } from "../comman-types";
-import PageContent from "../layouts/PageContent";
-import { EmptyState, ContentCard } from "../layouts/ContentComponents";
+import { useAppSelector } from "@/app/store/hooks";
+import { getElixirs } from "@/features/elixirs/elixirSlice";
+import Modal from "@/shared/components/overlay/Modal";
+import PageContent from "@/shared/layouts/PageContent";
+import { ContentCard, EmptyState } from "@/shared/layouts/ContentComponents";
+import type { Elixirs } from "@/shared/types/api";
 
 const renderValue = (value: any) => {
   if (typeof value === "object" && value !== null) {

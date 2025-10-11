@@ -1,17 +1,17 @@
 import { useState, useMemo } from "react";
-import { useGetTransactionsQuery } from "../services/transactionsServices";
-import { getCurrentToken } from "../features/authSlice";
-import { Transactions } from "../comman-types";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
 import { ShoppingBag, Search, X, History } from "lucide-react";
-import Pagination from "../components/ui/pagination/pagination.component";
-import PageContent from "../layouts/PageContent";
+import { useAppSelector } from "@/app/store/hooks";
+import { getCurrentToken } from "@/features/auth/authSlice";
+import { useGetTransactionsQuery } from "@/services/api/transactions";
+import type { Transactions } from "@/shared/types/api";
+import Pagination from "@/shared/ui/pagination/pagination.component";
+import PageContent from "@/shared/layouts/PageContent";
 import {
   LoadingState,
   ErrorState,
   EmptyState,
-} from "../layouts/ContentComponents";
+} from "@/shared/layouts/ContentComponents";
 
 const OrderHistoryPage = () => {
   const access_token = useAppSelector(getCurrentToken);

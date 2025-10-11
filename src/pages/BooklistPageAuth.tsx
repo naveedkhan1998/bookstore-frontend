@@ -1,38 +1,36 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, type FC } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { Trash2, BookOpen } from "lucide-react";
+import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
+import { getCurrentToken } from "@/features/auth/authSlice";
+import {
+  getUserBooklists,
+  setUserBookslist,
+} from "@/features/booklists/booklistSlice";
 import {
   useGetUserBooklistsQuery,
   useCreateBooklistMutation,
-} from "../services/booklistsServices";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { getCurrentToken } from "../features/authSlice";
-import { getUserBooklists, setUserBookslist } from "../features/booklistSlice";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { useDeleteBooklistMutation } from "../services/booklistsServices";
-import { Trash2, BookOpen } from "lucide-react";
-import Input from "../components/ui/input/input.component";
-import Button from "../components/ui/button/Button";
-import Toggle from "../components/ui/toggle/toggle.component";
-import Spinner from "../components/ui/spinner/spinner.component";
-import PageContent from "../layouts/PageContent";
+  useDeleteBooklistMutation,
+} from "@/services/api/booklists";
+import Button from "@/shared/ui/button/Button";
+import Input from "@/shared/ui/input/input.component";
+import Toggle from "@/shared/ui/toggle/toggle.component";
+import Spinner from "@/shared/ui/spinner/spinner.component";
+import PageContent from "@/shared/layouts/PageContent";
 import {
   Section,
   Grid,
   ContentCard,
   EmptyState,
-} from "../layouts/ContentComponents";
+} from "@/shared/layouts/ContentComponents";
 
-const BooklistPageAuth: React.FC = () => {
+const BooklistPageAuth: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const access_token = useAppSelector(getCurrentToken);
   const { data, isSuccess, refetch } = useGetUserBooklistsQuery(access_token);
-
   const [deleteBooklist] = useDeleteBooklistMutation();
-
-  if (isSuccess) {
-    dispatch(setUserBookslist(data));
-  }
 
   const storeData = useAppSelector(getUserBooklists);
 
@@ -49,7 +47,13 @@ const BooklistPageAuth: React.FC = () => {
       refetch();
       toast.success("Booklist Created");
     }
-  }, [createBooklistSuccess]);
+  }, [createBooklistSuccess, refetch]);
+
+  useEffect(() => {
+    if (isSuccess && data) {
+      dispatch(setUserBookslist(data));
+    }
+  }, [isSuccess, data, dispatch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = e.target;
