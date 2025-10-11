@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../app/hooks";
 import { getCurrentUserDetails } from "../features/userSlice";
 import PageContent from "../layouts/PageContent";
 import { LoadingState, Grid, ContentCard } from "../layouts/ContentComponents";
@@ -13,7 +13,7 @@ import {
 } from "react-icons/hi";
 
 const UserProfile = () => {
-  const user = useSelector(getCurrentUserDetails);
+  const user = useAppSelector(getCurrentUserDetails);
 
   if (!user) {
     return (

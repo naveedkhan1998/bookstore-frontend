@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logOut } from "../features/authSlice";
 import { removeToken } from "../services/LocalStorageService";
-import { useAppSelector } from "../app/hooks";
 import { getCurrentUserDetails } from "../features/userSlice";
 import { unSetUserInfo } from "../features/userSlice";
 import { toast } from "react-toastify";
@@ -14,7 +13,7 @@ const ProfileMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const user = useAppSelector(getCurrentUserDetails);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const signOut = () => {
     removeToken();

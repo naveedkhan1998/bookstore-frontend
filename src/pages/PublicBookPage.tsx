@@ -10,14 +10,13 @@ import {
   useAddBooklistReviewMutation,
   useGetALLBooklistsQuery,
 } from "../services/booklistsServices";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import { toast } from "react-toastify";
 import {
   getPublicBooklists,
   setPublicBookslist,
 } from "../features/publicBooklistSlice";
-import { useDispatch } from "react-redux";
 import { getCurrentUserDetails } from "../features/userSlice";
 import { useAdminHideReviewMutation } from "../services/adminServices";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,7 +25,7 @@ import { Section, EmptyState } from "../layouts/ContentComponents";
 
 const PublicBookPage = () => {
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const access_token = useAppSelector(getCurrentToken);
   const user = useAppSelector(getCurrentUserDetails);
   const booklists = useAppSelector(getPublicBooklists);

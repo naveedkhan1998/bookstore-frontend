@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../app/hooks";
 import { getCurrentSettingDetails, Language } from "../features/settingSlice";
 import { Tab } from "@headlessui/react";
 import { toast } from "react-toastify";
@@ -21,7 +21,7 @@ import PageContent from "../layouts/PageContent";
 import { LoadingState } from "../layouts/ContentComponents";
 
 const UserSettings = () => {
-  const setting = useSelector(getCurrentSettingDetails);
+  const setting = useAppSelector(getCurrentSettingDetails);
   const [isSaving, setIsSaving] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState("system");
 
