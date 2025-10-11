@@ -1,30 +1,31 @@
 import { useState, useEffect } from "react";
 import { BookCategory } from "../comman-types";
 import { useLocation } from "react-router-dom";
+import { BookOpen } from "lucide-react";
 import Modal from "../components/Modal";
 import BookComponentList from "../components/BookComponentList";
 import Button from "../components/ui/button/Button";
-
 import { MessageCircle, Send } from "lucide-react";
 import {
   useAddBooklistReviewMutation,
   useGetALLBooklistsQuery,
 } from "../services/booklistsServices";
-import { useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getCurrentToken } from "../features/authSlice";
 import { toast } from "react-toastify";
 import {
   getPublicBooklists,
   setPublicBookslist,
 } from "../features/publicBooklistSlice";
-import { useDispatch } from "react-redux";
 import { getCurrentUserDetails } from "../features/userSlice";
 import { useAdminHideReviewMutation } from "../services/adminServices";
 import { motion, AnimatePresence } from "framer-motion";
+import PageContent from "../layouts/PageContent";
+import { Section, EmptyState } from "../layouts/ContentComponents";
 
 const PublicBookPage = () => {
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const access_token = useAppSelector(getCurrentToken);
   const user = useAppSelector(getCurrentUserDetails);
   const booklists = useAppSelector(getPublicBooklists);
@@ -94,23 +95,19 @@ const PublicBookPage = () => {
   };
 
   const sortedReviews = book?.reviews?.filter(
-    (review) => review.reviewText && (!review.isHidden || user.isAdmin),
+    (review) => review.reviewText && (!review.isHidden || user?.isAdmin),
   );
 
   if (!book) return null;
 
   return (
     <Modal title={book.name} description={`Created by ${book.authorName}`}>
-      <div className="space-y-8">
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6"
-        >
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">Books in this list</h2>
-          </div>
-
+      <PageContent
+        title={book.name}
+        subtitle={`Created by ${book.authorName}`}
+        icon={BookOpen}
+      >
+        <Section title="Books in this list">
           {isLoading ? (
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
@@ -120,43 +117,33 @@ const PublicBookPage = () => {
                 />
               ))}
             </div>
+          ) : book.books.length === 0 ? (
+            <EmptyState title="No books added to this list yet" />
           ) : (
             <div className="space-y-4">
-              {book.books.length === 0 ? (
-                <p className="text-gray-500 text-center py-8">
-                  No books added to this list yet
-                </p>
-              ) : (
-                book.books.map((bookId) => (
-                  <BookComponentList key={bookId} book_id={bookId} />
-                ))
-              )}
+              {book.books.map((bookId) => (
+                <BookComponentList key={bookId} book_id={bookId} />
+              ))}
             </div>
           )}
-        </motion.section>
+        </Section>
 
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6"
-        >
-          <div className="flex items-center gap-2 mb-6">
-            <MessageCircle className="w-6 h-6" />
-            <h2 className="text-2xl font-bold">Reviews</h2>
-            <span className="text-sm text-gray-500">
-              ({sortedReviews?.length || 0})
+        <Section title="Reviews">
+          <div className="flex items-center gap-2 mb-4 text-gray-600 dark:text-gray-400">
+            <MessageCircle className="w-5 h-5" />
+            <span className="text-sm">
+              {sortedReviews?.length || 0}{" "}
+              {sortedReviews?.length === 1 ? "review" : "reviews"}
             </span>
           </div>
-
           <div className="space-y-4 max-h-[32rem] overflow-y-auto mb-6 pr-2 custom-scrollbar">
             <AnimatePresence>
               {sortedReviews?.length === 0 ? (
-                <div className="text-center py-8 space-y-3">
-                  <MessageCircle className="w-12 h-12 mx-auto text-gray-400" />
-                  <p className="text-gray-500">
-                    No reviews yet. Be the first to share your thoughts!
-                  </p>
-                </div>
+                <EmptyState
+                  icon={<MessageCircle className="w-12 h-12" />}
+                  title="No reviews yet"
+                  description="Be the first to share your thoughts!"
+                />
               ) : (
                 sortedReviews?.map((review) => (
                   <motion.div
@@ -175,7 +162,7 @@ const PublicBookPage = () => {
                           <span className="font-semibold text-gray-800 dark:text-gray-200">
                             {review.reviewerName}
                           </span>
-                          {user.isAdmin && (
+                          {user?.isAdmin && (
                             <Button
                               variant={review.isHidden ? "outline" : "danger"}
                               size="sm"
@@ -231,8 +218,8 @@ const PublicBookPage = () => {
               <p className="text-gray-500">Please log in to add a review</p>
             </div>
           )}
-        </motion.section>
-      </div>
+        </Section>
+      </PageContent>
     </Modal>
   );
 };

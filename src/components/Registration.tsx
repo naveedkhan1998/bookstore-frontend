@@ -66,83 +66,115 @@ const Registration: React.FC = () => {
   }, [EmailSent]);
 
   return (
-    <div className="container flex items-center min-h-screen px-4 py-8 m-auto">
-      <div className="w-full max-w-md mx-auto space-y-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold">Create an account</h2>
-          <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Please fill in your information to get started
-          </p>
-        </div>
+    <div className="relative flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-16">
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-main-primary via-main-secondary to-main-tertiary dark:from-dark-primary dark:via-dark-secondary dark:to-dark-tertiary" />
+      <div className="relative w-full max-w-3xl overflow-hidden rounded-3xl border border-gray-200 bg-main-secondary shadow-[0_45px_100px_-50px_rgba(34,32,30,0.5)] dark:border-gray-800 dark:bg-dark-secondary">
+        <div className="absolute -top-28 right-24 h-60 w-60 rounded-full bg-secondary/15 blur-3xl" />
+        <div className="absolute -bottom-16 left-16 h-52 w-52 rounded-full bg-accent/15 blur-3xl" />
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Input
-              label="Given Name"
-              id="given_name"
-              type="text"
-              value={formData.given_name}
-              onChange={handleChange}
-              required
-              startIcon={<User className="h-5 w-5" />}
-              placeholder="John"
-            />
-            <Input
-              label="Family Name"
-              id="family_name"
-              type="text"
-              value={formData.family_name}
-              onChange={handleChange}
-              required
-              startIcon={<User className="h-5 w-5" />}
-              placeholder="Doe"
-            />
+        <div className="relative z-10 grid gap-10 px-8 py-10 sm:px-10">
+          <div className="space-y-4 text-center sm:text-left">
+            <span className="inline-flex items-center gap-2 rounded-full bg-secondary/15 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-secondary">
+              Create Account
+            </span>
+            <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-50">
+              Join the Bookstore community
+            </h2>
+            <p className="text-base text-gray-600 dark:text-gray-300">
+              Personalise your reading experience, follow trusted curators, and
+              keep every list in sync.
+            </p>
           </div>
 
-          <Input
-            label="Email"
-            id="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            startIcon={<Mail className="h-5 w-5" />}
-            placeholder="john.doe@example.com"
-            helperText="We'll send you a verification email"
-          />
+          <form onSubmit={handleSubmit} className="grid gap-6">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <Input
+                label="Given Name"
+                id="given_name"
+                type="text"
+                value={formData.given_name}
+                onChange={handleChange}
+                required
+                startIcon={<User className="h-5 w-5" />}
+                placeholder="Jane"
+              />
+              <Input
+                label="Family Name"
+                id="family_name"
+                type="text"
+                value={formData.family_name}
+                onChange={handleChange}
+                required
+                startIcon={<User className="h-5 w-5" />}
+                placeholder="Doe"
+              />
+            </div>
 
-          <Input
-            label="Password"
-            id="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-            startIcon={<Lock className="h-5 w-5" />}
-            placeholder="Create a strong password"
-            helperText="Must be at least 8 characters with numbers and special characters"
-          />
+            <Input
+              label="Email"
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              startIcon={<Mail className="h-5 w-5" />}
+              placeholder="you@example.com"
+              helperText="Well send a verification link to this address"
+            />
 
-          <Button
-            type="submit"
-            variant="default"
-            size="lg"
-            className="w-full"
-            disabled={loading}
-          >
-            {loading ? "Creating account..." : "Create account"}
-          </Button>
+            <Input
+              label="Password"
+              id="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              startIcon={<Lock className="h-5 w-5" />}
+              placeholder="Minimum 8 characters"
+              helperText="Use at least one number and special character"
+            />
 
-          <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-            Already have an account?{" "}
-            <Link
-              to="/auth"
-              className="text-accent-DEFAULT hover:text-accent-hover font-medium"
+            <div className="rounded-2xl border border-gray-200 bg-main-primary/70 p-5 text-sm text-gray-600 dark:border-gray-700 dark:bg-dark-tertiary/70 dark:text-gray-200">
+              <span className="font-semibold text-secondary dark:text-secondary-dark">
+                Youll be able to:
+              </span>
+              <ul className="mt-3 grid gap-2 text-sm">
+                <li className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-secondary"></span>
+                  Build private and shared reading lists
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-secondary"></span>
+                  Sync your progress across devices
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-secondary"></span>
+                  Receive personalised weekly recommendations
+                </li>
+              </ul>
+            </div>
+
+            <Button
+              type="submit"
+              variant="default"
+              size="lg"
+              className="w-full"
+              disabled={loading}
             >
-              Back to sign in
-            </Link>
-          </p>
-        </form>
+              {loading ? "Creating account..." : "Create account"}
+            </Button>
+
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+              Already have an account?
+              <Link
+                to="/auth"
+                className="ml-1 font-medium text-secondary hover:text-secondary-hover"
+              >
+                Back to sign in
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

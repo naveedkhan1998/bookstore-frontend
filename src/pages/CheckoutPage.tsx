@@ -7,6 +7,8 @@ import { getCurrentToken } from "../features/authSlice";
 import { useAddToTransactionsMutation } from "../services/transactionsServices";
 import { unSetUserCart } from "../features/cartSlice";
 import { unsetLoadedBook } from "../features/loadBookSlice";
+import PageContent from "../layouts/PageContent";
+import { Grid } from "../layouts/ContentComponents";
 
 interface FormData {
   cardNumber: string;
@@ -55,7 +57,7 @@ const FormInput = ({
 const CreditCardPreview = ({ cardNumber, expiryDate }: Partial<FormData>) => (
   <div className="relative w-full aspect-[1.586/1] perspective-1000">
     <div className="absolute inset-0 p-6 rounded-2xl bg-gradient-to-br from-secondary via-secondary-hover to-secondary-dark shadow-xl transform rotate-3 hover:rotate-0 transition-transform duration-300">
-      <div className="h-full flex flex-col justify-between text-white">
+      <div className="h-full flex flex-col justify-between ">
         <div className="flex justify-between items-start">
           <div className="space-y-1">
             <p className="text-xs uppercase opacity-80">Card Number</p>
@@ -168,88 +170,88 @@ const CheckoutPage: React.FC = () => {
   }, [checkoutDone, dispatch, navigate]);
 
   return (
-    <div className="container max-w-4xl px-4 py-8 mx-auto">
-      <div className="flex flex-col gap-8">
-        <h1 className="text-3xl font-bold text-center">Secure Checkout</h1>
+    <PageContent
+      title="Secure Checkout"
+      subtitle="Complete your purchase securely"
+      icon={CreditCard}
+    >
+      <Grid cols={{ default: 1, lg: 2 }} className="gap-8">
+        {/* Credit Card Preview */}
+        <div className="order-1 lg:order-none">
+          <CreditCardPreview {...formData} />
 
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          {/* Credit Card Preview */}
-          <div className="order-1 lg:order-none">
-            <CreditCardPreview {...formData} />
-
-            <div className="mt-8 p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
-              <h2 className="text-lg font-semibold">Order Summary</h2>
-              <div className="mt-4 flex justify-between items-center text-lg">
-                <span>Total Amount:</span>
-                <span className="font-bold">${to.price.toFixed(2)}</span>
-              </div>
+          <div className="mt-8 p-4 rounded-lg bg-gray-50 dark:bg-gray-800">
+            <h2 className="text-lg font-semibold">Order Summary</h2>
+            <div className="mt-4 flex justify-between items-center text-lg">
+              <span>Total Amount:</span>
+              <span className="font-bold">${to.price.toFixed(2)}</span>
             </div>
           </div>
+        </div>
 
-          {/* Payment Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Payment Form */}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <FormInput
+            label="Card Number"
+            icon={CreditCard}
+            name="cardNumber"
+            type="text"
+            placeholder="1234 5678 9012 3456"
+            value={formData.cardNumber}
+            onChange={handleChange}
+            error={errors.cardNumber}
+          />
+
+          <div className="grid grid-cols-2 gap-4">
             <FormInput
-              label="Card Number"
-              icon={CreditCard}
-              name="cardNumber"
+              label="Expiry Date"
+              icon={Calendar}
+              name="expiryDate"
               type="text"
-              placeholder="1234 5678 9012 3456"
-              value={formData.cardNumber}
+              placeholder="MM/YYYY"
+              value={formData.expiryDate}
               onChange={handleChange}
-              error={errors.cardNumber}
+              error={errors.expiryDate}
             />
 
-            <div className="grid grid-cols-2 gap-4">
-              <FormInput
-                label="Expiry Date"
-                icon={Calendar}
-                name="expiryDate"
-                type="text"
-                placeholder="MM/YYYY"
-                value={formData.expiryDate}
-                onChange={handleChange}
-                error={errors.expiryDate}
-              />
+            <FormInput
+              label="CVV"
+              icon={Lock}
+              name="cvv"
+              type="password"
+              placeholder="•••"
+              value={formData.cvv}
+              onChange={handleChange}
+              error={errors.cvv}
+            />
+          </div>
 
-              <FormInput
-                label="CVV"
-                icon={Lock}
-                name="cvv"
-                type="password"
-                placeholder="•••"
-                value={formData.cvv}
-                onChange={handleChange}
-                error={errors.cvv}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className={`
-                w-full px-6 py-3 
-                text-white font-medium
-                bg-secondary hover:bg-secondary-hover
-                rounded-lg shadow-lg
-                transform transition-all duration-200
-                flex items-center justify-center gap-2
-                disabled:opacity-50 disabled:cursor-not-allowed
-                ${!isLoading && "hover:scale-[1.02] active:scale-[0.98]"}
-              `}
-            >
-              {isLoading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Processing...
-                </>
-              ) : (
-                <>Pay ${to.price.toFixed(2)}</>
-              )}
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`
+              w-full px-6 py-3 
+              bg-main-primary dark:bg-dark-primary cursor-pointer 
+              hover:scale-[1.02]  font-medium
+              rounded-lg shadow-lg
+              transform transition-all duration-200
+              flex items-center justify-center gap-2
+              disabled:opacity-50 disabled:cursor-not-allowed
+              ${!isLoading && "hover:scale-[1.02] active:scale-[0.98]"}
+            `}
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="w-5 h-5 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>Pay ${to.price.toFixed(2)}</>
+            )}
+          </button>
+        </form>
+      </Grid>
+    </PageContent>
   );
 };
 

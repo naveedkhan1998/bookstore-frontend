@@ -1,51 +1,75 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  /* Colors */
-  /* Main - Clean, modern base */
-  --color-main-primary: #f8fafc; /* Clean, crisp white with slight blue tint */
-  --color-main-secondary: #f1f5f9; /* Subtle blue-gray */
-  --color-main-text: #0f172a; /* Rich navy */
+  /* ============================================
+     LIGHT MODE - Fresh & Modern Ocean Breeze
+     ============================================ */
+  --color-main-primary: #f8fafc;
+  --color-main-secondary: #f1f5f9;
+  --color-main-tertiary: #e2e8f0;
+  --color-main-text: #0f172a;
+  --color-main-text-secondary: #475569;
 
-  /* Dark mode - Sophisticated dark theme */
-  --color-dark-primary: #0f172a; /* Deep navy */
-  --color-dark-secondary: #1e293b; /* Rich slate blue */
-  --color-dark-text: #f8fafc; /* Bright white */
+  /* ============================================
+     DARK MODE - Deep Ocean & Midnight Sky
+     ============================================ */
+  --color-dark-primary: #0b1120;
+  --color-dark-secondary: #151d2f;
+  --color-dark-tertiary: #1e293b;
+  --color-dark-text: #f1f5f9;
+  --color-dark-text-secondary: #94a3b8;
 
-  /* Secondary (Base: DEFAULT) - Modern blue accent */
-  --color-secondary: #3b82f6; /* Vibrant blue */
-  --color-secondary-hover: #60a5fa; /* Lighter blue */
-  --color-secondary-border: #2563eb; /* Deeper blue */
-  --color-secondary-text: #ffffff; /* Pure white */
-  --color-secondary-dark: #1d4ed8; /* Dark blue for dark mode */
-  --color-secondary-dark-hover: #2563eb; /* Brighter blue for dark mode hover */
+  /* ============================================
+     BRAND COLORS - Vibrant Blue & Purple Fusion
+     ============================================ */
+  --color-brand-primary: #3b82f6;
+  --color-brand-primary-hover: #2563eb;
+  --color-brand-primary-light: #60a5fa;
+  --color-brand-primary-dark: #1e40af;
 
-  /* Accent - For CTAs and highlights */
-  --color-accent: #8b5cf6; /* Rich purple */
-  --color-accent-hover: #a78bfa; /* Lighter purple */
-  --color-accent-text: #ffffff; /* Pure white */
+  --color-brand-secondary: #a855f7;
+  --color-brand-secondary-hover: #9333ea;
+  --color-brand-secondary-light: #c084fc;
 
-  /* Success colors */
-  --color-success: #10b981; /* Emerald */
-  --color-success-hover: #34d399; /* Light emerald */
-  --color-success-text: #ffffff;
+  --color-brand-accent: #06b6d4;
+  --color-brand-accent-hover: #0891b2;
+  --color-brand-accent-light: #22d3ee;
 
-  /* Warning colors */
-  --color-warning: #f59e0b; /* Amber */
-  --color-warning-hover: #fbbf24; /* Light amber */
-  --color-warning-text: #ffffff;
+  /* ============================================
+     SEMANTIC COLORS - Clear & Vibrant
+     ============================================ */
+  --color-success: #22c55e;
+  --color-success-DEFAULT: #22c55e;
+  --color-success-hover: #16a34a;
+  --color-success-light: #4ade80;
+  --color-success-bg: #dcfce7;
+  --color-success-bg-dark: #14532d;
 
-  /* Error colors */
-  --color-error: #ef4444; /* Red */
-  --color-error-hover: #f87171; /* Light red */
-  --color-error-text: #ffffff;
+  --color-warning: #eab308;
+  --color-warning-DEFAULT: #eab308;
+  --color-warning-hover: #ca8a04;
+  --color-warning-light: #facc15;
+  --color-warning-bg: #fef9c3;
+  --color-warning-bg-dark: #713f12;
 
-  /* Info colors */
-  --color-info: #06b6d4; /* Cyan */
-  --color-info-hover: #22d3ee; /* Light cyan */
-  --color-info-text: #ffffff;
+  --color-error: #f43f5e;
+  --color-error-DEFAULT: #f43f5e;
+  --color-error-hover: #e11d48;
+  --color-error-light: #fb7185;
+  --color-error-bg: #ffe4e6;
+  --color-error-bg-dark: #881337;
 
-  /* Neutral shades */
+  --color-info: #0ea5e9;
+  --color-info-DEFAULT: #0ea5e9;
+  --color-info-hover: #0284c7;
+  --color-info-light: #38bdf8;
+  --color-info-bg: #e0f2fe;
+  --color-info-bg-dark: #0c4a6e;
+
+  /* ============================================
+     NEUTRAL SCALE - Cool Slate Grays
+     ============================================ */
   --color-gray-50: #f8fafc;
   --color-gray-100: #f1f5f9;
   --color-gray-200: #e2e8f0;
@@ -58,19 +82,76 @@
   --color-gray-900: #0f172a;
   --color-gray-950: #020617;
 
-  /* Box Shadow */
-  --box-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --box-shadow-DEFAULT:
-    0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --box-shadow-md:
-    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --box-shadow-lg:
-    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --box-shadow-xl:
-    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --box-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --box-shadow-menu:
-    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  /* ============================================
+     ELEVATIONS & SHADOWS - Depth & Hierarchy
+     ============================================ */
+  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.1), 0 1px 2px -1px rgb(15 23 42 / 0.1);
+  --shadow-DEFAULT:
+    0 4px 6px -1px rgb(15 23 42 / 0.1), 0 2px 4px -2px rgb(15 23 42 / 0.1);
+  --shadow-md:
+    0 10px 15px -3px rgb(15 23 42 / 0.1), 0 4px 6px -4px rgb(15 23 42 / 0.1);
+  --shadow-lg:
+    0 20px 25px -5px rgb(15 23 42 / 0.1), 0 8px 10px -6px rgb(15 23 42 / 0.1);
+  --shadow-xl: 0 25px 50px -12px rgb(15 23 42 / 0.25);
+  --shadow-2xl: 0 35px 60px -15px rgb(15 23 42 / 0.3);
+  --shadow-inner: inset 0 2px 4px 0 rgb(15 23 42 / 0.06);
+
+  /* Special purpose shadows */
+  --shadow-glow: 0 0 24px rgb(59 130 246 / 0.35);
+  --shadow-glow-accent: 0 0 24px rgb(6 182 212 / 0.35);
+  --shadow-header:
+    0 1px 3px 0 rgb(15 23 42 / 0.1), 0 1px 2px -1px rgb(15 23 42 / 0.1);
+  --shadow-sidebar:
+    -4px 0 6px -1px rgb(15 23 42 / 0.1), -2px 0 4px -2px rgb(15 23 42 / 0.1);
+
+  /* ============================================
+     BORDER RADIUS - Consistent Curves
+     ============================================ */
+  --radius-sm: 0.375rem;
+  --radius-DEFAULT: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-full: 9999px;
+
+  /* ============================================
+     TRANSITIONS - Smooth & Natural
+     ============================================ */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-DEFAULT: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ============================================
+     SPACING & LAYOUT
+     ============================================ */
+  --header-height: 4rem;
+  --sidebar-width: 16rem;
+  --sidebar-collapsed-width: 4.5rem;
+  --content-max-width: 1536px;
+  --content-padding: 1.5rem;
+
+  /* ============================================
+     Z-INDEX LAYERS
+     ============================================ */
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+  --font-sans:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+    sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
 
   /* Breakpoints */
   --breakpoint-xs: 400px;
@@ -79,72 +160,418 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
+}
 
-  /* Max Width */
-  --max-width-10xl: 1680px;
+/* ============================================
+   GLOBAL STYLES & UTILITIES
+   ============================================ */
+html {
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-  font-family: "League Spartan", sans-serif;
-  background-color: var(--color-main-primary);
+  font-family: var(--font-sans);
+  background:
+    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
+    var(--color-main-primary);
   color: var(--color-main-text);
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+  transition:
+    background-color var(--transition-slow),
+    color var(--transition-slow);
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;
 }
 
 .dark body {
-  background-color: var(--color-dark-primary);
+  background:
+    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.06) 0%, transparent 40%),
+    linear-gradient(135deg, #0b1120 0%, #151d2f 100%);
   color: var(--color-dark-text);
 }
 
-::-webkit-scrollbar {
-  width: 6px;
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-main-text);
+  transition: color var(--transition-DEFAULT);
 }
 
-::-webkit-scrollbar-thumb {
-  background-color: var(--color-secondary);
-  border-radius: 6px;
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6 {
+  color: var(--color-dark-text);
+}
+
+a {
+  color: var(--color-brand-primary);
+  transition:
+    color var(--transition-fast),
+    opacity var(--transition-fast);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-brand-primary-hover);
+  opacity: 0.9;
+}
+
+/* ============================================
+   TEXT SELECTION
+   ============================================ */
+::selection {
+  background-color: rgba(59, 130, 246, 0.25);
+  color: var(--color-main-text);
+}
+
+.dark ::selection {
+  background-color: rgba(59, 130, 246, 0.35);
+  color: var(--color-dark-text);
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: var(--color-gray-100);
+  background: var(--color-gray-100);
+  border-radius: var(--radius-full);
 }
 
-.scrollbar-hidden::-webkit-scrollbar-thumb {
-  background-color: transparent;
+::-webkit-scrollbar-thumb {
+  background: var(--color-gray-300);
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-gray-100);
+  transition: background var(--transition-DEFAULT);
 }
 
-/* Dark mode scrollbar */
-.dark ::-webkit-scrollbar-thumb {
-  background-color: var(--color-secondary-dark);
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-400);
 }
 
 .dark ::-webkit-scrollbar-track {
-  background-color: var(--color-dark-primary);
+  background: var(--color-dark-secondary);
 }
 
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-gray-700);
+  border-color: var(--color-dark-secondary);
 }
 
-@keyframes draw {
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gray-600);
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+   ANIMATIONS & KEYFRAMES
+   ============================================ */
+@keyframes fadeIn {
   from {
-    stroke-dashoffset: 100;
+    opacity: 0;
   }
   to {
-    stroke-dashoffset: 0;
+    opacity: 1;
   }
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.animate-draw path {
-  stroke-dasharray: 100;
-  animation: draw 2s ease-in-out forwards;
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.3s ease-out;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.2s ease-out;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  background-size: 1000px 100%;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.glass-effect {
+  background: rgba(248, 250, 252, 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.dark .glass-effect {
+  background: rgba(21, 29, 47, 0.75);
+  border-color: rgba(148, 163, 184, 0.1);
+}
+
+.card-elevated {
+  background: var(--color-main-secondary);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  transition:
+    transform var(--transition-DEFAULT),
+    box-shadow var(--transition-DEFAULT);
+}
+
+.dark .card-elevated {
+  background: var(--color-dark-secondary);
+  border-color: var(--color-gray-800);
+}
+
+.card-elevated:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.gradient-primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-primary) 0%,
+    var(--color-brand-secondary) 100%
+  );
+}
+
+.gradient-accent {
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-accent) 0%,
+    var(--color-brand-primary-light) 100%
+  );
+}
+
+.text-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--color-brand-primary) 0%,
+    var(--color-brand-secondary) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  transition: box-shadow var(--transition-fast);
+}
+
+.dark .focus-ring {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+/* ============================================
+   COMPONENT-SPECIFIC UTILITIES
+   ============================================ */
+.header-blur {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.sidebar-shadow {
+  box-shadow: var(--shadow-sidebar);
+}
+
+.nav-item-active {
+  position: relative;
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.12) 0%,
+    rgba(59, 130, 246, 0.06) 100%
+  );
+  border-left: 3px solid var(--color-brand-primary);
+}
+
+.dark .nav-item-active {
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.18) 0%,
+    rgba(59, 130, 246, 0.1) 100%
+  );
+}
+
+/* ============================================
+   LOADING STATES
+   ============================================ */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-200) 25%,
+    var(--color-gray-300) 50%,
+    var(--color-gray-200) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-gray-800) 25%,
+    var(--color-gray-700) 50%,
+    var(--color-gray-800) 75%
+  );
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .no-print {
+    display: none !important;
+  }
 }

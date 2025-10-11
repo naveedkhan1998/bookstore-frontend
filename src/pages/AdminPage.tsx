@@ -14,6 +14,14 @@ import {
   HiOutlineUserRemove,
   HiOutlineChartBar,
 } from "react-icons/hi";
+import { ShieldCheck } from "lucide-react";
+import PageContent from "../layouts/PageContent";
+import {
+  LoadingState,
+  Grid,
+  ContentCard,
+  Section,
+} from "../layouts/ContentComponents";
 
 const AdminPage = () => {
   const dispatch = useAppDispatch();
@@ -41,16 +49,14 @@ const AdminPage = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full space-x-2">
-        <div className="w-4 h-4 bg-accent-DEFAULT rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-        <div className="w-4 h-4 bg-accent-DEFAULT rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-        <div className="w-4 h-4 bg-accent-DEFAULT rounded-full animate-bounce"></div>
-      </div>
+      <PageContent>
+        <LoadingState message="Loading user data..." />
+      </PageContent>
     );
   }
 
   const StatCard = ({ title, value, icon: Icon, color }: any) => (
-    <div className="p-6 bg-white dark:bg-dark-secondary rounded-xl shadow-lg">
+    <ContentCard className="p-6">
       <div className="flex items-center space-x-4">
         <div className={`p-3 rounded-full ${color}`}>
           <Icon className="w-6 h-6 text-white" />
@@ -60,55 +66,61 @@ const AdminPage = () => {
           <p className="text-2xl font-bold">{value}</p>
         </div>
       </div>
+    </ContentCard>
+  );
+
+  const searchInput = (
+    <div className="relative w-full max-w-md">
+      <HiOutlineSearch className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
+      <input
+        type="text"
+        placeholder="Search users..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-DEFAULT focus:border-transparent dark:bg-dark-secondary"
+      />
     </div>
   );
 
   return (
-    <div className="container p-4 mx-auto space-y-8">
-      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between">
-        <h1 className="text-3xl font-bold">User Management</h1>
-        <div className="relative">
-          <HiOutlineSearch className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
-          <input
-            type="text"
-            placeholder="Search users..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent-DEFAULT focus:border-transparent dark:bg-dark-secondary"
-          />
-        </div>
-      </div>
-
+    <PageContent
+      title="User Management"
+      subtitle="Manage users, permissions, and account settings"
+      icon={ShieldCheck}
+      headerActions={searchInput}
+    >
       {/* Stats Section */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard
-          title="Total Users"
-          value={data?.activeUsers.length + data?.inactiveUsers.length}
-          icon={HiOutlineUserGroup}
-          color="bg-blue-500"
-        />
-        <StatCard
-          title="Active Users"
-          value={data?.activeUsers.length}
-          icon={HiOutlineUserAdd}
-          color="bg-green-500"
-        />
-        <StatCard
-          title="Inactive Users"
-          value={data?.inactiveUsers.length}
-          icon={HiOutlineUserRemove}
-          color="bg-red-500"
-        />
-        <StatCard
-          title="Admin Users"
-          value={data?.activeUsers.filter((u: UserType) => u.isAdmin).length}
-          icon={HiOutlineChartBar}
-          color="bg-purple-500"
-        />
-      </div>
+      <Section>
+        <Grid cols={{ default: 1, sm: 2, lg: 4 }} gap={4}>
+          <StatCard
+            title="Total Users"
+            value={data?.activeUsers.length + data?.inactiveUsers.length}
+            icon={HiOutlineUserGroup}
+            color="bg-blue-500"
+          />
+          <StatCard
+            title="Active Users"
+            value={data?.activeUsers.length}
+            icon={HiOutlineUserAdd}
+            color="bg-green-500"
+          />
+          <StatCard
+            title="Inactive Users"
+            value={data?.inactiveUsers.length}
+            icon={HiOutlineUserRemove}
+            color="bg-red-500"
+          />
+          <StatCard
+            title="Admin Users"
+            value={data?.activeUsers.filter((u: UserType) => u.isAdmin).length}
+            icon={HiOutlineChartBar}
+            color="bg-purple-500"
+          />
+        </Grid>
+      </Section>
 
       {/* Tabs */}
-      <div className="flex space-x-4 border-b">
+      <div className="flex space-x-4 border-b mt-8">
         <button
           className={`px-4 py-2 -mb-px text-sm font-medium transition-colors duration-200 ${
             activeTab === "active"
@@ -132,47 +144,51 @@ const AdminPage = () => {
       </div>
 
       {/* User List */}
-      <div className="bg-white dark:bg-dark-secondary rounded-xl shadow-lg overflow-hidden">
-        <div className="grid gap-4 p-4">
-          {filterUsers(
-            activeTab === "active" ? data?.activeUsers : data?.inactiveUsers,
-          ).map((user: UserType) => (
-            <Link
-              key={user._id}
-              to="/admin-user-page"
-              state={{ user, isActive: activeTab === "active" }}
-              className="p-4 transition-all duration-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 group"
-            >
-              <div className="flex items-center space-x-4">
-                <img
-                  src={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}&background=random`}
-                  alt={`${user.given_name} ${user.family_name}`}
-                  className="w-12 h-12 rounded-full"
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">
-                    {user.given_name} {user.family_name}
-                  </p>
-                  <p className="text-sm text-gray-500 truncate">{user.email}</p>
+      <Section>
+        <ContentCard>
+          <div className="grid gap-4">
+            {filterUsers(
+              activeTab === "active" ? data?.activeUsers : data?.inactiveUsers,
+            ).map((user: UserType) => (
+              <Link
+                key={user._id}
+                to="/admin-user-page"
+                state={{ user, isActive: activeTab === "active" }}
+                className="p-4 transition-all duration-200 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 group"
+              >
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={`https://ui-avatars.com/api/?name=${user.given_name}+${user.family_name}&background=random`}
+                    alt={`${user.given_name} ${user.family_name}`}
+                    className="w-12 h-12 rounded-full"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">
+                      {user.given_name} {user.family_name}
+                    </p>
+                    <p className="text-sm text-gray-500 truncate">
+                      {user.email}
+                    </p>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {user.isAdmin && (
+                      <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
+                        Admin
+                      </span>
+                    )}
+                    {user.isVerified ? (
+                      <HiOutlineShieldCheck className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <HiOutlineBan className="w-5 h-5 text-red-500" />
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  {user.isAdmin && (
-                    <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
-                      Admin
-                    </span>
-                  )}
-                  {user.isVerified ? (
-                    <HiOutlineShieldCheck className="w-5 h-5 text-green-500" />
-                  ) : (
-                    <HiOutlineBan className="w-5 h-5 text-red-500" />
-                  )}
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
+              </Link>
+            ))}
+          </div>
+        </ContentCard>
+      </Section>
+    </PageContent>
   );
 };
 
