@@ -1,6 +1,4 @@
-import type { CustomFlowbiteTheme } from "flowbite-react";
-
-export const customPaginationTheme: CustomFlowbiteTheme["pagination"] = {
+export const customPaginationTheme = {
   pages: {
     base: "xs:mt-0 mt-2 inline-flex items-center -space-x-px",
     showIcon: "inline-flex",
