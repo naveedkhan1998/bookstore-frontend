@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type FC } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -13,23 +13,20 @@ import {
   Heart,
   Star,
 } from "lucide-react";
-import Modal from "../components/Modal";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { getBooks } from "../features/booksSlice";
-import { getCurrentToken } from "../features/authSlice";
-import { getUserBooklists } from "../features/booklistSlice";
-import { useGetVolumeQuery } from "../services/googleBooksServices";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { getBooks } from "@/features/books/booksSlice";
+import { getCurrentToken } from "@/features/auth/authSlice";
+import { getUserBooklists } from "@/features/booklists/booklistSlice";
+import { setUserCart } from "@/features/cart/cartSlice";
 import {
   useAddBookToBooklistMutation,
   useGetUserBooklistsQuery,
-} from "../services/booklistsServices";
-import {
-  useAddToCartMutation,
-  useGetCartQuery,
-} from "../services/cartServices";
-import { setUserCart } from "../features/cartSlice";
-import DefaultPic from "../assets/pp.jpg";
-import { Grid } from "../layouts/ContentComponents";
+} from "@/services/api/booklists";
+import { useGetVolumeQuery } from "@/services/api/googleBooks";
+import { useAddToCartMutation, useGetCartQuery } from "@/services/api/cart";
+import Modal from "@/shared/components/overlay/Modal";
+import DefaultPic from "@/assets/pp.jpg";
+import { Grid } from "@/shared/layouts/ContentComponents";
 
 interface PriceTagProps {
   amount: number;
@@ -56,7 +53,7 @@ interface RatingStarsProps {
   rating?: number;
 }
 
-const PriceTag: React.FC<PriceTagProps> = ({
+const PriceTag: FC<PriceTagProps> = ({
   amount,
   currencyCode,
   isRetail = false,
@@ -69,11 +66,7 @@ const PriceTag: React.FC<PriceTagProps> = ({
   </div>
 );
 
-const BookMetaItem: React.FC<BookMetaItemProps> = ({
-  icon: Icon,
-  label,
-  value,
-}) => (
+const BookMetaItem: FC<BookMetaItemProps> = ({ icon: Icon, label, value }) => (
   <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
     <Icon className="w-5 h-5" />
     <div className="flex flex-col">
@@ -83,7 +76,7 @@ const BookMetaItem: React.FC<BookMetaItemProps> = ({
   </div>
 );
 
-const ActionButton: React.FC<ActionButtonProps> = ({
+const ActionButton: FC<ActionButtonProps> = ({
   onClick,
   isLoading = false,
   icon: Icon,
@@ -121,7 +114,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
   );
 };
 
-const RatingStars: React.FC<RatingStarsProps> = ({ rating = 4.5 }) => (
+const RatingStars: FC<RatingStarsProps> = ({ rating = 4.5 }) => (
   <div className="flex items-center gap-2">
     <div className="flex">
       {[...Array(5)].map((_, i) => (
@@ -165,7 +158,7 @@ interface Book {
   saleInfo: SaleInfo;
 }
 
-const BookPage: React.FC = () => {
+const BookPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   const access_token = useAppSelector(getCurrentToken);

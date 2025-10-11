@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
-import { getBooks } from "../features/booksSlice";
-import { BookVolume } from "../comman-types";
-import DefaultImage from "../assets/pp.jpg";
 import { motion, AnimatePresence } from "framer-motion";
 import { Library } from "lucide-react";
-import Card from "../components/ui/card/card.component";
-import Pagination from "../components/ui/pagination/pagination.component";
-import PageContent from "../layouts/PageContent";
-import { LoadingState } from "../layouts/ContentComponents";
+import { useAppSelector } from "@/app/store/hooks";
+import { getBooks } from "@/features/books/booksSlice";
+import type { BookVolume } from "@/shared/types/api";
+import DefaultImage from "@/assets/pp.jpg";
+import Card from "@/shared/ui/card/card.component";
+import Pagination from "@/shared/ui/pagination/pagination.component";
+import PageContent from "@/shared/layouts/PageContent";
+import { LoadingState } from "@/shared/layouts/ContentComponents";
 
 const BOOKS_SCROLL_KEY = "booksListScrollPosition";
 
@@ -61,7 +61,7 @@ const BooksList = () => {
     if (pageParam && Number(pageParam) !== currentPage) {
       setCurrentPage(Number(pageParam));
     }
-  }, [searchParams]);
+  }, [searchParams, currentPage]);
 
   // Pagination logic
   const startIndex = (currentPage - 1) * pageSize;

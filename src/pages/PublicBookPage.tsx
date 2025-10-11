@@ -1,27 +1,26 @@
 import { useState, useEffect } from "react";
-import { BookCategory } from "../comman-types";
 import { useLocation } from "react-router-dom";
-import { BookOpen } from "lucide-react";
-import Modal from "../components/Modal";
-import BookComponentList from "../components/BookComponentList";
-import Button from "../components/ui/button/Button";
-import { MessageCircle, Send } from "lucide-react";
-import {
-  useAddBooklistReviewMutation,
-  useGetALLBooklistsQuery,
-} from "../services/booklistsServices";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { getCurrentToken } from "../features/authSlice";
 import { toast } from "react-toastify";
+import { motion, AnimatePresence } from "framer-motion";
+import { BookOpen, MessageCircle, Send } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { getCurrentToken } from "@/features/auth/authSlice";
 import {
   getPublicBooklists,
   setPublicBookslist,
-} from "../features/publicBooklistSlice";
-import { getCurrentUserDetails } from "../features/userSlice";
-import { useAdminHideReviewMutation } from "../services/adminServices";
-import { motion, AnimatePresence } from "framer-motion";
-import PageContent from "../layouts/PageContent";
-import { Section, EmptyState } from "../layouts/ContentComponents";
+} from "@/features/booklists/publicBooklistSlice";
+import { getCurrentUserDetails } from "@/features/user/userSlice";
+import {
+  useAddBooklistReviewMutation,
+  useGetALLBooklistsQuery,
+} from "@/services/api/booklists";
+import { useAdminHideReviewMutation } from "@/services/api/admin";
+import Button from "@/shared/ui/button/Button";
+import BookComponentList from "@/features/books/components/BookComponentList";
+import Modal from "@/shared/components/overlay/Modal";
+import PageContent from "@/shared/layouts/PageContent";
+import { EmptyState, Section } from "@/shared/layouts/ContentComponents";
+import type { BookCategory } from "@/shared/types/api";
 
 const PublicBookPage = () => {
   const location = useLocation();

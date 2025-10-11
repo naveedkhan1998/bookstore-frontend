@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+  type ChangeEvent,
+  type FormEvent,
+  type FC,
+} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { CreditCard, Calendar, Lock, Loader2 } from "lucide-react";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { getCurrentToken } from "../features/authSlice";
-import { useAddToTransactionsMutation } from "../services/transactionsServices";
-import { unSetUserCart } from "../features/cartSlice";
-import { unsetLoadedBook } from "../features/loadBookSlice";
-import PageContent from "../layouts/PageContent";
-import { Grid } from "../layouts/ContentComponents";
+import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
+import { getCurrentToken } from "@/features/auth/authSlice";
+import { unSetUserCart } from "@/features/cart/cartSlice";
+import { unsetLoadedBook } from "@/features/books/loadBookSlice";
+import { useAddToTransactionsMutation } from "@/services/api/transactions";
+import PageContent from "@/shared/layouts/PageContent";
+import { Grid } from "@/shared/layouts/ContentComponents";
 
 interface FormData {
   cardNumber: string;
@@ -77,7 +83,7 @@ const CreditCardPreview = ({ cardNumber, expiryDate }: Partial<FormData>) => (
   </div>
 );
 
-const CheckoutPage: React.FC = () => {
+const CheckoutPage: FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -98,7 +104,7 @@ const CheckoutPage: React.FC = () => {
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     let formattedValue = value;
 
@@ -149,7 +155,7 @@ const CheckoutPage: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (validateForm()) {
       try {

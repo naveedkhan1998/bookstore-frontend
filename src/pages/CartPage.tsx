@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, type FC, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
@@ -13,21 +13,25 @@ import {
   CreditCard,
   LucideIcon,
 } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { getCurrentToken } from "../features/authSlice";
-import { getUserCart, setUserCart } from "../features/cartSlice";
-import { getLoadedBooks } from "../features/loadBookSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { getCurrentToken } from "@/features/auth/authSlice";
+import { getUserCart, setUserCart } from "@/features/cart/cartSlice";
+import { getLoadedBooks } from "@/features/books/loadBookSlice";
 import {
   useAddToCartMutation,
   useGetCartQuery,
   useRemoveFromCartMutation,
   useRemoveWholeItemFromCartMutation,
-} from "../services/cartServices";
-import { BookVolume } from "../comman-types";
-import BookLoaderComponent from "../components/BookLoaderComponent";
-import DefaultPic from "../assets/pp.jpg";
-import PageContent from "../layouts/PageContent";
-import { LoadingState, EmptyState, Grid } from "../layouts/ContentComponents";
+} from "@/services/api/cart";
+import type { BookVolume } from "@/shared/types/api";
+import BookLoaderComponent from "@/features/books/components/BookLoaderComponent";
+import DefaultPic from "@/assets/pp.jpg";
+import PageContent from "@/shared/layouts/PageContent";
+import {
+  LoadingState,
+  EmptyState,
+  Grid,
+} from "@/shared/layouts/ContentComponents";
 
 interface CartFeatureProps {
   icon: LucideIcon;
@@ -38,7 +42,7 @@ interface CartFeatureProps {
 interface QuantityButtonProps {
   onClick: () => void;
   disabled?: boolean;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 interface CartItemProps {
@@ -59,7 +63,7 @@ interface OrderSummaryProps {
   disabled: boolean;
 }
 
-const CartFeature: React.FC<CartFeatureProps> = ({
+const CartFeature: FC<CartFeatureProps> = ({
   icon: Icon,
   title,
   description,
@@ -73,7 +77,7 @@ const CartFeature: React.FC<CartFeatureProps> = ({
   </div>
 );
 
-const QuantityButton: React.FC<QuantityButtonProps> = ({
+const QuantityButton: FC<QuantityButtonProps> = ({
   onClick,
   disabled,
   children,
@@ -87,7 +91,7 @@ const QuantityButton: React.FC<QuantityButtonProps> = ({
   </button>
 );
 
-const CartItem: React.FC<CartItemProps> = ({
+const CartItem: FC<CartItemProps> = ({
   book,
   quantity,
   onIncrement,
@@ -164,7 +168,7 @@ const CartItem: React.FC<CartItemProps> = ({
   );
 };
 
-const OrderSummary: React.FC<OrderSummaryProps> = ({
+const OrderSummary: FC<OrderSummaryProps> = ({
   subTotal,
   tax,
   total,
@@ -250,7 +254,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
   </div>
 );
 
-const CartPage: React.FC = () => {
+const CartPage: FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const access_token = useAppSelector(getCurrentToken);

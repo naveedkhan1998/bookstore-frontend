@@ -1,15 +1,15 @@
 import { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { UserType } from "../features/userSlice";
-import Button from "../components/ui/button/Button";
 import { toast } from "react-toastify";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { getCurrentToken } from "../features/authSlice";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   useAdminDisableUserMutation,
   useAdminMakeAdminMutation,
-} from "../services/adminServices";
-import { setRefresh } from "../features/refreshSlice";
+} from "@/services/api/admin";
+import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
+import { getCurrentToken } from "@/features/auth/authSlice";
+import { setRefresh } from "@/features/session/refreshSlice";
+import type { UserType } from "@/features/user/userSlice";
+import Button from "@/shared/ui/button/Button";
 import {
   HiOutlineMail,
   HiOutlineCalendar,
@@ -20,8 +20,8 @@ import {
   HiArrowLeft,
 } from "react-icons/hi";
 import { UserCog } from "lucide-react";
-import PageContent from "../layouts/PageContent";
-import { Grid, ContentCard } from "../layouts/ContentComponents";
+import PageContent from "@/shared/layouts/PageContent";
+import { Grid, ContentCard } from "@/shared/layouts/ContentComponents";
 
 const AdminUserPage = () => {
   const access_token = useAppSelector(getCurrentToken);

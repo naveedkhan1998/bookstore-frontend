@@ -1,9 +1,9 @@
 import { useLocation } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
-import Modal from "../components/Modal";
-import BookComponent from "../components/BookComponent";
-import PageContent from "../layouts/PageContent";
-import { Grid } from "../layouts/ContentComponents";
+import BookComponent from "@/features/books/components/BookComponent";
+import Modal from "@/shared/components/overlay/Modal";
+import PageContent from "@/shared/layouts/PageContent";
+import { Grid } from "@/shared/layouts/ContentComponents";
 
 const OrderItemsPage = () => {
   const location = useLocation();

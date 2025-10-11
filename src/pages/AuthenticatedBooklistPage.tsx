@@ -1,20 +1,20 @@
 import { useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
-import { getCurrentToken } from "../features/authSlice";
-import { useGetALLBooklistsQuery } from "../services/booklistsServices";
-import { setPublicBookslist } from "../features/publicBooklistSlice";
 import { Link } from "react-router-dom";
-import { getRefresh, setRefresh } from "../features/refreshSlice";
-import { BookCategory } from "../comman-types";
 import { Library, RefreshCw } from "lucide-react";
-import Card from "../components/ui/card/card.component";
-import PageContent from "../layouts/PageContent";
+import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
+import { getCurrentToken } from "@/features/auth/authSlice";
+import { getRefresh, setRefresh } from "@/features/session/refreshSlice";
+import { setPublicBookslist } from "@/features/booklists/publicBooklistSlice";
+import { useGetALLBooklistsQuery } from "@/services/api/booklists";
+import type { BookCategory } from "@/shared/types/api";
+import Card from "@/shared/ui/card/card.component";
+import PageContent from "@/shared/layouts/PageContent";
 import {
   LoadingState,
   ErrorState,
   EmptyState,
   Grid,
-} from "../layouts/ContentComponents";
+} from "@/shared/layouts/ContentComponents";
 
 const AuthenticatedBooklistPage = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +35,7 @@ const AuthenticatedBooklistPage = () => {
       dispatch(setPublicBookslist(data));
       dispatch(setRefresh(false));
     }
-  }, [refresh]);
+  }, [refresh, refetch, dispatch, data]);
 
   if (isLoading) {
     return <LoadingState />;

@@ -1,6 +1,5 @@
+import { EmptyState, PageContent } from "@/shared/layouts";
 import { User } from "lucide-react";
-import PageContent from "../layouts/PageContent";
-import { EmptyState } from "../layouts/ContentComponents";
 
 const AccountPage = () => {
   return (

@@ -1,10 +1,5 @@
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { getCurrentToken } from "../features/authSlice";
-import { useAdminGetUsersQuery } from "../services/adminServices";
 import { Link } from "react-router-dom";
-import { UserType } from "../features/userSlice";
-import { getRefresh, setRefresh } from "../features/refreshSlice";
 import {
   HiOutlineShieldCheck,
   HiOutlineBan,
@@ -15,13 +10,18 @@ import {
   HiOutlineChartBar,
 } from "react-icons/hi";
 import { ShieldCheck } from "lucide-react";
-import PageContent from "../layouts/PageContent";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { getCurrentToken } from "@/features/auth/authSlice";
+import { getRefresh, setRefresh } from "@/features/session/refreshSlice";
+import type { UserType } from "@/features/user/userSlice";
+import { useAdminGetUsersQuery } from "@/services/api/admin";
+import PageContent from "@/shared/layouts/PageContent";
 import {
   LoadingState,
   Grid,
   ContentCard,
   Section,
-} from "../layouts/ContentComponents";
+} from "@/shared/layouts/ContentComponents";
 
 const AdminPage = () => {
   const dispatch = useAppDispatch();

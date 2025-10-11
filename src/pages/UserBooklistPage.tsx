@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import { useState, type FC } from "react";
 import { useParams } from "react-router-dom";
 import { BookMarked, Lock, Globe } from "lucide-react";
-import Modal from "../components/Modal";
-import { useAppSelector } from "../app/hooks";
-import { getUserBooklists } from "../features/booklistSlice";
-import BookComponent from "../components/BookComponent";
-import PageContent from "../layouts/PageContent";
-import { EmptyState, Grid } from "../layouts/ContentComponents";
+import { useAppSelector } from "@/app/store/hooks";
+import { getUserBooklists } from "@/features/booklists/booklistSlice";
+import BookComponent from "@/features/books/components/BookComponent";
+import Modal from "@/shared/components/overlay/Modal";
+import PageContent from "@/shared/layouts/PageContent";
+import { EmptyState, Grid } from "@/shared/layouts/ContentComponents";
 
-const UserBooklistPage: React.FC = () => {
+const UserBooklistPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const userBooklists = useAppSelector(getUserBooklists);
   const booklist = userBooklists.bookLists?.find((obj) => obj._id === id);

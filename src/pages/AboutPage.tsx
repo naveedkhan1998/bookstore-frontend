@@ -10,8 +10,8 @@ import {
   SiMongodb,
   SiNodedotjs,
 } from "react-icons/si";
-import PageContent from "../layouts/PageContent";
-import { Section, Grid, ContentCard } from "../layouts/ContentComponents";
+import PageContent from "@/shared/layouts/PageContent";
+import { Section, Grid, ContentCard } from "@/shared/layouts/ContentComponents";
 
 const AboutPage = () => {
   const techStacks = {

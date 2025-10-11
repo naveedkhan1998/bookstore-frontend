@@ -1,7 +1,3 @@
-import { useAppSelector } from "../app/hooks";
-import { getCurrentUserDetails } from "../features/userSlice";
-import PageContent from "../layouts/PageContent";
-import { LoadingState, Grid, ContentCard } from "../layouts/ContentComponents";
 import { User } from "lucide-react";
 import {
   HiMail,
@@ -11,6 +7,14 @@ import {
   HiCollection,
   HiUserGroup,
 } from "react-icons/hi";
+import { useAppSelector } from "@/app/store/hooks";
+import { getCurrentUserDetails } from "@/features/user/userSlice";
+import PageContent from "@/shared/layouts/PageContent";
+import {
+  ContentCard,
+  Grid,
+  LoadingState,
+} from "@/shared/layouts/ContentComponents";
 
 const UserProfile = () => {
   const user = useAppSelector(getCurrentUserDetails);

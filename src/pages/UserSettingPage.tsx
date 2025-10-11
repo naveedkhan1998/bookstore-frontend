@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useAppSelector } from "../app/hooks";
-import { getCurrentSettingDetails, Language } from "../features/settingSlice";
 import { Tab } from "@headlessui/react";
 import { toast } from "react-toastify";
 import { Settings } from "lucide-react";
@@ -15,10 +13,15 @@ import {
   HiOutlineDesktopComputer,
   HiOutlineCheck,
 } from "react-icons/hi";
-import Button from "../components/ui/button/Button";
-import Input from "../components/ui/input/input.component";
-import PageContent from "../layouts/PageContent";
-import { LoadingState } from "../layouts/ContentComponents";
+import { useAppSelector } from "@/app/store/hooks";
+import {
+  getCurrentSettingDetails,
+  Language,
+} from "@/features/settings/settingSlice";
+import Button from "@/shared/ui/button/Button";
+import Input from "@/shared/ui/input/input.component";
+import PageContent from "@/shared/layouts/PageContent";
+import { LoadingState } from "@/shared/layouts/ContentComponents";
 
 const UserSettings = () => {
   const setting = useAppSelector(getCurrentSettingDetails);
