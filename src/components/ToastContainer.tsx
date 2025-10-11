@@ -7,7 +7,7 @@ const Toast: React.FC = () => {
     autoClose: 1100,
   };
 
-  return <ToastContainer {...toastOptions} />;
+  return <ToastContainer className="z-50" {...toastOptions} />;
 };
 
 export default Toast;

@@ -60,8 +60,8 @@ const routes = [
 
 function LoadingFallback() {
   return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    <div className="flex h-64 items-center justify-center">
+      <div className="h-12 w-12 animate-spin rounded-full border-b-2 border-t-2 border-secondary"></div>
     </div>
   );
 }
@@ -72,55 +72,63 @@ function App() {
   return (
     <Router>
       <SidebarProvider>
-        <div className="flex flex-col h-screen bg-main-primary dark:bg-dark-primary text-main-text dark:text-dark-text">
+        <div className="min-h-screen w-full bg-main-primary text-main-text transition-colors duration-300 dark:bg-dark-primary dark:text-dark-text">
           <PageHeader />
-          <div className="flex flex-1 overflow-hidden">
+
+          <div className="mx-auto flex w-full  flex-1 items-start gap-8 px-4 pb-16 pt-10 lg:px-12">
             <Sidebar />
-            <main className="flex-1 overflow-y-auto">
-              <div className="min-h-full px-8 pb-20">
-                <Suspense fallback={<LoadingFallback />}>
-                  <Routes>
-                    {routes.map(({ path, element, protected: isProtected }) => (
+
+            <main className="flex-1">
+              <div className="min-h-[70vh] rounded-[28px] border border-gray-200 bg-main-secondary shadow-[0_35px_80px_-45px_rgba(47,41,36,0.45)] transition-colors duration-300 dark:border-gray-800 dark:bg-dark-secondary/90">
+                <div className="px-6 py-8 sm:px-10 lg:px-12">
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Routes>
+                      {routes.map(
+                        ({ path, element, protected: isProtected }) => (
+                          <Route
+                            key={path}
+                            path={path}
+                            element={
+                              isProtected ? (
+                                <ProtectedRoute>{element}</ProtectedRoute>
+                              ) : (
+                                element
+                              )
+                            }
+                          />
+                        ),
+                      )}
+
+                      {/* Special route that depends on auth state */}
                       <Route
-                        key={path}
-                        path={path}
+                        path="/public-booklists"
                         element={
-                          isProtected ? (
-                            <ProtectedRoute>{element}</ProtectedRoute>
+                          access_token ? (
+                            <AuthentiatedBooklistPage />
                           ) : (
-                            element
+                            <PublicBooklistsPage />
                           )
                         }
                       />
-                    ))}
-
-                    {/* Special route that depends on auth state */}
-                    <Route
-                      path="/public-booklists"
-                      element={
-                        access_token ? (
-                          <AuthentiatedBooklistPage />
-                        ) : (
-                          <PublicBooklistsPage />
-                        )
-                      }
-                    />
-                    <Route
-                      path="/public-booklist"
-                      element={<PublicBookPage />}
-                    />
-                  </Routes>
-                </Suspense>
+                      <Route
+                        path="/public-booklist"
+                        element={<PublicBookPage />}
+                      />
+                    </Routes>
+                  </Suspense>
+                </div>
               </div>
             </main>
           </div>
-          <footer className="fixed bottom-0 w-full">
-            <div className="bg-main-secondary dark:bg-dark-secondary bg-opacity-90">
+
+          <footer className="border-t border-gray-200/60 bg-main-secondary/70 py-8 transition-colors duration-300 dark:border-gray-800/60 dark:bg-dark-secondary">
+            <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 lg:px-12">
               <Footer />
             </div>
           </footer>
+
+          <Toast />
         </div>
-        <Toast />
       </SidebarProvider>
     </Router>
   );

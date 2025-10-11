@@ -1,5 +1,13 @@
 import { X } from "lucide-react";
-import { useCallback, useRef, ReactNode, useEffect, forwardRef } from "react";
+import {
+  useCallback,
+  useRef,
+  ReactNode,
+  useEffect,
+  forwardRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 import { cva, type VariantProps } from "class-variance-authority";
 import { twMerge } from "tailwind-merge";
 import Button from "./ui/button/Button";
@@ -7,26 +15,27 @@ import Button from "./ui/button/Button";
 const modalVariants = cva(
   [
     "relative",
-    "w-[calc(100%-2rem)]",
+    "w-[min(90vw,56rem)]",
     "mx-auto",
     "bg-main-primary",
     "dark:bg-dark-primary",
     "text-main-text",
     "dark:text-dark-text",
-    "rounded-lg",
-    "shadow-xl",
+    "rounded-2xl",
+    "shadow-2xl",
     "flex",
     "flex-col",
-    "max-h-[90vh]",
+    "max-h-[calc(100vh-6rem)]",
+    "overflow-hidden",
   ],
   {
     variants: {
       size: {
-        default: ["max-w-2xl"],
-        sm: ["max-w-sm"],
-        lg: ["max-w-4xl"],
-        xl: ["max-w-6xl"],
-        full: ["max-w-[calc(100%-2rem)]"],
+        default: [],
+        sm: ["w-[min(90vw,28rem)]"],
+        lg: ["w-[min(92vw,72rem)]"],
+        xl: ["w-[min(94vw,90rem)]"],
+        full: ["w-[min(96vw,102rem)]", "max-h-[calc(100vh-4rem)]"],
       },
     },
     defaultVariants: {
@@ -47,19 +56,23 @@ interface ModalProps extends VariantProps<typeof modalVariants> {
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(
-  ({
-    children,
-    onClose,
-    title,
-    description,
-    showCloseButton = true,
-    closeOnClickOutside = true,
-    closeOnEsc = true,
-    size,
-    className,
-  }) => {
+  (
+    {
+      children,
+      onClose,
+      title,
+      description,
+      showCloseButton = true,
+      closeOnClickOutside = true,
+      closeOnEsc = true,
+      size,
+      className,
+    },
+    ref,
+  ) => {
     const overlay = useRef<HTMLDivElement>(null);
     const wrapper = useRef<HTMLDivElement>(null);
+    const [mounted, setMounted] = useState(false);
 
     const handleDismiss = useCallback(() => {
       onClose ? onClose() : window.history.back();
@@ -75,6 +88,20 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
     );
 
     useEffect(() => {
+      setMounted(true);
+      return () => setMounted(false);
+    }, []);
+
+    useEffect(() => {
+      if (!mounted) return;
+      const previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = previousOverflow;
+      };
+    }, [mounted]);
+
+    useEffect(() => {
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === "Escape" && closeOnEsc) {
           handleDismiss();
@@ -87,17 +114,14 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       return () => document.removeEventListener("keydown", handleEscape);
     }, [handleDismiss, closeOnEsc]);
 
-    useEffect(() => {
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = "auto";
-      };
-    }, []);
+    if (!mounted) {
+      return null;
+    }
 
-    return (
+    const modalMarkup = (
       <div
         ref={overlay}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 dark:bg-black/70 backdrop-blur-sm p-4"
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/55 backdrop-blur-sm p-4"
         onClick={handleClick}
         role="dialog"
         aria-modal="true"
@@ -106,20 +130,31 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
       >
         <div
           className={twMerge(modalVariants({ size }), className)}
-          ref={wrapper}
+          ref={(node) => {
+            (wrapper as React.MutableRefObject<HTMLDivElement | null>).current =
+              node;
+            if (typeof ref === "function") {
+              ref(node);
+            } else if (ref) {
+              (ref as React.MutableRefObject<HTMLDivElement | null>).current =
+                node;
+            }
+          }}
         >
-          {/* Fixed Header */}
-          <div className="flex items-center justify-between p-4 border-b bg-main-secondary dark:bg-dark-secondary border-gray-200 dark:border-gray-700 rounded-t-lg">
+          <div className="flex items-start justify-between gap-3 border-b border-gray-200/70 bg-main-secondary/80 px-6 py-4 dark:border-gray-700/60 dark:bg-dark-secondary/80">
             <div className="flex-1 min-w-0">
               {title && (
-                <h2 id="modal-title" className="text-lg font-semibold truncate">
+                <h2
+                  id="modal-title"
+                  className="text-lg font-semibold leading-tight"
+                >
                   {title}
                 </h2>
               )}
               {description && (
                 <p
                   id="modal-description"
-                  className="mt-1 text-sm text-gray-500 dark:text-gray-400 line-clamp-2"
+                  className="mt-1 text-sm text-gray-500 dark:text-gray-400"
                 >
                   {description}
                 </p>
@@ -130,19 +165,20 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
                 onClick={handleDismiss}
                 variant="ghost"
                 size="icon"
-                className="flex-shrink-0 -mr-2"
+                className="flex-shrink-0"
                 aria-label="Close modal"
               >
-                <X className="w-5 h-5" />
+                <X className="h-5 w-5" />
               </Button>
             )}
           </div>
 
-          {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto p-4 min-h-0">{children}</div>
+          <div className="flex-1 overflow-y-auto px-6 py-5">{children}</div>
         </div>
       </div>
     );
+
+    return createPortal(modalMarkup, document.body);
   },
 );
 

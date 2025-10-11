@@ -6,15 +6,12 @@ import { Provider } from "react-redux";
 import { store } from "./app/store.ts";
 import { DarkModeProvider } from "./context/DarkModeContext.tsx";
 
-
 createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
-
-      <DarkModeProvider>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
-      </DarkModeProvider>
-
+    <DarkModeProvider>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </DarkModeProvider>
   </Provider>,
 );

@@ -366,7 +366,7 @@ const PageHeader: React.FC = () => {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 flex justify-between gap-10 p-2 transition-all duration-300 ease-in-out shadow-md lg:gap-20 bg-main-secondary dark:bg-dark-secondary">
+    <nav className="sticky top-0 z-50 flex items-center justify-between gap-6 border-b border-gray-200 bg-main-secondary/90 px-4 py-4 shadow-[0_18px_44px_-30px_rgba(34,32,30,0.5)] backdrop-blur-md transition-all duration-300 ease-in-out dark:border-gray-800 dark:bg-dark-secondary/85 lg:gap-12">
       <PageHeaderFirstSection hidden={showFullWidthSearch} />
       <div
         className={`flex-grow justify-center ${showFullWidthSearch ? "flex" : "hidden md:flex"}`}

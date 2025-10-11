@@ -22,8 +22,7 @@ const LoginReg: React.FC = () => {
   const handleSocialLogin = async (provider: string) => {
     try {
       setSocialLoading(provider);
-      // Implement social login logic here
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       toast.success(`Successfully logged in with ${provider}`);
     } catch (error) {
       toast.error(`Failed to login with ${provider}`);
@@ -33,52 +32,66 @@ const LoginReg: React.FC = () => {
   };
 
   return (
-    <div className="container flex items-center min-h-screen px-4 py-8 m-auto">
+    <div className="relative flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-16">
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-main-primary via-main-secondary to-main-tertiary dark:from-dark-primary dark:via-dark-secondary dark:to-dark-tertiary" />
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col w-full max-w-6xl mx-auto overflow-hidden bg-white shadow-xl md:flex-row dark:bg-dark-secondary rounded-2xl"
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="relative flex w-full max-w-5xl overflow-hidden rounded-3xl border border-gray-200 bg-main-secondary shadow-[0_45px_90px_-40px_rgba(34,32,30,0.55)] dark:border-gray-800 dark:bg-dark-secondary"
       >
-        {/* Left Panel */}
-        <motion.div className="relative hidden md:flex md:w-5/12 bg-gradient-to-br from-accent-DEFAULT via-secondary-DEFAULT to-primary-DEFAULT">
-          <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-          <div className="relative z-10 flex flex-col justify-center w-full p-12">
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="flex flex-col items-center mb-12"
-            >
-              <div className="p-3 mb-4 bg-white/10 backdrop-blur-sm rounded-2xl">
-                <BookLogo className="w-16 h-16 " />
+        <motion.div
+          initial={{ opacity: 0, x: -24 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1, duration: 0.4 }}
+          className="relative hidden h-full flex-col justify-between bg-gradient-to-br from-primary via-secondary to-secondary-dark p-12 text-primary-text md:flex md:w-5/12"
+        >
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(243,238,229,0.28),transparent_55%)]" />
+          <div className="relative z-10 space-y-10">
+            <div className="flex flex-col items-start gap-4">
+              <span className="inline-flex items-center gap-2 rounded-full bg-primary-text/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em]">
+                Bookstore
+              </span>
+              <div className="rounded-2xl bg-primary-text/10 p-3 backdrop-blur-md">
+                <BookLogo className="h-14 w-14" />
               </div>
-              <h1 className="text-3xl font-bold ">BookStore</h1>
-            </motion.div>
-
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="space-y-6 text-center"
-            >
-              <h2 className="text-4xl font-bold leading-tight ">
-                Welcome to BookStore
-              </h2>
-              <p className="max-w-sm mx-auto text-lg leading-relaxed ">
-                Choose how you'd like to continue
+              <h1 className="text-3xl font-semibold leading-tight">
+                Your next chapter starts with a better library.
+              </h1>
+              <p className="text-sm text-primary-text/80">
+                Create, curate, and share reading journeys with a calm interface
+                designed for long-form discovery.
               </p>
-              <div className="w-20 h-1 mx-auto rounded-full bg-white/20"></div>
-            </motion.div>
+            </div>
+            <div className="space-y-5 text-sm text-primary-text/85">
+              {[
+                "Track every purchase and wishlist",
+                "Build collaborative booklists",
+                "Sync notes across devices",
+              ].map((item, index) => (
+                <div key={item} className="flex items-center gap-3">
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full border border-primary-text/30 bg-primary-text/10 text-base font-semibold">
+                    {index + 1}
+                  </span>
+                  <p>{item}</p>
+                </div>
+              ))}
+            </div>
           </div>
+          <p className="relative z-10 text-xs text-primary-text/70">
+            Need help? Reach us at support@bookstore.app
+          </p>
         </motion.div>
 
-        {/* Right Panel */}
-        <div className="w-full p-4 md:w-7/12 md:p-12">
-          <div className="max-w-md mx-auto space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold">Welcome to BookStore</h2>
-              <p className="mt-2 text-gray-600 dark:text-gray-400">
-                Choose how you'd like to continue
+        <div className="w-full px-6 py-12 sm:px-10 md:w-7/12">
+          <div className="mx-auto flex w-full max-w-md flex-col gap-10">
+            <div className="space-y-3 text-center md:text-left">
+              <h2 className="text-3xl font-semibold text-gray-800 dark:text-gray-50">
+                Welcome to Bookstore
+              </h2>
+              <p className="text-base text-gray-600 dark:text-gray-300">
+                Choose how you�d like to sign in. You can always update your
+                preference later.
               </p>
             </div>
 
@@ -95,20 +108,19 @@ const LoginReg: React.FC = () => {
                 variant="outline"
                 size="lg"
                 className="w-full"
-                onClick={() => navigate("/register")}
+                onClick={() => navigate("/registration")}
               >
                 Create Account
               </Button>
             </div>
 
-            {/* Social Login */}
-            <div className="mt-8">
-              <div className="relative flex items-center my-6">
-                <div className="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
-                <span className="flex-shrink-0 mx-4 text-sm text-gray-400">
-                  or continue with
+            <div className="space-y-6">
+              <div className="relative flex items-center">
+                <span className="flex-grow border-t border-dashed border-gray-200 dark:border-gray-700"></span>
+                <span className="mx-4 text-xs font-medium uppercase tracking-[0.3em] text-gray-400">
+                  Or continue with
                 </span>
-                <div className="flex-grow border-t border-gray-200 dark:border-gray-700"></div>
+                <span className="flex-grow border-t border-dashed border-gray-200 dark:border-gray-700"></span>
               </div>
 
               <div className="grid grid-cols-3 gap-4">
@@ -122,16 +134,23 @@ const LoginReg: React.FC = () => {
                     onClick={() => handleSocialLogin(name)}
                     disabled={!!socialLoading}
                     aria-label={`Sign in with ${name}`}
-                    className={`flex items-center justify-center p-2.5 border border-gray-200 
-                      dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 
-                      transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed
-                      ${socialLoading === name ? "animate-pulse" : ""}`}
+                    className={`flex items-center justify-center rounded-2xl border border-gray-200 bg-main-secondary px-3 py-2.5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-gray-700 dark:bg-dark-tertiary/70 dark:hover:bg-dark-tertiary ${socialLoading === name ? "animate-pulse" : ""}`}
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="h-5 w-5" />
                   </button>
                 ))}
               </div>
             </div>
+
+            <p className="text-center text-xs text-gray-500 dark:text-gray-400">
+              By continuing you agree to our
+              <button
+                type="button"
+                className="ml-1 font-medium text-secondary hover:text-secondary-hover"
+              >
+                Terms &amp; Privacy Policy
+              </button>
+            </p>
           </div>
         </div>
       </motion.div>

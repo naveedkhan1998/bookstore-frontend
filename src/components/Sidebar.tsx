@@ -151,11 +151,11 @@ const LargeSidebarItem = memo<SidebarItemProps>(
       to={url}
       onClick={onClick}
       className={twMerge(
-        "w-full flex items-center gap-3 px-4 py-3 mx-2 rounded-lg",
-        "transition-all duration-200 group relative",
+        "group relative mb-1 flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200",
+        "border border-transparent",
         isActive
-          ? "bg-blue-500 text-white"
-          : "hover:bg-slate-100 dark:hover:bg-slate-800",
+          ? "bg-secondary text-secondary-text shadow-md"
+          : "text-gray-600 dark:text-gray-300 hover:bg-main-tertiary/60 dark:hover:bg-dark-tertiary/70",
       )}
     >
       {typeof Icon === "string" ? (
@@ -166,12 +166,19 @@ const LargeSidebarItem = memo<SidebarItemProps>(
         />
       ) : (
         <Icon
-          className={`w-5 h-5 ${isActive ? "text-white" : "text-slate-500 dark:text-slate-400"}`}
+          className={`h-5 w-5 ${isActive ? "text-secondary-text" : "text-gray-500 dark:text-gray-400"}`}
         />
       )}
       <span className="font-medium">{title}</span>
       {isActive && (
-        <ChevronRight className="w-4 h-4 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
+        <ChevronRight
+          className={twMerge(
+            "ml-auto h-4 w-4 transition-opacity duration-200",
+            isActive
+              ? "opacity-100 text-secondary-text"
+              : "opacity-0 text-gray-400 group-hover:opacity-100",
+          )}
+        />
       )}
     </Link>
   ),
@@ -191,7 +198,7 @@ const LargeSidebarSection = memo<SectionProps>(
     return (
       <div className="py-2">
         {title && (
-          <h3 className="px-6 mb-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+          <h3 className="px-6 mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
             {title}
           </h3>
         )}
@@ -200,7 +207,7 @@ const LargeSidebarSection = memo<SectionProps>(
           <Button
             onClick={() => setIsExpanded((prev) => !prev)}
             variant="ghost"
-            className="flex items-center w-full gap-4 p-3 rounded-lg"
+            className="mt-1 flex w-full items-center gap-3 rounded-2xl border border-gray-200 bg-main-primary/60 px-4 py-2 text-sm text-gray-600 transition hover:bg-main-tertiary/60 dark:border-gray-700 dark:bg-dark-tertiary/60 dark:text-gray-200 dark:hover:bg-dark-tertiary"
           >
             <ButtonIcon className="w-6 h-6" />
             <span>{isExpanded ? "Show Less" : "Show More"}</span>
@@ -238,15 +245,17 @@ const Sidebar: React.FC<SidebarProps> = () => {
       {isSmallOpen && <SidebarOverlay onClose={close} />}
       <aside
         className={twMerge(
-          "w-64 max-h-screen lg:sticky absolute top-0 overflow-y-auto scrollbar-hidden flex-col",
-          "bg-white dark:bg-slate-900 border-r dark:border-slate-800",
+          "w-72 shrink-0 overflow-y-auto overflow-x-hidden scrollbar-hidden flex-col rounded-3xl",
+          "border border-gray-200 dark:border-gray-800",
+          "bg-main-secondary/85 dark:bg-dark-secondary/85 shadow-[0_26px_60px_-42px_rgba(34,32,30,0.55)] backdrop-blur-sm",
+          isSmallOpen
+            ? "fixed inset-y-0 left-0 z-[999] m-4 flex max-h-[calc(100vh-2rem)] shadow-2xl"
+            : "hidden",
+          "lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:m-0",
           isLargeOpen ? "lg:flex" : "lg:hidden",
-          isSmallOpen ? "flex z-[999] min-h-screen" : "hidden",
-          "lg:bg-white lg:dark:bg-slate-900",
-          "bg-main-secondary dark:bg-dark-secondary",
         )}
       >
-        <div className="sticky top-0 bg-main-secondary dark:bg-dark-secondary lg:bg-transparent p-2 lg:hidden">
+        <div className="sticky top-0 z-10 border-b border-gray-200 bg-main-secondary p-3 rounded-3xl dark:border-gray-800 dark:bg-dark-secondary lg:hidden">
           <PageHeaderFirstSection />
         </div>
 
@@ -268,14 +277,16 @@ const Sidebar: React.FC<SidebarProps> = () => {
         </div>
 
         {user && (
-          <div className="p-4 border-t dark:border-slate-700">
-            <div className="flex items-center gap-3 px-4 py-2 rounded-lg bg-slate-50 dark:bg-slate-800">
-              <UserCircle2Icon className="w-8 h-8 text-slate-500" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">
+          <div className="border-t border-gray-200 p-4 dark:border-gray-800">
+            <div className="flex items-center gap-3 rounded-2xl bg-main-primary/70 px-4 py-3 dark:bg-dark-tertiary/70">
+              <UserCircle2Icon className="h-8 w-8 text-secondary" />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-gray-700 dark:text-gray-100">
                   {user.given_name} {user.family_name}
                 </p>
-                <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                <p className="truncate text-xs text-gray-500 dark:text-gray-400">
+                  {user.email}
+                </p>
               </div>
             </div>
           </div>

@@ -10,10 +10,13 @@ const inputVariants = cva(
     "py-2.5",
     "text-gray-900",
     "dark:text-white",
-    "bg-white",
+    "bg-main-secondary",
     "dark:bg-dark-secondary",
     "border",
-    "rounded-lg",
+    "border-gray-200",
+    "dark:border-gray-700",
+    "shadow-sm",
+    "rounded-xl",
     "transition-all",
     "duration-200",
     "focus:outline-none",
@@ -25,11 +28,11 @@ const inputVariants = cva(
     variants: {
       variant: {
         default: [
-          "border-gray-300",
-          "dark:border-gray-600",
-          "focus:border-accent-DEFAULT",
-          "dark:focus:border-accent-DEFAULT",
-          "focus:ring-accent-DEFAULT/20",
+          "border-gray-200",
+          "dark:border-gray-700",
+          "focus:border-secondary",
+          "dark:focus:border-secondary-dark",
+          "focus:ring-secondary/30",
         ],
         error: [
           "border-red-500",
@@ -129,9 +132,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             }
             className={twMerge(
               inputVariants({ variant, size, className }),
-              startIcon && "pl-10",
+              startIcon && "pl-11",
               (endIcon || (type === "password" && !hidePasswordToggle)) &&
-                "pr-10",
+                "pr-11",
             )}
           />
           {endIcon && (

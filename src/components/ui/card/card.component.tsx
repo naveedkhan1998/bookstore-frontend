@@ -33,11 +33,17 @@ const Card = ({
     mouseY.set(clientY - top);
   };
 
-  // Gradient animation properties
+  const interactiveSurface = twMerge(
+    "rounded-2xl border border-gray-200 bg-main-secondary/90 text-main-text shadow-sm",
+    "dark:border-gray-800 dark:bg-dark-secondary/85 dark:text-dark-text",
+    "transition-all duration-300 ease-out",
+    className,
+  );
+
   const background = useMotionTemplate`radial-gradient(
-    650px circle at ${mouseX}px ${mouseY}px,
-    rgba(14, 165, 233, 0.07),
-    transparent 80%
+    600px circle at ${mouseX}px ${mouseY}px,
+    rgba(99, 102, 241, 0.18),
+    transparent 70%
   )`;
 
   if (variant === "hover3d") {
@@ -48,18 +54,10 @@ const Card = ({
         whileTap={{ scale: 0.98 }}
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={0.1}
+        dragElastic={0.08}
         onMouseMove={handleMouseMove}
-        style={{
-          perspective: "1000px",
-        }}
-        className={twMerge(
-          "overflow-hidden rounded-lg bg-main-secondary dark:bg-dark-secondary",
-          "transition-all duration-300 ease-out",
-          "cursor-pointer",
-          "border border-gray-200 dark:border-gray-700",
-          className,
-        )}
+        style={{ perspective: "1000px" }}
+        className={interactiveSurface}
       >
         <motion.div
           style={{
@@ -70,8 +68,8 @@ const Card = ({
         >
           {image && (
             <motion.div
-              className="aspect-[3/4] relative overflow-hidden"
-              whileHover={{ scale: 1.05 }}
+              className="relative overflow-hidden aspect-[3/4]"
+              whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
               <motion.img
@@ -79,12 +77,12 @@ const Card = ({
                 alt={image.alt}
                 className="object-cover w-full h-full"
                 initial={{ scale: 1 }}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.08 }}
                 transition={{ duration: 0.4 }}
               />
             </motion.div>
           )}
-          <div className="p-4">{children}</div>
+          <div className="p-5 flex flex-col gap-2">{children}</div>
         </motion.div>
       </motion.div>
     );
@@ -97,13 +95,7 @@ const Card = ({
         onMouseMove={handleMouseMove}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        className={twMerge(
-          "overflow-hidden rounded-lg bg-main-secondary dark:bg-dark-secondary",
-          "transition-all duration-300 ease-out",
-          "cursor-pointer group relative",
-          "border border-gray-200 dark:border-gray-700",
-          className,
-        )}
+        className={twMerge(interactiveSurface, "relative group")}
       >
         <motion.div
           className="pointer-events-none absolute inset-0 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -111,21 +103,21 @@ const Card = ({
         />
         {image && (
           <motion.div
-            className="aspect-[3/4] relative overflow-hidden"
+            className="relative overflow-hidden aspect-[3/4]"
             whileHover={{ scale: 1.02 }}
           >
             <motion.img
               src={image.src}
               alt={image.alt}
               className="object-cover w-full h-full"
-              whileHover={{ scale: 1.1 }}
+              whileHover={{ scale: 1.08 }}
               transition={{ duration: 0.4 }}
             />
           </motion.div>
         )}
         <motion.div
-          className="p-4 relative z-20"
-          initial={{ opacity: 0, y: 10 }}
+          className="relative z-20 p-5 flex flex-col gap-2"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
@@ -135,45 +127,34 @@ const Card = ({
     );
   }
 
-  // Default variant
   return (
     <motion.div
       onClick={onClick}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.02, y: -4 }}
       whileTap={{ scale: 0.98 }}
-      className={twMerge(
-        "overflow-hidden rounded-lg bg-main-secondary dark:bg-dark-secondary",
-        "transition-all duration-300 ease-out",
-        "hover:shadow-lg",
-        "cursor-pointer",
-        "border border-gray-200 dark:border-gray-700",
-        className,
-      )}
+      className={twMerge(interactiveSurface, "shadow-sm hover:shadow-2xl")}
     >
       {image && (
         <motion.div
-          className="aspect-[3/4] relative overflow-hidden"
+          className="relative overflow-hidden aspect-[3/4]"
           whileHover={{ scale: 1.02 }}
         >
           <motion.img
             src={image.src}
             alt={image.alt}
             className="object-cover w-full h-full"
-            whileHover={{ scale: 1.1 }}
-            transition={{
-              duration: 0.4,
-              ease: [0.4, 0, 0.2, 1],
-            }}
+            whileHover={{ scale: 1.08 }}
+            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
           />
         </motion.div>
       )}
       <motion.div
-        className="p-4"
+        className="p-5 flex flex-col gap-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.18 }}
       >
         {children}
       </motion.div>
