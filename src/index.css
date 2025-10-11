@@ -3,107 +3,107 @@
 
 @theme {
   /* ============================================
-     LIGHT MODE - Warm & Inviting Base Colors
+     LIGHT MODE - Fresh & Modern Ocean Breeze
      ============================================ */
-  --color-main-primary: #fafaf9;
-  --color-main-secondary: #f5f5f4;
-  --color-main-tertiary: #e7e5e4;
-  --color-main-text: #1c1917;
-  --color-main-text-secondary: #57534e;
+  --color-main-primary: #f8fafc;
+  --color-main-secondary: #f1f5f9;
+  --color-main-tertiary: #e2e8f0;
+  --color-main-text: #0f172a;
+  --color-main-text-secondary: #475569;
 
   /* ============================================
-     DARK MODE - Rich & Sophisticated
+     DARK MODE - Deep Ocean & Midnight Sky
      ============================================ */
-  --color-dark-primary: #0a0a0a;
-  --color-dark-secondary: #141414;
-  --color-dark-tertiary: #1f1f1f;
-  --color-dark-text: #fafafa;
-  --color-dark-text-secondary: #a8a29e;
+  --color-dark-primary: #0b1120;
+  --color-dark-secondary: #151d2f;
+  --color-dark-tertiary: #1e293b;
+  --color-dark-text: #f1f5f9;
+  --color-dark-text-secondary: #94a3b8;
 
   /* ============================================
-     BRAND COLORS - Modern & Vibrant
+     BRAND COLORS - Vibrant Blue & Purple Fusion
      ============================================ */
-  --color-brand-primary: #6366f1;
-  --color-brand-primary-hover: #4f46e5;
-  --color-brand-primary-light: #818cf8;
-  --color-brand-primary-dark: #3730a3;
+  --color-brand-primary: #3b82f6;
+  --color-brand-primary-hover: #2563eb;
+  --color-brand-primary-light: #60a5fa;
+  --color-brand-primary-dark: #1e40af;
 
-  --color-brand-secondary: #8b5cf6;
-  --color-brand-secondary-hover: #7c3aed;
-  --color-brand-secondary-light: #a78bfa;
+  --color-brand-secondary: #a855f7;
+  --color-brand-secondary-hover: #9333ea;
+  --color-brand-secondary-light: #c084fc;
 
-  --color-brand-accent: #f97316;
-  --color-brand-accent-hover: #ea580c;
-  --color-brand-accent-light: #fb923c;
+  --color-brand-accent: #06b6d4;
+  --color-brand-accent-hover: #0891b2;
+  --color-brand-accent-light: #22d3ee;
 
   /* ============================================
-     SEMANTIC COLORS - Clear & Consistent
+     SEMANTIC COLORS - Clear & Vibrant
      ============================================ */
-  --color-success: #10b981;
-  --color-success-DEFAULT: #10b981;
-  --color-success-hover: #059669;
-  --color-success-light: #34d399;
-  --color-success-bg: #d1fae5;
-  --color-success-bg-dark: #064e3b;
+  --color-success: #22c55e;
+  --color-success-DEFAULT: #22c55e;
+  --color-success-hover: #16a34a;
+  --color-success-light: #4ade80;
+  --color-success-bg: #dcfce7;
+  --color-success-bg-dark: #14532d;
 
-  --color-warning: #f59e0b;
-  --color-warning-DEFAULT: #f59e0b;
-  --color-warning-hover: #d97706;
-  --color-warning-light: #fbbf24;
-  --color-warning-bg: #fef3c7;
-  --color-warning-bg-dark: #78350f;
+  --color-warning: #eab308;
+  --color-warning-DEFAULT: #eab308;
+  --color-warning-hover: #ca8a04;
+  --color-warning-light: #facc15;
+  --color-warning-bg: #fef9c3;
+  --color-warning-bg-dark: #713f12;
 
-  --color-error: #ef4444;
-  --color-error-DEFAULT: #ef4444;
-  --color-error-hover: #dc2626;
-  --color-error-light: #f87171;
-  --color-error-bg: #fee2e2;
-  --color-error-bg-dark: #7f1d1d;
+  --color-error: #f43f5e;
+  --color-error-DEFAULT: #f43f5e;
+  --color-error-hover: #e11d48;
+  --color-error-light: #fb7185;
+  --color-error-bg: #ffe4e6;
+  --color-error-bg-dark: #881337;
 
-  --color-info: #3b82f6;
-  --color-info-DEFAULT: #3b82f6;
-  --color-info-hover: #2563eb;
-  --color-info-light: #60a5fa;
-  --color-info-bg: #dbeafe;
-  --color-info-bg-dark: #1e3a8a;
+  --color-info: #0ea5e9;
+  --color-info-DEFAULT: #0ea5e9;
+  --color-info-hover: #0284c7;
+  --color-info-light: #38bdf8;
+  --color-info-bg: #e0f2fe;
+  --color-info-bg-dark: #0c4a6e;
 
   /* ============================================
-     NEUTRAL SCALE - Balanced Grays
+     NEUTRAL SCALE - Cool Slate Grays
      ============================================ */
-  --color-gray-50: #fafaf9;
-  --color-gray-100: #f5f5f4;
-  --color-gray-200: #e7e5e4;
-  --color-gray-300: #d6d3d1;
-  --color-gray-400: #a8a29e;
-  --color-gray-500: #78716c;
-  --color-gray-600: #57534e;
-  --color-gray-700: #44403c;
-  --color-gray-800: #292524;
-  --color-gray-900: #1c1917;
-  --color-gray-950: #0a0a0a;
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+  --color-gray-950: #020617;
 
   /* ============================================
      ELEVATIONS & SHADOWS - Depth & Hierarchy
      ============================================ */
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-xs: 0 1px 2px 0 rgb(15 23 42 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(15 23 42 / 0.1), 0 1px 2px -1px rgb(15 23 42 / 0.1);
   --shadow-DEFAULT:
-    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    0 4px 6px -1px rgb(15 23 42 / 0.1), 0 2px 4px -2px rgb(15 23 42 / 0.1);
   --shadow-md:
-    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    0 10px 15px -3px rgb(15 23 42 / 0.1), 0 4px 6px -4px rgb(15 23 42 / 0.1);
   --shadow-lg:
-    0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
-  --shadow-2xl: 0 35px 60px -15px rgb(0 0 0 / 0.3);
-  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+    0 20px 25px -5px rgb(15 23 42 / 0.1), 0 8px 10px -6px rgb(15 23 42 / 0.1);
+  --shadow-xl: 0 25px 50px -12px rgb(15 23 42 / 0.25);
+  --shadow-2xl: 0 35px 60px -15px rgb(15 23 42 / 0.3);
+  --shadow-inner: inset 0 2px 4px 0 rgb(15 23 42 / 0.06);
 
   /* Special purpose shadows */
-  --shadow-glow: 0 0 20px rgb(99 102 241 / 0.3);
-  --shadow-glow-accent: 0 0 20px rgb(249 115 22 / 0.3);
+  --shadow-glow: 0 0 24px rgb(59 130 246 / 0.35);
+  --shadow-glow-accent: 0 0 24px rgb(6 182 212 / 0.35);
   --shadow-header:
-    0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    0 1px 3px 0 rgb(15 23 42 / 0.1), 0 1px 2px -1px rgb(15 23 42 / 0.1);
   --shadow-sidebar:
-    -4px 0 6px -1px rgb(0 0 0 / 0.1), -2px 0 4px -2px rgb(0 0 0 / 0.1);
+    -4px 0 6px -1px rgb(15 23 42 / 0.1), -2px 0 4px -2px rgb(15 23 42 / 0.1);
 
   /* ============================================
      BORDER RADIUS - Consistent Curves
@@ -173,8 +173,9 @@ html {
 body {
   font-family: var(--font-sans);
   background:
-    linear-gradient(135deg, rgba(99, 102, 241, 0.03) 0%, transparent 50%),
-    linear-gradient(225deg, rgba(139, 92, 246, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.05) 0%, transparent 40%),
     var(--color-main-primary);
   color: var(--color-main-text);
   height: 100%;
@@ -194,9 +195,10 @@ body {
 
 .dark body {
   background:
-    linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
-    linear-gradient(225deg, rgba(249, 115, 22, 0.03) 0%, transparent 50%),
-    var(--color-dark-primary);
+    radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(6, 182, 212, 0.06) 0%, transparent 40%),
+    linear-gradient(135deg, #0b1120 0%, #151d2f 100%);
   color: var(--color-dark-text);
 }
 
@@ -241,12 +243,12 @@ a:hover {
    TEXT SELECTION
    ============================================ */
 ::selection {
-  background-color: rgba(99, 102, 241, 0.2);
+  background-color: rgba(59, 130, 246, 0.25);
   color: var(--color-main-text);
 }
 
 .dark ::selection {
-  background-color: rgba(99, 102, 241, 0.3);
+  background-color: rgba(59, 130, 246, 0.35);
   color: var(--color-dark-text);
 }
 
@@ -439,15 +441,15 @@ a:hover {
    UTILITY CLASSES
    ============================================ */
 .glass-effect {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(248, 250, 252, 0.75);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.5);
 }
 
 .dark .glass-effect {
-  background: rgba(20, 20, 20, 0.7);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(21, 29, 47, 0.75);
+  border-color: rgba(148, 163, 184, 0.1);
 }
 
 .card-elevated {
@@ -482,7 +484,7 @@ a:hover {
   background: linear-gradient(
     135deg,
     var(--color-brand-accent) 0%,
-    var(--color-warning) 100%
+    var(--color-brand-primary-light) 100%
   );
 }
 
@@ -499,20 +501,20 @@ a:hover {
 
 .focus-ring {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
   transition: box-shadow var(--transition-fast);
 }
 
 .dark .focus-ring {
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
 }
 
 /* ============================================
    COMPONENT-SPECIFIC UTILITIES
    ============================================ */
 .header-blur {
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 .sidebar-shadow {
@@ -523,8 +525,8 @@ a:hover {
   position: relative;
   background: linear-gradient(
     90deg,
-    rgba(99, 102, 241, 0.1) 0%,
-    rgba(99, 102, 241, 0.05) 100%
+    rgba(59, 130, 246, 0.12) 0%,
+    rgba(59, 130, 246, 0.06) 100%
   );
   border-left: 3px solid var(--color-brand-primary);
 }
@@ -532,8 +534,8 @@ a:hover {
 .dark .nav-item-active {
   background: linear-gradient(
     90deg,
-    rgba(99, 102, 241, 0.15) 0%,
-    rgba(99, 102, 241, 0.08) 100%
+    rgba(59, 130, 246, 0.18) 0%,
+    rgba(59, 130, 246, 0.1) 100%
   );
 }
 
