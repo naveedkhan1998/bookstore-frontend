@@ -26,6 +26,8 @@ import {
 import { BookVolume } from "../comman-types";
 import BookLoaderComponent from "../components/BookLoaderComponent";
 import DefaultPic from "../assets/pp.jpg";
+import PageContent from "../layouts/PageContent";
+import { LoadingState, EmptyState, Grid } from "../layouts/ContentComponents";
 
 interface CartFeatureProps {
   icon: LucideIcon;
@@ -344,26 +346,34 @@ const CartPage: React.FC = () => {
   const validBooks = books.filter((book) => cart.books && cart.books[book.id]);
   const isCartEmpty = !validBooks.length;
 
+  if (isFetching && loadedBookIds.length === 0) {
+    return <LoadingState />;
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <>
       {bookLoaders}
-
-      <div className="container px-4 py-8 mx-auto">
-        <h1 className="mb-8 text-3xl font-bold">Your Cart</h1>
-
+      <PageContent 
+        title="Your Cart" 
+        subtitle={!isCartEmpty ? `${validBooks.length} item${validBooks.length !== 1 ? 's' : ''} in cart` : undefined}
+        icon={ShoppingCart}
+      >
         {isCartEmpty ? (
-          <div className="flex flex-col items-center justify-center gap-4 p-12 bg-white rounded-lg dark:bg-gray-800">
-            <PackageOpen className="w-16 h-16 text-gray-400" />
-            <p className="text-xl text-gray-500">Your cart is empty</p>
-            <button
-              onClick={() => navigate("/")}
-              className="px-6 py-2 text-white transition-all rounded-lg bg-secondary hover:bg-secondary-hover"
-            >
-              Continue Shopping
-            </button>
-          </div>
+          <EmptyState
+            icon={<PackageOpen className="w-16 h-16" />}
+            title="Your cart is empty"
+            description="Start shopping to add items to your cart"
+            action={
+              <button
+                onClick={() => navigate("/")}
+                className="px-6 py-2 text-white transition-all rounded-lg bg-secondary hover:bg-secondary-hover"
+              >
+                Continue Shopping
+              </button>
+            }
+          />
         ) : (
-          <div className="grid gap-8 lg:grid-cols-3">
+          <Grid cols={{ default: 1, lg: 3 }} className="gap-8">
             <div className="space-y-4 lg:col-span-2">
               {validBooks.map((book) => (
                 <CartItem
@@ -394,10 +404,10 @@ const CartPage: React.FC = () => {
                 />
               </div>
             </div>
-          </div>
+          </Grid>
         )}
-      </div>
-    </div>
+      </PageContent>
+    </>
   );
 };
 

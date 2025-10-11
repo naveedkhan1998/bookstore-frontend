@@ -9,11 +9,13 @@ import { getUserBooklists, setUserBookslist } from "../features/booklistSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDeleteBooklistMutation } from "../services/booklistsServices";
-import { Trash2 } from "lucide-react";
+import { Trash2, BookOpen } from "lucide-react";
 import Input from "../components/ui/input/input.component";
 import Button from "../components/ui/button/Button";
 import Toggle from "../components/ui/toggle/toggle.component";
 import Spinner from "../components/ui/spinner/spinner.component";
+import PageContent from "../layouts/PageContent";
+import { Section, Grid, ContentCard, EmptyState } from "../layouts/ContentComponents";
 
 const BooklistPageAuth: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -91,96 +93,103 @@ const BooklistPageAuth: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full max-w-6xl gap-8 p-8 mx-auto mt-10">
-      <div className="flex flex-col w-full p-8 bg-white border border-gray-200 rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-          Create New BookList
-        </h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <Input
-            label="Booklist Name"
-            type="text"
-            name="booklist_name"
-            value={formData.booklist_name}
-            onChange={handleInputChange}
-            required
-          />
-
-          <div className="mb-4">
-            <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Privacy
-            </label>
-            <Toggle
-              checked={formData.isPrivate}
-              label="Private"
-              onChange={(checked) =>
-                setFormData({ ...formData, isPrivate: checked })
-              }
+    <PageContent
+      title="My Booklists"
+      subtitle="Create and manage your personal book collections"
+      icon={BookOpen}
+    >
+      <Section
+        title="Create New Booklist"
+        description="Start a new collection of your favorite books"
+      >
+        <ContentCard>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <Input
+              label="Booklist Name"
+              type="text"
+              name="booklist_name"
+              value={formData.booklist_name}
+              onChange={handleInputChange}
+              required
             />
-          </div>
 
-          <Button
-            disabled={isLoading}
-            type="submit"
-            variant="default"
-            className="w-full py-3 text-lg"
-          >
-            {isLoading ? (
-              <div className="flex items-center justify-center gap-2">
-                <Spinner />
-                <span>Creating...</span>
-              </div>
-            ) : (
-              "Create Booklist"
-            )}
-          </Button>
-        </form>
-      </div>
+            <div className="mb-4">
+              <label className="block mb-2 text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Privacy
+              </label>
+              <Toggle
+                checked={formData.isPrivate}
+                label="Private"
+                onChange={(checked) =>
+                  setFormData({ ...formData, isPrivate: checked })
+                }
+              />
+            </div>
 
-      <div className="w-full mt-8">
-        <h1 className="mb-6 text-2xl font-bold text-gray-900 dark:text-white">
-          Your BookLists
-        </h1>
-
-        {storeData && (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {storeData.bookLists &&
-              storeData.bookLists.map((bookList) => (
-                <div
-                  key={bookList._id}
-                  className="relative overflow-hidden bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <div
-                    className="p-6 cursor-pointer"
-                    onClick={() => handleBooklistClick(bookList._id)}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                          {bookList.name}
-                        </h2>
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                          {bookList.isPrivate ? "Private" : "Public"}
-                        </span>
-                      </div>
-                      <Button
-                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                          e.stopPropagation();
-                          handleDelete(bookList._id);
-                        }}
-                        variant="ghost"
-                        className="text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </Button>
-                    </div>
-                  </div>
+            <Button
+              disabled={isLoading}
+              type="submit"
+              variant="default"
+              className="w-full py-3 text-lg"
+            >
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Spinner />
+                  <span>Creating...</span>
                 </div>
-              ))}
-          </div>
+              ) : (
+                "Create Booklist"
+              )}
+            </Button>
+          </form>
+        </ContentCard>
+      </Section>
+
+      <Section
+        title="Your Booklists"
+        description="Browse and manage your collections"
+        className="mt-12"
+      >
+        {storeData && storeData.bookLists && storeData.bookLists.length > 0 ? (
+          <Grid cols={{ default: 1, md: 2, lg: 3 }} gap={6}>
+            {storeData.bookLists.map((bookList) => (
+              <ContentCard
+                key={bookList._id}
+                hoverable
+                onClick={() => handleBooklistClick(bookList._id)}
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      {bookList.name}
+                    </h2>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 mt-2">
+                      {bookList.isPrivate ? "Private" : "Public"}
+                    </span>
+                  </div>
+                  <Button
+                    onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                      e.stopPropagation();
+                      handleDelete(bookList._id);
+                    }}
+                    variant="ghost"
+                    className="text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </Button>
+                </div>
+              </ContentCard>
+            ))}
+          </Grid>
+        ) : (
+          <EmptyState
+            icon={<BookOpen className="w-12 h-12" />}
+            title="No Booklists Yet"
+            description="Create your first booklist to start organizing your favorite books"
+          />
         )}
-      </div>
-    </div>
+      </Section>
+    </PageContent>
   );
 };
 

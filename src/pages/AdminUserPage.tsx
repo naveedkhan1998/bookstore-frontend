@@ -19,6 +19,9 @@ import {
   HiOutlineKey,
   HiArrowLeft,
 } from "react-icons/hi";
+import { UserCog } from "lucide-react";
+import PageContent from "../layouts/PageContent";
+import { Grid, ContentCard } from "../layouts/ContentComponents";
 
 const AdminUserPage = () => {
   const access_token = useAppSelector(getCurrentToken);
@@ -71,7 +74,7 @@ const AdminUserPage = () => {
   );
 
   const InfoCard = ({ icon: Icon, label, value }: any) => (
-    <div className="flex items-center p-4 bg-white dark:bg-dark-secondary rounded-lg shadow-sm">
+    <ContentCard className="flex items-center p-4">
       <div className="p-3 mr-4 bg-accent-DEFAULT/10 rounded-full">
         <Icon className="w-6 h-6 text-accent-DEFAULT" />
       </div>
@@ -79,14 +82,19 @@ const AdminUserPage = () => {
         <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
         <p className="text-lg font-semibold">{value}</p>
       </div>
-    </div>
+    </ContentCard>
   );
 
   return (
-    <div className="container max-w-4xl px-4 py-8 mx-auto">
+    <PageContent
+      title={`${userObj.given_name} ${userObj.family_name}`}
+      subtitle="Manage user permissions and account status"
+      icon={UserCog}
+      noPadding
+    >
       <button
         onClick={() => navigate(-1)}
-        className="flex items-center mb-6 text-sm text-gray-600 hover:text-accent-DEFAULT transition-colors"
+        className="flex items-center mb-6 px-6 pt-6 text-sm text-gray-600 hover:text-accent-DEFAULT transition-colors"
       >
         <HiArrowLeft className="w-4 h-4 mr-2" />
         Back to Users
@@ -128,7 +136,7 @@ const AdminUserPage = () => {
             </div>
           </div>
 
-          <div className="grid gap-4 mb-8 md:grid-cols-2">
+          <Grid cols={{ default: 1, md: 2 }} gap={4} className="mb-8">
             <InfoCard
               icon={HiOutlineUser}
               label="Account Type"
@@ -149,7 +157,7 @@ const AdminUserPage = () => {
               label="Verification"
               value={userObj.isVerified ? "Verified" : "Pending"}
             />
-          </div>
+          </Grid>
 
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-end">
             <Button
@@ -171,7 +179,7 @@ const AdminUserPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </PageContent>
   );
 };
 

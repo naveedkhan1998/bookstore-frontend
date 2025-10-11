@@ -29,6 +29,7 @@ import {
 } from "../services/cartServices";
 import { setUserCart } from "../features/cartSlice";
 import DefaultPic from "../assets/pp.jpg";
+import { Grid } from "../layouts/ContentComponents";
 
 interface PriceTagProps {
   amount: number;
@@ -236,7 +237,7 @@ const BookPage: React.FC = () => {
 
   return (
     <Modal title={volumeInfo.title}>
-      <div className="grid grid-cols-1 lg:grid-cols-[350px,1fr] gap-12">
+      <Grid cols={{ default: 1, lg: 2 }} className="gap-12">
         {/* Left Column */}
         <div className="space-y-8">
           {/* Book Cover */}
@@ -377,7 +378,7 @@ const BookPage: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
+      </Grid>
     </Modal>
   );
 };

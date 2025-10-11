@@ -1,8 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Toast from "./components/ToastContainer";
-import PageHeader from "./layouts/PageHeader";
-import Sidebar from "./components/Sidebar";
-import Footer from "./layouts/Footer";
+import MainLayout from "./layouts/MainLayout";
 import { useAppSelector } from "./app/hooks";
 import { getCurrentToken } from "./features/authSlice";
 import SidebarProvider from "./context/SidebarContext";
@@ -10,7 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 // Lazy load components for better performance
 import { lazy, Suspense } from "react";
-const BooksList = lazy(() => import("./components/BooksList"));
+const BooksList = lazy(() => import("./pages/HomePage"));
 const CartPage = lazy(() => import("./pages/CartPage"));
 const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
 const UserSettings = lazy(() => import("./pages/UserSettingPage"));
@@ -72,63 +70,45 @@ function App() {
   return (
     <Router>
       <SidebarProvider>
-        <div className="min-h-screen w-full bg-main-primary text-main-text transition-colors duration-300 dark:bg-dark-primary dark:text-dark-text">
-          <PageHeader />
+        <MainLayout>
+          <Suspense fallback={<LoadingFallback />}>
+            <Routes>
+              {routes.map(
+                ({ path, element, protected: isProtected }) => (
+                  <Route
+                    key={path}
+                    path={path}
+                    element={
+                      isProtected ? (
+                        <ProtectedRoute>{element}</ProtectedRoute>
+                      ) : (
+                        element
+                      )
+                    }
+                  />
+                ),
+              )}
 
-          <div className="mx-auto flex w-full  flex-1 items-start gap-8 px-4 pb-16 pt-10 lg:px-12">
-            <Sidebar />
+              {/* Special route that depends on auth state */}
+              <Route
+                path="/public-booklists"
+                element={
+                  access_token ? (
+                    <AuthentiatedBooklistPage />
+                  ) : (
+                    <PublicBooklistsPage />
+                  )
+                }
+              />
+              <Route
+                path="/public-booklist"
+                element={<PublicBookPage />}
+              />
+            </Routes>
+          </Suspense>
+        </MainLayout>
 
-            <main className="flex-1">
-              <div className="min-h-[70vh] rounded-[28px] border border-gray-200 bg-main-secondary shadow-[0_35px_80px_-45px_rgba(47,41,36,0.45)] transition-colors duration-300 dark:border-gray-800 dark:bg-dark-secondary/90">
-                <div className="px-6 py-8 sm:px-10 lg:px-12">
-                  <Suspense fallback={<LoadingFallback />}>
-                    <Routes>
-                      {routes.map(
-                        ({ path, element, protected: isProtected }) => (
-                          <Route
-                            key={path}
-                            path={path}
-                            element={
-                              isProtected ? (
-                                <ProtectedRoute>{element}</ProtectedRoute>
-                              ) : (
-                                element
-                              )
-                            }
-                          />
-                        ),
-                      )}
-
-                      {/* Special route that depends on auth state */}
-                      <Route
-                        path="/public-booklists"
-                        element={
-                          access_token ? (
-                            <AuthentiatedBooklistPage />
-                          ) : (
-                            <PublicBooklistsPage />
-                          )
-                        }
-                      />
-                      <Route
-                        path="/public-booklist"
-                        element={<PublicBookPage />}
-                      />
-                    </Routes>
-                  </Suspense>
-                </div>
-              </div>
-            </main>
-          </div>
-
-          <footer className="border-t border-gray-200/60 bg-main-secondary/70 py-8 transition-colors duration-300 dark:border-gray-800/60 dark:bg-dark-secondary">
-            <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 lg:px-12">
-              <Footer />
-            </div>
-          </footer>
-
-          <Toast />
-        </div>
+        <Toast />
       </SidebarProvider>
     </Router>
   );

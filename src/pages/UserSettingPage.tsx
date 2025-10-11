@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { getCurrentSettingDetails, Language } from "../features/settingSlice";
 import { Tab } from "@headlessui/react";
 import { toast } from "react-toastify";
+import { Settings } from "lucide-react";
 import {
   HiOutlineMail,
   HiSave,
@@ -16,6 +17,8 @@ import {
 } from "react-icons/hi";
 import Button from "../components/ui/button/Button";
 import Input from "../components/ui/input/input.component";
+import PageContent from "../layouts/PageContent";
+import { LoadingState } from "../layouts/ContentComponents";
 
 const UserSettings = () => {
   const setting = useSelector(getCurrentSettingDetails);
@@ -23,11 +26,7 @@ const UserSettings = () => {
   const [selectedTheme, setSelectedTheme] = useState("system");
 
   if (!setting) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-indigo-500 rounded-full animate-spin border-t-transparent"></div>
-      </div>
-    );
+    return <LoadingState />;
   }
 
   const ThemeButton = ({ value, icon: Icon, label }: any) => (
@@ -166,9 +165,11 @@ const UserSettings = () => {
   };
 
   return (
-    <div className="container max-w-4xl p-6 mx-auto">
-      <div className="flex items-center justify-between mb-8">
-        <h2 className="text-3xl font-bold">Settings</h2>
+    <PageContent 
+      title="Settings" 
+      subtitle="Manage your account preferences"
+      icon={Settings}
+      headerActions={
         <Button
           variant="default"
           onClick={handleSaveClick}
@@ -187,8 +188,8 @@ const UserSettings = () => {
             </>
           )}
         </Button>
-      </div>
-
+      }
+    >
       <Tab.Group>
         <Tab.List className="flex p-1 mb-8 space-x-2 rounded-xl bg-gray-100 dark:bg-gray-800">
           {tabs.map((tab) => (
@@ -220,7 +221,7 @@ const UserSettings = () => {
           ))}
         </Tab.Panels>
       </Tab.Group>
-    </div>
+    </PageContent>
   );
 };
 

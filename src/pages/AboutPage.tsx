@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { HiCode, HiServer, HiSparkles, HiUserGroup } from "react-icons/hi";
+import { Info } from "lucide-react";
 import {
   SiReact,
   SiTypescript,
@@ -9,6 +10,8 @@ import {
   SiMongodb,
   SiNodedotjs,
 } from "react-icons/si";
+import PageContent from "../layouts/PageContent";
+import { Section, Grid, ContentCard } from "../layouts/ContentComponents";
 
 const AboutPage = () => {
   const techStacks = {
@@ -32,63 +35,53 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="container px-4 py-12 mx-auto max-w-7xl">
-      {/* Hero Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-16 text-center"
-      >
-        <h1 className="mb-6 text-5xl font-bold text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text">
-          Welcome to Our Bookstore
-        </h1>
-        <p className="max-w-2xl mx-auto text-xl text-gray-600 dark:text-gray-400">
-          A modern platform for book enthusiasts, combining cutting-edge
-          technology with a passion for literature.
-        </p>
-      </motion.div>
-
+    <PageContent
+      title="About Our Bookstore"
+      subtitle="A modern platform for book enthusiasts, combining cutting-edge technology with a passion for literature"
+      icon={Info}
+    >
       {/* Stats Section */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="grid grid-cols-1 gap-8 mb-16 md:grid-cols-3"
-      >
-        {stats.map((stat) => (
-          <motion.div
-            key={stat.label}
-            whileHover={{ scale: 1.05 }}
-            className="p-6 bg-white shadow-lg dark:bg-gray-800 rounded-xl"
-          >
-            <stat.icon className="w-8 h-8 mb-4 text-indigo-500" />
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-              {stat.value}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400">{stat.label}</p>
-          </motion.div>
-        ))}
-      </motion.div>
+      <Section>
+        <Grid cols={{ default: 1, md: 3 }} gap={8}>
+          {stats.map((stat) => (
+            <motion.div
+              key={stat.label}
+              whileHover={{ scale: 1.05 }}
+            >
+              <ContentCard hoverable className="p-6">
+                <stat.icon className="w-8 h-8 mb-4 text-indigo-500" />
+                <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                  {stat.value}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">{stat.label}</p>
+              </ContentCard>
+            </motion.div>
+          ))}
+        </Grid>
+      </Section>
 
       {/* Tech Stack Section */}
-      <div className="mb-16">
-        <SectionTitle icon={HiCode} title="Technology Stack" />
-        <div className="grid grid-cols-2 gap-8 mt-8">
+      <Section title="Technology Stack" className="mt-12">
+        <Grid cols={{ default: 1, md: 2 }} gap={8}>
           {/* Frontend Stack */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="p-6 bg-white shadow-lg dark:bg-gray-800 rounded-xl"
           >
-            <h3 className="mb-4 text-xl font-semibold">
-              Frontend Technologies
-            </h3>
-            <div className="grid grid-cols-2 gap-4">
-              {techStacks.frontend.map((tech) => (
-                <TechCard key={tech.name} {...tech} />
-              ))}
-            </div>
+            <ContentCard className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <HiCode className="w-6 h-6 text-indigo-500" />
+                <h3 className="text-xl font-semibold">
+                  Frontend Technologies
+                </h3>
+              </div>
+              <Grid cols={{ default: 1, sm: 2 }} gap={4}>
+                {techStacks.frontend.map((tech) => (
+                  <TechCard key={tech.name} {...tech} />
+                ))}
+              </Grid>
+            </ContentCard>
           </motion.div>
 
           {/* Backend Stack */}
@@ -96,42 +89,33 @@ const AboutPage = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
-            className="p-6 bg-white shadow-lg dark:bg-gray-800 rounded-xl"
           >
-            <h3 className="mb-4 text-xl font-semibold">Backend Technologies</h3>
-            <div className="grid grid-cols-2 gap-4">
-              {techStacks.backend.map((tech) => (
-                <TechCard key={tech.name} {...tech} />
-              ))}
-            </div>
+            <ContentCard className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <HiServer className="w-6 h-6 text-indigo-500" />
+                <h3 className="text-xl font-semibold">Backend Technologies</h3>
+              </div>
+              <Grid cols={{ default: 1, sm: 2 }} gap={4}>
+                {techStacks.backend.map((tech) => (
+                  <TechCard key={tech.name} {...tech} />
+                ))}
+              </Grid>
+            </ContentCard>
           </motion.div>
-        </div>
-      </div>
+        </Grid>
+      </Section>
 
       {/* Features Section */}
-      <div>
-        <SectionTitle icon={HiSparkles} title="Key Features" />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="grid grid-cols-1 gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3"
-        >
+      <Section title="Key Features" className="mt-12">
+        <Grid cols={{ default: 1, md: 2, lg: 3 }} gap={6}>
           {features.map((feature, index) => (
             <FeatureCard key={feature.title} {...feature} index={index} />
           ))}
-        </motion.div>
-      </div>
-    </div>
+        </Grid>
+      </Section>
+    </PageContent>
   );
 };
-
-const SectionTitle = ({ icon: Icon, title }: { icon: any; title: string }) => (
-  <div className="flex items-center gap-3 mb-6">
-    <Icon className="w-6 h-6 text-indigo-500" />
-    <h2 className="text-2xl font-bold">{title}</h2>
-  </div>
-);
 
 const TechCard = ({
   name,
