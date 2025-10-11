@@ -95,7 +95,7 @@ const PublicBookPage = () => {
   };
 
   const sortedReviews = book?.reviews?.filter(
-    (review) => review.reviewText && (!review.isHidden || user.isAdmin),
+    (review) => review.reviewText && (!review.isHidden || user?.isAdmin),
   );
 
   if (!book) return null;
@@ -162,7 +162,7 @@ const PublicBookPage = () => {
                           <span className="font-semibold text-gray-800 dark:text-gray-200">
                             {review.reviewerName}
                           </span>
-                          {user.isAdmin && (
+                          {user?.isAdmin && (
                             <Button
                               variant={review.isHidden ? "outline" : "danger"}
                               size="sm"
