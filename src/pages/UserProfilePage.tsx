@@ -52,7 +52,9 @@ const UserProfile = () => {
               <h2 className="mt-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
                 {`${user.given_name} ${user.family_name}`}
               </h2>
-              <p className="text-gray-600 dark:text-gray-400">Book Enthusiast</p>
+              <p className="text-gray-600 dark:text-gray-400">
+                Book Enthusiast
+              </p>
             </div>
 
             {/* Stats Grid */}

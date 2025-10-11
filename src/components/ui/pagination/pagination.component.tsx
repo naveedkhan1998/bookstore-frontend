@@ -1,4 +1,9 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+} from "lucide-react";
 import { twMerge } from "tailwind-merge";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -44,13 +49,13 @@ const Pagination = ({
     <motion.button
       onClick={() => onPageChange(page)}
       className={twMerge(
-        "px-3 py-2 rounded-lg text-sm font-medium relative",
-        "transition-colors duration-200",
+        "relative px-3 py-1.5 rounded-lg text-sm font-semibold",
+        "transition-all duration-300 min-w-[36px]",
         active
-          ? "text-white"
-          : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700",
+          ? "text-white shadow-lg scale-105"
+          : "text-gray-700 dark:text-gray-300 hover:text-brand-primary dark:hover:text-brand-primary hover:bg-gray-100 dark:hover:bg-gray-800/50",
       )}
-      whileHover={{ scale: 1.05 }}
+      whileHover={active ? {} : { scale: 1.05, y: -2 }}
       whileTap={{ scale: 0.95 }}
       initial={false}
       aria-current={active ? "page" : undefined}
@@ -58,9 +63,9 @@ const Pagination = ({
       {active && (
         <motion.div
           layoutId="activePageBackground"
-          className="absolute inset-0 bg-secondary rounded-lg"
+          className="absolute inset-0 bg-gradient-to-r from-brand-primary to-brand-secondary rounded-lg"
           initial={false}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          transition={{ type: "spring", stiffness: 400, damping: 30 }}
         />
       )}
       <span className="relative z-10">{page}</span>
@@ -71,63 +76,99 @@ const Pagination = ({
     direction,
     onClick,
     disabled,
+    isJump = false,
   }: {
     direction: "left" | "right";
     onClick: () => void;
     disabled: boolean;
+    isJump?: boolean;
   }) => (
     <motion.button
       onClick={onClick}
       disabled={disabled}
-      className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-      whileHover={disabled ? {} : { scale: 1.1 }}
-      whileTap={disabled ? {} : { scale: 0.9 }}
-      aria-label={direction === "left" ? "Previous page" : "Next page"}
+      className={twMerge(
+        "p-1.5 rounded-lg transition-all duration-200",
+        "text-gray-700 dark:text-gray-300",
+        disabled
+          ? "opacity-40 cursor-not-allowed"
+          : "hover:bg-gradient-to-r hover:from-brand-primary hover:to-brand-secondary hover:text-white hover:shadow-md",
+        isJump && "border border-gray-300 dark:border-gray-700",
+      )}
+      whileHover={disabled ? {} : { scale: 1.08, y: -1 }}
+      whileTap={disabled ? {} : { scale: 0.92 }}
+      aria-label={
+        isJump
+          ? direction === "left"
+            ? "First page"
+            : "Last page"
+          : direction === "left"
+            ? "Previous page"
+            : "Next page"
+      }
     >
       {direction === "left" ? (
-        <ChevronLeft className="w-5 h-5" />
+        isJump ? (
+          <ChevronsLeft className="w-4 h-4" />
+        ) : (
+          <ChevronLeft className="w-4 h-4" />
+        )
+      ) : isJump ? (
+        <ChevronsRight className="w-4 h-4" />
       ) : (
-        <ChevronRight className="w-5 h-5" />
+        <ChevronRight className="w-4 h-4" />
       )}
     </motion.button>
   );
 
   const Ellipsis = () => (
     <motion.span
-      className="px-2 text-gray-400"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      className="px-1.5 text-gray-500 dark:text-gray-500 font-bold select-none"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.8 }}
+      transition={{ duration: 0.2 }}
     >
-      ...
+      •••
     </motion.span>
   );
 
   return (
     <motion.nav
       className={twMerge(
-        "flex items-center gap-1 bg-main-primary dark:bg-dark-primary p-2 rounded-lg",
+        "flex items-center gap-1.5 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm p-2 rounded-xl border border-gray-200 dark:border-gray-800 shadow-md",
         className,
       )}
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
       aria-label="Pagination"
     >
+      {/* First page button */}
+      <NavigationButton
+        direction="left"
+        onClick={() => onPageChange(1)}
+        disabled={currentPage === 1}
+        isJump
+      />
+
+      {/* Previous page button */}
       <NavigationButton
         direction="left"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       />
 
-      <AnimatePresence mode="wait">
+      {/* Divider */}
+      <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-0.5" />
+
+      <AnimatePresence mode="popLayout">
         <motion.div
-          key={currentPage}
-          className="flex items-center"
+          key={`page-${currentPage}`}
+          className="flex items-center gap-0.5"
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 10 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.25 }}
         >
           {pageNumbers[0] > 1 && (
             <>
@@ -151,11 +192,34 @@ const Pagination = ({
         </motion.div>
       </AnimatePresence>
 
+      {/* Divider */}
+      <div className="w-px h-6 bg-gray-300 dark:bg-gray-700 mx-0.5" />
+
+      {/* Next page button */}
       <NavigationButton
         direction="right"
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       />
+
+      {/* Last page button */}
+      <NavigationButton
+        direction="right"
+        onClick={() => onPageChange(totalPages)}
+        disabled={currentPage === totalPages}
+        isJump
+      />
+
+      {/* Page info */}
+      <div className="ml-1.5 pl-2 border-l border-gray-300 dark:border-gray-700">
+        <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+          Page{" "}
+          <span className="text-brand-primary font-bold">{currentPage}</span> of{" "}
+          <span className="text-gray-900 dark:text-gray-100 font-bold">
+            {totalPages}
+          </span>
+        </span>
+      </div>
     </motion.nav>
   );
 };

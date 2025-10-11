@@ -90,7 +90,7 @@ const LoginReg: React.FC = () => {
                 Welcome to Bookstore
               </h2>
               <p className="text-base text-gray-600 dark:text-gray-300">
-                Choose how you�d like to sign in. You can always update your
+                Choose how youd like to sign in. You can always update your
                 preference later.
               </p>
             </div>

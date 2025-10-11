@@ -119,7 +119,7 @@ const Registration: React.FC = () => {
               required
               startIcon={<Mail className="h-5 w-5" />}
               placeholder="you@example.com"
-              helperText="We�ll send a verification link to this address"
+              helperText="Well send a verification link to this address"
             />
 
             <Input
@@ -136,7 +136,7 @@ const Registration: React.FC = () => {
 
             <div className="rounded-2xl border border-gray-200 bg-main-primary/70 p-5 text-sm text-gray-600 dark:border-gray-700 dark:bg-dark-tertiary/70 dark:text-gray-200">
               <span className="font-semibold text-secondary dark:text-secondary-dark">
-                You�ll be able to:
+                Youll be able to:
               </span>
               <ul className="mt-3 grid gap-2 text-sm">
                 <li className="flex items-center gap-2">

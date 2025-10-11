@@ -108,8 +108,8 @@ const BooksList = () => {
 
   if (books.length === 0) {
     return (
-      <PageContent 
-        title="Book Library" 
+      <PageContent
+        title="Book Library"
         subtitle="Discover your next favorite read"
         icon={Library}
       >
@@ -119,18 +119,14 @@ const BooksList = () => {
   }
 
   return (
-    <PageContent 
-      title="Book Library" 
+    <PageContent
+      title="Book Library"
       subtitle={`${books.length} books available`}
       icon={Library}
       noPadding
     >
       <div className="min-h-screen">
-        <motion.div
-          className="sticky top-0 z-10 py-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur border-b border-gray-200 dark:border-gray-700"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-        >
+        <div className="sticky top-0 z-10 py-4 ">
           <div className="container flex justify-center mx-auto px-4">
             <Pagination
               currentPage={currentPage}
@@ -139,13 +135,13 @@ const BooksList = () => {
               maxVisible={5}
             />
           </div>
-        </motion.div>
+        </div>
 
-        <div className="container mx-auto px-4 py-6">
+        <div className=" mx-auto px-4 py-6">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentPage}
-              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}

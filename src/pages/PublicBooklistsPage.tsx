@@ -9,7 +9,12 @@ import { Link } from "react-router-dom";
 import { Library, RefreshCw } from "lucide-react";
 import Card from "../components/ui/card/card.component";
 import PageContent from "../layouts/PageContent";
-import { LoadingState, ErrorState, EmptyState, Grid } from "../layouts/ContentComponents";
+import {
+  LoadingState,
+  ErrorState,
+  EmptyState,
+  Grid,
+} from "../layouts/ContentComponents";
 
 const PublicBooklistsPage = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +40,9 @@ const PublicBooklistsPage = () => {
   }
 
   if (isError) {
-    return <ErrorState message="Failed to load public booklists. Please try again later." />;
+    return (
+      <ErrorState message="Failed to load public booklists. Please try again later." />
+    );
   }
 
   return (

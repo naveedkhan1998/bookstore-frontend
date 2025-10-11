@@ -12,7 +12,6 @@ import {
   InfoIcon,
   BookOpen,
   ShieldCheckIcon,
-  ChevronRight,
 } from "lucide-react";
 import Button from "./ui/button/Button";
 import { useSidebarContext } from "../context/SidebarContext";
@@ -140,7 +139,7 @@ const getNavigationItems = (currentPath: string): NavigationSection[] => [
 const SidebarOverlay = memo<{ onClose: () => void }>(({ onClose }) => (
   <div
     onClick={onClose}
-    className="fixed inset-0 z-[999] bg-black/60 lg:hidden"
+    className="fixed inset-0 z-[999] bg-black/50 backdrop-blur-sm lg:hidden animate-fadeIn"
   />
 ));
 SidebarOverlay.displayName = "SidebarOverlay";
@@ -151,34 +150,35 @@ const LargeSidebarItem = memo<SidebarItemProps>(
       to={url}
       onClick={onClick}
       className={twMerge(
-        "group relative mb-1 flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all duration-200",
-        "border border-transparent",
+        "group relative flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200",
         isActive
-          ? "bg-secondary text-secondary-text shadow-md"
-          : "text-gray-600 dark:text-gray-300 hover:bg-main-tertiary/60 dark:hover:bg-dark-tertiary/70",
+          ? "bg-brand-primary/20 text-white shadow-lg "
+          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-tertiary",
       )}
     >
-      {typeof Icon === "string" ? (
-        <img
-          src={Icon}
-          alt={`${title} icon`}
-          className="w-5 h-5 rounded-full"
-        />
-      ) : (
-        <Icon
-          className={`h-5 w-5 ${isActive ? "text-secondary-text" : "text-gray-500 dark:text-gray-400"}`}
-        />
-      )}
-      <span className="font-medium">{title}</span>
+      <div
+        className={twMerge(
+          "flex items-center justify-center w-9 h-9 rounded-lg transition-all duration-200",
+          isActive
+            ? "bg-white/10 border"
+            : "bg-gray-100 dark:bg-dark-tertiary group-hover:bg-gray-200 dark:group-hover:bg-gray-700",
+        )}
+      >
+        {typeof Icon === "string" ? (
+          <img
+            src={Icon}
+            alt={`${title} icon`}
+            className="w-5 h-5 rounded-full bg-inherit"
+          />
+        ) : (
+          <Icon
+            className={twMerge("h-5 w-5 transition-transform duration-200")}
+          />
+        )}
+      </div>
+      <span className="flex-1">{title}</span>
       {isActive && (
-        <ChevronRight
-          className={twMerge(
-            "ml-auto h-4 w-4 transition-opacity duration-200",
-            isActive
-              ? "opacity-100 text-secondary-text"
-              : "opacity-0 text-gray-400 group-hover:opacity-100",
-          )}
-        />
+        <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></div>
       )}
     </Link>
   ),
@@ -196,21 +196,25 @@ const LargeSidebarSection = memo<SectionProps>(
     const ButtonIcon = isExpanded ? ChevronUp : ChevronDown;
 
     return (
-      <div className="py-2">
+      <div className="mb-6">
         {title && (
-          <h3 className="px-6 mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-gray-400 dark:text-gray-500">
+          <h3 className="px-4 mb-3 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
             {title}
           </h3>
         )}
-        {visibleChildren}
+        <div className="space-y-1">{visibleChildren}</div>
         {showExpandButton && (
           <Button
             onClick={() => setIsExpanded((prev) => !prev)}
             variant="ghost"
-            className="mt-1 flex w-full items-center gap-3 rounded-2xl border border-gray-200 bg-main-primary/60 px-4 py-2 text-sm text-gray-600 transition hover:bg-main-tertiary/60 dark:border-gray-700 dark:bg-dark-tertiary/60 dark:text-gray-200 dark:hover:bg-dark-tertiary"
+            className="mt-2 w-full flex items-center justify-center gap-2 rounded-xl py-2 text-sm 
+                     text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-dark-tertiary
+                     transition-all duration-200"
           >
-            <ButtonIcon className="w-6 h-6" />
-            <span>{isExpanded ? "Show Less" : "Show More"}</span>
+            <ButtonIcon className="w-4 h-4" />
+            <span className="font-medium">
+              {isExpanded ? "Show Less" : "Show More"}
+            </span>
           </Button>
         )}
       </div>
@@ -245,21 +249,23 @@ const Sidebar: React.FC<SidebarProps> = () => {
       {isSmallOpen && <SidebarOverlay onClose={close} />}
       <aside
         className={twMerge(
-          "w-72 shrink-0 overflow-y-auto overflow-x-hidden scrollbar-hidden flex-col rounded-3xl",
-          "border border-gray-200 dark:border-gray-800",
-          "bg-main-secondary/85 dark:bg-dark-secondary/85 shadow-[0_26px_60px_-42px_rgba(34,32,30,0.55)] backdrop-blur-sm",
+          "w-72 shrink-0 flex flex-col",
+          "bg-white dark:bg-dark-secondary border-r border-gray-200 dark:border-gray-800",
+          "shadow-lg lg:shadow-none",
           isSmallOpen
-            ? "fixed inset-y-0 left-0 z-[999] m-4 flex max-h-[calc(100vh-2rem)] shadow-2xl"
+            ? "fixed inset-y-0 left-0 z-[999] animate-slideInLeft"
             : "hidden",
-          "lg:sticky lg:top-28 lg:max-h-[calc(100vh-8rem)] lg:m-0",
           isLargeOpen ? "lg:flex" : "lg:hidden",
         )}
       >
-        <div className="sticky top-0 z-10 border-b border-gray-200 bg-main-secondary p-3 rounded-3xl dark:border-gray-800 dark:bg-dark-secondary lg:hidden">
+        <div
+          className="flex-shrink-0 bg-white dark:bg-dark-secondary border-b border-gray-200 
+                      dark:border-gray-800 p-4 lg:hidden"
+        >
           <PageHeaderFirstSection />
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 overflow-y-auto scrollbar-hidden p-4 space-y-2">
           {filteredNavSections.map((section, index) => (
             <LargeSidebarSection key={index} title={section.section}>
               {section.items.map((item) => (
@@ -277,16 +283,24 @@ const Sidebar: React.FC<SidebarProps> = () => {
         </div>
 
         {user && (
-          <div className="border-t border-gray-200 p-4 dark:border-gray-800">
-            <div className="flex items-center gap-3 rounded-2xl bg-main-primary/70 px-4 py-3 dark:bg-dark-tertiary/70">
-              <UserCircle2Icon className="h-8 w-8 text-secondary" />
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold text-gray-700 dark:text-gray-100">
+          <div
+            className="flex-shrink-0 border-t border-gray-200 dark:border-gray-800 p-4 
+                        bg-white dark:bg-dark-secondary"
+          >
+            <div
+              className="flex items-center gap-3 p-3 rounded-xl bg-gradient-to-br from-brand-primary 
+                          to-brand-secondary text-white shadow-lg"
+            >
+              <img
+                src={user.avatarUrl}
+                alt={`${user.given_name} ${user.family_name}`}
+                className="w-10 h-10 rounded-full ring-2 ring-white/30"
+              />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold truncate">
                   {user.given_name} {user.family_name}
                 </p>
-                <p className="truncate text-xs text-gray-500 dark:text-gray-400">
-                  {user.email}
-                </p>
+                <p className="text-xs text-white/80 truncate">{user.email}</p>
               </div>
             </div>
           </div>
@@ -296,4 +310,4 @@ const Sidebar: React.FC<SidebarProps> = () => {
   );
 };
 
-export default memo(Sidebar);
+export default Sidebar;

@@ -216,7 +216,7 @@ const OrderSummary: React.FC<OrderSummaryProps> = ({
       onClick={onCheckout}
       disabled={disabled}
       className={`
-        w-full py-4 text-white transition-all rounded-lg
+        w-full py-4  transition-all bg-main-primary dark:bg-dark-primary cursor-pointer hover:scale-[1.02] rounded-lg
         flex items-center justify-center gap-2
         ${
           disabled
@@ -353,9 +353,13 @@ const CartPage: React.FC = () => {
   return (
     <>
       {bookLoaders}
-      <PageContent 
-        title="Your Cart" 
-        subtitle={!isCartEmpty ? `${validBooks.length} item${validBooks.length !== 1 ? 's' : ''} in cart` : undefined}
+      <PageContent
+        title="Your Cart"
+        subtitle={
+          !isCartEmpty
+            ? `${validBooks.length} item${validBooks.length !== 1 ? "s" : ""} in cart`
+            : undefined
+        }
         icon={ShoppingCart}
       >
         {isCartEmpty ? (

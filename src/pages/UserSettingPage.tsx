@@ -165,8 +165,8 @@ const UserSettings = () => {
   };
 
   return (
-    <PageContent 
-      title="Settings" 
+    <PageContent
+      title="Settings"
       subtitle="Manage your account preferences"
       icon={Settings}
       headerActions={

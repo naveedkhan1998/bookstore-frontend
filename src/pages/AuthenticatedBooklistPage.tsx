@@ -9,7 +9,12 @@ import { BookCategory } from "../comman-types";
 import { Library, RefreshCw } from "lucide-react";
 import Card from "../components/ui/card/card.component";
 import PageContent from "../layouts/PageContent";
-import { LoadingState, ErrorState, EmptyState, Grid } from "../layouts/ContentComponents";
+import {
+  LoadingState,
+  ErrorState,
+  EmptyState,
+  Grid,
+} from "../layouts/ContentComponents";
 
 const AuthenticatedBooklistPage = () => {
   const dispatch = useAppDispatch();
@@ -37,7 +42,9 @@ const AuthenticatedBooklistPage = () => {
   }
 
   if (isError) {
-    return <ErrorState message="Failed to load booklists. Please try again later." />;
+    return (
+      <ErrorState message="Failed to load booklists. Please try again later." />
+    );
   }
 
   return (
@@ -56,7 +63,7 @@ const AuthenticatedBooklistPage = () => {
       }
     >
       {data && data.length === 0 ? (
-        <EmptyState 
+        <EmptyState
           title="No booklists found"
           description="Create your first booklist to get started!"
         />

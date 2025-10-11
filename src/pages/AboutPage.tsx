@@ -44,10 +44,7 @@ const AboutPage = () => {
       <Section>
         <Grid cols={{ default: 1, md: 3 }} gap={8}>
           {stats.map((stat) => (
-            <motion.div
-              key={stat.label}
-              whileHover={{ scale: 1.05 }}
-            >
+            <motion.div key={stat.label} whileHover={{ scale: 1.05 }}>
               <ContentCard hoverable className="p-6">
                 <stat.icon className="w-8 h-8 mb-4 text-indigo-500" />
                 <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
@@ -72,9 +69,7 @@ const AboutPage = () => {
             <ContentCard className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <HiCode className="w-6 h-6 text-indigo-500" />
-                <h3 className="text-xl font-semibold">
-                  Frontend Technologies
-                </h3>
+                <h3 className="text-xl font-semibold">Frontend Technologies</h3>
               </div>
               <Grid cols={{ default: 1, sm: 2 }} gap={4}>
                 {techStacks.frontend.map((tech) => (

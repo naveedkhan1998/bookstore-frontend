@@ -121,7 +121,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
     const modalMarkup = (
       <div
         ref={overlay}
-        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/55 backdrop-blur-sm p-4"
+        className="fixed inset-0 z-40 flex items-center justify-center bg-black/55 backdrop-blur-sm p-4"
         onClick={handleClick}
         role="dialog"
         aria-modal="true"

@@ -40,19 +40,23 @@ const UserBooklistPage: React.FC = () => {
         icon={BookMarked}
         headerActions={
           <span className="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-md text-gray-700 dark:text-gray-300">
-            {booklist.isPrivate ? <Lock className="w-4 h-4" /> : <Globe className="w-4 h-4" />}
+            {booklist.isPrivate ? (
+              <Lock className="w-4 h-4" />
+            ) : (
+              <Globe className="w-4 h-4" />
+            )}
             {booklist.isPrivate ? "Private" : "Public"}
           </span>
         }
       >
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-semibold">Books ({booklist.books.length})</h3>
+          <h3 className="text-xl font-semibold">
+            Books ({booklist.books.length})
+          </h3>
           <select
             className="px-4 py-2 border rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
             value={sortBy}
-            onChange={(e) =>
-              setSortBy(e.target.value as "dateAdded" | "title")
-            }
+            onChange={(e) => setSortBy(e.target.value as "dateAdded" | "title")}
           >
             <option value="dateAdded">Sort by Date Added</option>
             <option value="title">Sort by Title</option>

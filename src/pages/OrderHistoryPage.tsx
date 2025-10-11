@@ -7,7 +7,11 @@ import { useAppSelector } from "../app/hooks";
 import { ShoppingBag, Search, X, History } from "lucide-react";
 import Pagination from "../components/ui/pagination/pagination.component";
 import PageContent from "../layouts/PageContent";
-import { LoadingState, ErrorState, EmptyState } from "../layouts/ContentComponents";
+import {
+  LoadingState,
+  ErrorState,
+  EmptyState,
+} from "../layouts/ContentComponents";
 
 const OrderHistoryPage = () => {
   const access_token = useAppSelector(getCurrentToken);
@@ -111,11 +115,7 @@ const OrderHistoryPage = () => {
                 </span>
               </div>
               <div className="p-4">
-                <Link
-                  to="/order-items"
-                  state={{ items: entry }}
-                  className="block w-full bg-blue-500 text-white text-center py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
-                >
+                <Link to="/order-items" state={{ items: entry }}>
                   View Details
                 </Link>
               </div>

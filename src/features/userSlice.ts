@@ -12,43 +12,17 @@ export interface UserType {
   avatarUrl?: string;
 }
 
-const initialState: UserType = {
-  _id: "",
-  email: "",
-  given_name: "",
-  family_name: "",
-  avatarUrl: "https://ui-avatars.com/api/?name=John+Boe",
-};
+const initialState = null as UserType | null;
 
 export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUserInfo: (state, action: PayloadAction<UserType>) => {
-      const {
-        _id,
-        email,
-        given_name,
-        family_name,
-        isVerified,
-        isAdmin,
-        avatarUrl,
-      } = action.payload;
-      state._id = _id;
-      state.email = email;
-      state.given_name = given_name;
-      state.family_name = family_name;
-      state.isVerified = isVerified;
-      state.isAdmin = isAdmin;
-      state.avatarUrl = avatarUrl;
+    setUserInfo: (_state, action: PayloadAction<UserType | null>) => {
+      return action.payload;
     },
-    unSetUserInfo: (state) => {
-      state._id = "";
-      state.email = "";
-      state.given_name = "";
-      state.family_name = "";
-      state.isVerified = undefined;
-      state.isAdmin = undefined;
+    unSetUserInfo: () => {
+      return null;
     },
   },
 });

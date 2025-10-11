@@ -13,7 +13,7 @@ const Footer = () => {
         >
           Ahmed (Jimmy) Abdalla
         </a>
-        <span className="opacity-60">�</span>
+        <span className="opacity-60"></span>
         <a
           href="https://www.linkedin.com/in/da-cheng-clay/"
           target="_blank"
@@ -22,7 +22,7 @@ const Footer = () => {
         >
           Da Cheng (Clay)
         </a>
-        <span className="opacity-60">�</span>
+        <span className="opacity-60"></span>
         <a
           href="https://www.linkedin.com/in/mnk1998/"
           target="_blank"

@@ -23,12 +23,12 @@ interface PageContentProps {
 
 /**
  * PageContent - Unified content layout component for consistent page structure
- * 
+ *
  * Provides a standardized layout for pages with:
  * - Optional page header with title, subtitle, icon, and actions
  * - Consistent spacing and responsive design
  * - Flexible content area
- * 
+ *
  * @example
  * ```tsx
  * <PageContent
@@ -57,8 +57,8 @@ const PageContent = ({
     <div
       className={twMerge(
         "w-full h-full",
-        !fullWidth && "max-w-7xl mx-auto",
-        !noPadding && "p-6",
+        !fullWidth && " mx-auto",
+        !noPadding && "",
         className,
       )}
     >
@@ -98,9 +98,7 @@ const PageContent = ({
       )}
 
       {/* Content Area */}
-      <div className="animate-fadeIn">
-        {children}
-      </div>
+      <div className="animate-fadeIn">{children}</div>
     </div>
   );
 };

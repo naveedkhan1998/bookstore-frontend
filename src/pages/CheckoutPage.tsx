@@ -57,7 +57,7 @@ const FormInput = ({
 const CreditCardPreview = ({ cardNumber, expiryDate }: Partial<FormData>) => (
   <div className="relative w-full aspect-[1.586/1] perspective-1000">
     <div className="absolute inset-0 p-6 rounded-2xl bg-gradient-to-br from-secondary via-secondary-hover to-secondary-dark shadow-xl transform rotate-3 hover:rotate-0 transition-transform duration-300">
-      <div className="h-full flex flex-col justify-between text-white">
+      <div className="h-full flex flex-col justify-between ">
         <div className="flex justify-between items-start">
           <div className="space-y-1">
             <p className="text-xs uppercase opacity-80">Card Number</p>
@@ -170,8 +170,8 @@ const CheckoutPage: React.FC = () => {
   }, [checkoutDone, dispatch, navigate]);
 
   return (
-    <PageContent 
-      title="Secure Checkout" 
+    <PageContent
+      title="Secure Checkout"
       subtitle="Complete your purchase securely"
       icon={CreditCard}
     >
@@ -231,8 +231,8 @@ const CheckoutPage: React.FC = () => {
             disabled={isLoading}
             className={`
               w-full px-6 py-3 
-              text-white font-medium
-              bg-secondary hover:bg-secondary-hover
+              bg-main-primary dark:bg-dark-primary cursor-pointer 
+              hover:scale-[1.02]  font-medium
               rounded-lg shadow-lg
               transform transition-all duration-200
               flex items-center justify-center gap-2

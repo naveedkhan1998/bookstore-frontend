@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useCallback, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeft,
   Search,
   ShoppingCart,
   MenuIcon,
@@ -9,6 +8,8 @@ import {
   X,
   BookOpen,
   User2,
+  Bell,
+  Sparkles,
 } from "lucide-react";
 import { DarkThemeToggle } from "flowbite-react";
 import Button from "../components/ui/button/Button";
@@ -27,7 +28,7 @@ import { UserType, setUserInfo } from "../features/userSlice";
 import { setUserBookslist } from "../features/booklistSlice";
 import type { BookVolume } from "../comman-types";
 
-// New SearchDropdown Component
+// Search Dropdown Component with modern design
 const SearchDropdown = memo<{
   searchResults: BookVolume[];
   handleSearchClick: (id: string) => void;
@@ -70,29 +71,32 @@ const SearchDropdown = memo<{
     };
 
     return (
-      <div className="relative flex-grow max-w-3xl" ref={dropdownRef}>
+      <div className="relative flex-grow max-w-2xl" ref={dropdownRef}>
         <form onSubmit={handleSubmit} className="relative w-full">
-          <div className="relative flex items-center w-full">
-            <Search className="absolute left-3 w-5 h-5 text-gray-400" />
+          <div className="relative flex items-center w-full group">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+              <Search className="w-5 h-5 text-gray-400 transition-colors group-focus-within:text-brand-primary" />
+            </div>
             <input
               type="search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search for books, authors, or genres..."
-              className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 
-                     bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                     shadow-sm transition-all duration-200 [&::-webkit-search-cancel-button]:hidden
-                     [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden
-                     [&::-webkit-search-results-decoration]:hidden"
+              placeholder="Search books, authors, genres..."
+              className="w-full h-11 pl-12 pr-12 bg-white dark:bg-dark-tertiary border border-gray-200 dark:border-gray-700
+                       rounded-full text-sm text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400
+                       focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20
+                       transition-all duration-200 [&::-webkit-search-cancel-button]:hidden
+                       shadow-sm hover:shadow-md"
             />
             {searchTerm && (
               <button
                 type="button"
                 onClick={() => setSearchTerm("")}
-                className="absolute right-3 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700
-                       transition-colors duration-200"
+                className="absolute right-3 p-1.5 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700
+                         text-gray-400 hover:text-gray-600 dark:hover:text-gray-300
+                         transition-all duration-200"
               >
-                <X className="w-4 h-4 text-gray-400" />
+                <X className="w-4 h-4" />
               </button>
             )}
           </div>
@@ -100,47 +104,64 @@ const SearchDropdown = memo<{
 
         {isOpen && (
           <div
-            className="absolute w-full mt-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg 
+            className="absolute w-full mt-3 bg-white dark:bg-dark-secondary rounded-2xl shadow-2xl
                       border border-gray-200 dark:border-gray-700 overflow-hidden z-50
-                      transition-all duration-200 ease-in-out transform"
+                      animate-slideDown"
           >
-            <div className="max-h-[70vh] overflow-y-auto">
-              {searchResults.map((book) => (
+            <div className="max-h-[70vh] overflow-y-auto scrollbar-hidden">
+              {searchResults.map((book, index) => (
                 <div
                   key={book.id}
                   onClick={() => handleSearchClick(book.id)}
-                  className="flex items-start gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-700
-                         cursor-pointer transition-colors duration-200"
+                  className="flex items-start gap-4 p-4 hover:bg-gray-50 dark:hover:bg-dark-tertiary/50
+                         cursor-pointer transition-all duration-200 group border-b border-gray-100 
+                         dark:border-gray-800 last:border-0"
+                  style={{ animationDelay: `${index * 30}ms` }}
                 >
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 relative">
                     {book.volumeInfo.imageLinks ? (
                       <img
                         src={book.volumeInfo.imageLinks.thumbnail}
                         alt={book.volumeInfo.title}
-                        className="w-16 h-20 object-cover rounded-md shadow-sm"
+                        className="w-14 h-20 object-cover rounded-lg shadow-md group-hover:shadow-lg 
+                                 transition-shadow duration-200"
                       />
                     ) : (
-                      <div className="w-16 h-20 bg-gray-100 dark:bg-gray-700 rounded-md flex items-center justify-center">
-                        <BookOpen className="w-8 h-8 text-gray-400" />
+                      <div
+                        className="w-14 h-20 bg-gradient-to-br from-gray-100 to-gray-200 
+                                    dark:from-gray-700 dark:to-gray-800 rounded-lg flex items-center 
+                                    justify-center shadow-md"
+                      >
+                        <BookOpen className="w-7 h-7 text-gray-400 dark:text-gray-500" />
                       </div>
                     )}
                   </div>
 
                   <div className="flex-grow min-w-0">
-                    <h3 className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                    <h3
+                      className="text-sm font-semibold text-gray-900 dark:text-white truncate 
+                                 group-hover:text-brand-primary dark:group-hover:text-brand-primary-light
+                                 transition-colors duration-200"
+                    >
                       {book.volumeInfo.title}
                     </h3>
-                    <div className="flex items-center mt-1 gap-2">
-                      <User2 className="w-4 h-4 text-gray-400" />
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <div className="flex items-center mt-1.5 gap-1.5">
+                      <User2 className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+                      <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
                         {book.volumeInfo.authors?.join(", ") ||
                           "Unknown Author"}
                       </p>
                     </div>
                     {book.volumeInfo.categories && (
-                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                        {book.volumeInfo.categories[0]}
-                      </p>
+                      <div className="mt-2">
+                        <span
+                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs 
+                                       font-medium bg-brand-primary/10 text-brand-primary 
+                                       dark:bg-brand-primary/20 dark:text-brand-primary-light"
+                        >
+                          {book.volumeInfo.categories[0]}
+                        </span>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -148,13 +169,20 @@ const SearchDropdown = memo<{
             </div>
 
             {searchResults.length > 0 && (
-              <div className="p-3 bg-gray-50 dark:bg-gray-700/50 border-t border-gray-200 dark:border-gray-700">
+              <div
+                className="sticky bottom-0 p-3 bg-gray-50 dark:bg-dark-tertiary/80 backdrop-blur-sm
+                            border-t border-gray-200 dark:border-gray-700"
+              >
                 <button
                   onClick={handleSearch}
-                  className="w-full py-2 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700
-                         dark:hover:text-blue-300 font-medium transition-colors duration-200"
+                  className="w-full py-2.5 px-4 text-sm font-medium text-brand-primary hover:text-brand-primary-hover
+                         dark:text-brand-primary-light dark:hover:text-white
+                         bg-brand-primary/5 hover:bg-brand-primary/10 dark:bg-brand-primary/10 
+                         dark:hover:bg-brand-primary/20 rounded-lg transition-all duration-200
+                         flex items-center justify-center gap-2"
                 >
-                  View all results
+                  <Sparkles className="w-4 h-4" />
+                  View all {searchResults.length} results
                 </button>
               </div>
             )}
@@ -164,115 +192,144 @@ const SearchDropdown = memo<{
     );
   },
 );
+SearchDropdown.displayName = "SearchDropdown";
 
-// Memoized Header Section Components
+// Logo and Menu Section
 export const PageHeaderFirstSection = memo<{ hidden?: boolean }>(
   ({ hidden }) => {
     const { toggle } = useSidebarContext();
 
     return (
       <div
-        className={`gap-4 items-center flex-shrink-0 ${hidden ? "hidden" : "flex"}`}
+        className={`gap-3 items-center flex-shrink-0 ${hidden ? "hidden" : "flex"}`}
       >
         <Button
           onClick={toggle}
           variant="ghost"
           size="icon"
-          className="transition-transform duration-300 ease-in-out hover:rotate-180"
+          className="hover:bg-gray-100 dark:hover:bg-dark-tertiary rounded-xl transition-all duration-200
+                   hover:rotate-90 transform"
         >
-          <MenuIcon />
+          <MenuIcon className="w-5 h-5" />
         </Button>
-        <img
-          src={logoImage}
-          className="h-8 transition-transform duration-300 ease-in-out hover:scale-110"
-          alt="BookStore Logo"
-        />
+        <div className="flex items-center gap-2">
+          <img
+            src={logoImage}
+            className="h-8 w-auto transition-transform duration-300 hover:scale-105"
+            alt="BookStore"
+          />
+          <span className="hidden sm:block text-lg font-bold text-gradient">
+            BookStore
+          </span>
+        </div>
       </div>
     );
   },
 );
+PageHeaderFirstSection.displayName = "PageHeaderFirstSection";
 
+// Header Action Buttons
 const HeaderButtons = memo<{
   showFullWidthSearch: boolean;
-  searchTerm: string;
   setShowFullWidthSearch: (show: boolean) => void;
   accessToken: string | null | undefined;
   cartData: ReturnType<typeof getUserCart>;
-}>(
-  ({
-    showFullWidthSearch,
-    searchTerm,
-    setShowFullWidthSearch,
-    accessToken,
-    cartData,
-  }) => {
-    const navigate = useNavigate();
-    const cartItemCount = Object.values(
-      cartData.books as Record<string, number>,
-    ).reduce((acc, val) => acc + val, 0);
+}>(({ showFullWidthSearch, setShowFullWidthSearch, accessToken, cartData }) => {
+  const navigate = useNavigate();
+  const cartItemCount = Object.values(
+    cartData.books as Record<string, number>,
+  ).reduce((acc, val) => acc + val, 0);
 
-    return (
-      <div
-        className={`flex items-center gap-3.5 xs:gap-6 md:gap-3.5 ${
-          showFullWidthSearch ? "hidden" : "md:flex-shrink-0 xs:flex-shrink"
-        }`}
+  return (
+    <div
+      className={`flex items-center gap-2 ${
+        showFullWidthSearch ? "hidden" : "flex"
+      }`}
+    >
+      {/* Mobile Search Button */}
+      <Button
+        onClick={() => setShowFullWidthSearch(true)}
+        size="icon"
+        variant="ghost"
+        className="md:hidden hover:bg-gray-100 dark:hover:bg-dark-tertiary rounded-xl"
       >
-        <Button
-          onClick={() => setShowFullWidthSearch(true)}
-          size="icon"
-          variant={searchTerm ? "default" : "ghost"}
-          className="z-50 transition-transform duration-300 ease-in-out md:hidden hover:scale-110"
-        >
-          <Search />
-        </Button>
-        <Button
-          size="icon"
-          onClick={() => navigate("/")}
-          variant="ghost"
-          className="hidden transition-transform duration-300 ease-in-out sm:flex hover:scale-110"
-        >
-          <HomeIcon />
-        </Button>
-        <Button
-          size="icon"
-          variant="ghost"
-          className="z-50 transition-transform duration-300 ease-in-out hover:scale-110"
-        >
-          <DarkThemeToggle className="rounded-full hover:bg-light-mode-hover dark:hover:bg-dark-mode-hover" />
-        </Button>
+        <Search className="w-5 h-5" />
+      </Button>
 
-        {!accessToken ? (
+      {/* Home Button */}
+      <Button
+        size="icon"
+        onClick={() => navigate("/")}
+        variant="ghost"
+        className="hidden sm:flex hover:bg-gray-100 dark:hover:bg-dark-tertiary rounded-xl"
+      >
+        <HomeIcon className="w-5 h-5" />
+      </Button>
+
+      {/* Notifications (placeholder) */}
+      {accessToken && (
+        <Button
+          size="icon"
+          variant="ghost"
+          className="relative hover:bg-gray-100 dark:hover:bg-dark-tertiary rounded-xl hidden lg:flex"
+        >
+          <Bell className="w-5 h-5" />
+          <span
+            className="absolute top-1 right-1 w-2 h-2 bg-error rounded-full 
+                           ring-2 ring-white dark:ring-dark-secondary"
+          ></span>
+        </Button>
+      )}
+
+      {/* Dark Mode Toggle */}
+      <Button
+        size="icon"
+        variant="ghost"
+        className="hover:bg-gray-100 dark:hover:bg-dark-tertiary rounded-xl"
+      >
+        <DarkThemeToggle className="rounded-full" />
+      </Button>
+
+      {!accessToken ? (
+        <Button
+          onClick={() => navigate("/auth")}
+          className="bg-brand-primary hover:bg-brand-primary-hover text-white rounded-xl
+                     px-4 py-2 text-sm font-medium transition-all duration-200 
+                     shadow-sm hover:shadow-md"
+        >
+          Sign In
+        </Button>
+      ) : (
+        <>
+          {/* Cart Button */}
           <Button
-            onClick={() => navigate("/auth")}
+            size="icon"
+            onClick={() => navigate("/cart")}
+            className="relative hover:bg-gray-100 dark:hover:bg-dark-tertiary rounded-xl"
             variant="ghost"
-            className="transition-all duration-300 ease-in-out rounded-full hover:bg-accent-DEFAULT hover:text-white"
           >
-            Login
+            <ShoppingCart className="w-5 h-5" />
+            {cartItemCount > 0 && (
+              <span
+                className="absolute -top-1 -right-1 min-w-[1.25rem] h-5 flex items-center 
+                               justify-center bg-brand-accent text-white text-xs font-bold 
+                               rounded-full px-1.5 shadow-md ring-2 ring-white dark:ring-dark-secondary"
+              >
+                {cartItemCount > 99 ? "99+" : cartItemCount}
+              </span>
+            )}
           </Button>
-        ) : (
-          <>
-            <Button
-              size="icon"
-              onClick={() => navigate("/cart")}
-              className="hidden transition-transform duration-300 ease-in-out xs:flex hover:scale-110"
-              variant="ghost"
-              number={cartItemCount}
-            >
-              <ShoppingCart />
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="transition-transform duration-300 ease-in-out hover:scale-110"
-            >
-              <ProfileMenu />
-            </Button>
-          </>
-        )}
-      </div>
-    );
-  },
-);
+
+          {/* Profile Menu */}
+          <div className="hover:opacity-90 transition-opacity">
+            <ProfileMenu />
+          </div>
+        </>
+      )}
+    </div>
+  );
+});
+HeaderButtons.displayName = "HeaderButtons";
 
 const PageHeader: React.FC = () => {
   const [showFullWidthSearch, setShowFullWidthSearch] = useState(false);
@@ -366,38 +423,47 @@ const PageHeader: React.FC = () => {
   }, []);
 
   return (
-    <nav className="sticky top-0 z-50 flex items-center justify-between gap-6 border-b border-gray-200 bg-main-secondary/90 px-4 py-4 shadow-[0_18px_44px_-30px_rgba(34,32,30,0.5)] backdrop-blur-md transition-all duration-300 ease-in-out dark:border-gray-800 dark:bg-dark-secondary/85 lg:gap-12">
-      <PageHeaderFirstSection hidden={showFullWidthSearch} />
-      <div
-        className={`flex-grow justify-center ${showFullWidthSearch ? "flex" : "hidden md:flex"}`}
-      >
-        {showFullWidthSearch && (
-          <Button
-            onClick={() => setShowFullWidthSearch(false)}
-            size="icon"
-            variant="ghost"
-            type="button"
-            className="flex-shrink-0 transition-transform duration-300 ease-in-out hover:-translate-x-1"
-          >
-            <ArrowLeft />
-          </Button>
-        )}
-        <SearchDropdown
-          searchResults={searchResults}
-          handleSearchClick={handleSearchClick}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          handleSearch={handleSearch}
+    <header
+      className="flex-shrink-0 w-full border-b border-gray-200 dark:border-gray-800
+                 bg-white/80 dark:bg-dark-secondary/80 backdrop-blur-xl header-blur
+                 shadow-sm transition-all duration-300 z-40"
+    >
+      <nav className="flex items-center justify-between gap-4 md:gap-6 px-4 md:px-6 py-3 max-w-[1920px] mx-auto">
+        <PageHeaderFirstSection hidden={showFullWidthSearch} />
+
+        <div
+          className={`flex-grow flex items-center justify-center ${
+            showFullWidthSearch ? "flex" : "hidden md:flex"
+          }`}
+        >
+          {showFullWidthSearch && (
+            <Button
+              onClick={() => setShowFullWidthSearch(false)}
+              size="icon"
+              variant="ghost"
+              type="button"
+              className="mr-2 hover:bg-gray-100 dark:hover:bg-dark-tertiary rounded-xl"
+            >
+              <X className="w-5 h-5" />
+            </Button>
+          )}
+          <SearchDropdown
+            searchResults={searchResults}
+            handleSearchClick={handleSearchClick}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            handleSearch={handleSearch}
+          />
+        </div>
+
+        <HeaderButtons
+          showFullWidthSearch={showFullWidthSearch}
+          setShowFullWidthSearch={setShowFullWidthSearch}
+          accessToken={accessToken}
+          cartData={cartDataSelector}
         />
-      </div>
-      <HeaderButtons
-        showFullWidthSearch={showFullWidthSearch}
-        searchTerm={searchTerm}
-        setShowFullWidthSearch={setShowFullWidthSearch}
-        accessToken={accessToken}
-        cartData={cartDataSelector}
-      />
-    </nav>
+      </nav>
+    </header>
   );
 };
 

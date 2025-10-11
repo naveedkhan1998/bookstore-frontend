@@ -73,21 +73,19 @@ function App() {
         <MainLayout>
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
-              {routes.map(
-                ({ path, element, protected: isProtected }) => (
-                  <Route
-                    key={path}
-                    path={path}
-                    element={
-                      isProtected ? (
-                        <ProtectedRoute>{element}</ProtectedRoute>
-                      ) : (
-                        element
-                      )
-                    }
-                  />
-                ),
-              )}
+              {routes.map(({ path, element, protected: isProtected }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={
+                    isProtected ? (
+                      <ProtectedRoute>{element}</ProtectedRoute>
+                    ) : (
+                      element
+                    )
+                  }
+                />
+              ))}
 
               {/* Special route that depends on auth state */}
               <Route
@@ -100,10 +98,7 @@ function App() {
                   )
                 }
               />
-              <Route
-                path="/public-booklist"
-                element={<PublicBookPage />}
-              />
+              <Route path="/public-booklist" element={<PublicBookPage />} />
             </Routes>
           </Suspense>
         </MainLayout>

@@ -16,7 +16,7 @@ interface SectionProps {
 
 /**
  * Section - Content section component for organizing page content
- * 
+ *
  * @example
  * ```tsx
  * <Section title="Recent Orders" description="Your latest purchases">
@@ -70,7 +70,7 @@ interface CardProps {
 
 /**
  * ContentCard - Styled card component for content sections
- * 
+ *
  * @example
  * ```tsx
  * <ContentCard hoverable onClick={() => navigate('/detail')}>
@@ -120,7 +120,7 @@ interface GridProps {
 
 /**
  * Grid - Responsive grid layout component
- * 
+ *
  * @example
  * ```tsx
  * <Grid cols={{ default: 1, md: 2, lg: 3 }} gap={6}>
@@ -170,7 +170,7 @@ interface EmptyStateProps {
 
 /**
  * EmptyState - Component to display when no content is available
- * 
+ *
  * @example
  * ```tsx
  * <EmptyState
@@ -214,7 +214,7 @@ interface LoadingStateProps {
 
 /**
  * LoadingState - Loading indicator component
- * 
+ *
  * @example
  * ```tsx
  * <LoadingState message="Loading your orders..." />
@@ -224,9 +224,7 @@ export const LoadingState = ({ message }: LoadingStateProps) => {
   return (
     <div className="flex flex-col items-center justify-center py-16">
       <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4" />
-      {message && (
-        <p className="text-gray-600 dark:text-gray-400">{message}</p>
-      )}
+      {message && <p className="text-gray-600 dark:text-gray-400">{message}</p>}
     </div>
   );
 };
@@ -242,7 +240,7 @@ interface ErrorStateProps {
 
 /**
  * ErrorState - Error display component
- * 
+ *
  * @example
  * ```tsx
  * <ErrorState
@@ -265,7 +263,9 @@ export const ErrorState = ({
       <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
         {title}
       </h3>
-      <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md">{message}</p>
+      <p className="text-gray-600 dark:text-gray-400 mb-6 max-w-md">
+        {message}
+      </p>
       {onRetry && (
         <button
           onClick={onRetry}

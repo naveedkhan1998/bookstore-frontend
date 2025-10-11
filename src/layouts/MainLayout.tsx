@@ -9,7 +9,7 @@ interface MainLayoutProps {
 
 /**
  * MainLayout - Unified layout component wrapping common UI elements
- * 
+ *
  * This component provides consistent structure across all pages including:
  * - PageHeader (navigation, search, cart, profile)
  * - Sidebar (navigation menu)
@@ -18,23 +18,21 @@ interface MainLayoutProps {
  */
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <div className="min-h-screen w-full bg-main-primary text-main-text transition-colors duration-300 dark:bg-dark-primary dark:text-dark-text">
+    <div className="flex flex-col h-screen w-full bg-main-primary text-main-text transition-colors duration-300 dark:bg-dark-primary dark:text-dark-text overflow-hidden">
       <PageHeader />
 
-      <div className="mx-auto flex w-full flex-1 items-start gap-8 px-4 pb-16 pt-10 lg:px-12">
+      <div className="flex flex-1 w-full overflow-hidden">
         <Sidebar />
 
-        <main className="flex-1">
-          <div className="min-h-[70vh] rounded-[28px] border border-gray-200 bg-main-secondary shadow-[0_35px_80px_-45px_rgba(47,41,36,0.45)] transition-colors duration-300 dark:border-gray-800 dark:bg-dark-secondary/90">
-            <div className="px-6 py-8 sm:px-10 lg:px-12">
-              {children}
-            </div>
+        <main className="flex-1 overflow-y-auto  px-4 lg:px-6">
+          <div className="min-h-full m-auto py-6">
+            <div className="px-6 py-8 sm:px-8 lg:px-10">{children}</div>
           </div>
         </main>
       </div>
 
-      <footer className="border-t border-gray-200/60 bg-main-secondary/70 py-8 transition-colors duration-300 dark:border-gray-800/60 dark:bg-dark-secondary">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 lg:px-12">
+      <footer className="flex-shrink-0 border-t border-gray-200 bg-white py-6 transition-colors duration-300 dark:border-gray-800 dark:bg-dark-secondary">
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 lg:px-6">
           <Footer />
         </div>
       </footer>

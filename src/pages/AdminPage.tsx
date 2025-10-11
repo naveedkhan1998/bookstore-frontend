@@ -16,7 +16,12 @@ import {
 } from "react-icons/hi";
 import { ShieldCheck } from "lucide-react";
 import PageContent from "../layouts/PageContent";
-import { LoadingState, Grid, ContentCard, Section } from "../layouts/ContentComponents";
+import {
+  LoadingState,
+  Grid,
+  ContentCard,
+  Section,
+} from "../layouts/ContentComponents";
 
 const AdminPage = () => {
   const dispatch = useAppDispatch();
@@ -161,7 +166,9 @@ const AdminPage = () => {
                     <p className="text-sm font-medium truncate">
                       {user.given_name} {user.family_name}
                     </p>
-                    <p className="text-sm text-gray-500 truncate">{user.email}</p>
+                    <p className="text-sm text-gray-500 truncate">
+                      {user.email}
+                    </p>
                   </div>
                   <div className="flex items-center space-x-2">
                     {user.isAdmin && (

@@ -14,9 +14,9 @@ const OrderItemsPage = () => {
 
   return (
     <Modal>
-      <PageContent 
-        title="Order Items" 
-        subtitle={`${itemCount} item${itemCount !== 1 ? 's' : ''} • Total: $${entry.price.toFixed(2)}`}
+      <PageContent
+        title="Order Items"
+        subtitle={`${itemCount} item${itemCount !== 1 ? "s" : ""} • Total: $${entry.price.toFixed(2)}`}
         icon={ShoppingBag}
       >
         <Grid cols={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}>

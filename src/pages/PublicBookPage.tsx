@@ -102,7 +102,11 @@ const PublicBookPage = () => {
 
   return (
     <Modal title={book.name} description={`Created by ${book.authorName}`}>
-      <PageContent title={book.name} subtitle={`Created by ${book.authorName}`} icon={BookOpen}>
+      <PageContent
+        title={book.name}
+        subtitle={`Created by ${book.authorName}`}
+        icon={BookOpen}
+      >
         <Section title="Books in this list">
           {isLoading ? (
             <div className="space-y-4">
@@ -128,7 +132,8 @@ const PublicBookPage = () => {
           <div className="flex items-center gap-2 mb-4 text-gray-600 dark:text-gray-400">
             <MessageCircle className="w-5 h-5" />
             <span className="text-sm">
-              {sortedReviews?.length || 0} {sortedReviews?.length === 1 ? 'review' : 'reviews'}
+              {sortedReviews?.length || 0}{" "}
+              {sortedReviews?.length === 1 ? "review" : "reviews"}
             </span>
           </div>
           <div className="space-y-4 max-h-[32rem] overflow-y-auto mb-6 pr-2 custom-scrollbar">
