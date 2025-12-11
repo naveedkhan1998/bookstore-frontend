@@ -9,24 +9,6 @@ export type Credentials = {
   password: string;
 };
 
-export type Elixirs = {
-  id: string;
-  name: string;
-  effect: string;
-  sideEffects: string;
-  characteristics: null | string;
-  time: null | string;
-  difficulty: string;
-  ingredients: Ingredient[];
-  inventors: { id: string; name: string }[];
-  manufacturer: null | string;
-};
-
-export type Ingredient = {
-  id: string;
-  name: string;
-};
-
 export type BookVolume = {
   kind: string;
   id: string;

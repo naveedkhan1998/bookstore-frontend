@@ -5,7 +5,8 @@ import { getCurrentToken } from "@/features/auth/authSlice";
 import {
   publicBookRoute,
   publicBooklistsRoute,
-  routeConfig,
+  publicRoutes,
+  protectedRoutes,
 } from "./routeConfig";
 
 export const AppRoutes = () => {
@@ -16,18 +17,18 @@ export const AppRoutes = () => {
 
   return (
     <Routes>
-      {routeConfig.map(({ path, component: Component, requiresAuth }) => (
+      {publicRoutes.map(({ path, component: Component }) => (
+        <Route key={path} path={path} element={<Component />} />
+      ))}
+
+      {protectedRoutes.map(({ path, component: Component }) => (
         <Route
           key={path}
           path={path}
           element={
-            requiresAuth ? (
-              <ProtectedRoute>
-                <Component />
-              </ProtectedRoute>
-            ) : (
+            <ProtectedRoute>
               <Component />
-            )
+            </ProtectedRoute>
           }
         />
       ))}

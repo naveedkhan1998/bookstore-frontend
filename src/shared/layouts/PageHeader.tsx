@@ -18,13 +18,9 @@ import logoImage from "@/assets/logo.png";
 import { useSidebarContext } from "@/shared/context/SidebarContext";
 import { useGetVolumesQuery } from "@/services/api/googleBooks";
 import { useGetCartQuery } from "@/services/api/cart";
-import { useGetUserBooklistsQuery } from "@/services/api/booklists";
 import { useGetLoggedUserQuery } from "@/services/api/auth";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { getCurrentToken } from "@/features/auth/authSlice";
-import { getUserCart, setUserCart } from "@/features/cart/cartSlice";
-import { setBooks } from "@/features/books/booksSlice";
-import { setUserBookslist } from "@/features/booklists/booklistSlice";
 import { UserType, setUserInfo } from "@/features/user/userSlice";
 import type { BookVolume } from "@/shared/types/api";
 
@@ -233,12 +229,14 @@ const HeaderButtons = memo<{
   showFullWidthSearch: boolean;
   setShowFullWidthSearch: (show: boolean) => void;
   accessToken: string | null | undefined;
-  cartData: ReturnType<typeof getUserCart>;
+  cartData?: { books?: Record<string, number> };
 }>(({ showFullWidthSearch, setShowFullWidthSearch, accessToken, cartData }) => {
   const navigate = useNavigate();
-  const cartItemCount = Object.values(
-    cartData.books as Record<string, number>,
-  ).reduce((acc, val) => acc + val, 0);
+  const cartBooks = cartData?.books ?? {};
+  const cartItemCount = Object.values(cartBooks).reduce(
+    (acc, val) => acc + val,
+    0,
+  );
 
   return (
     <div
@@ -337,17 +335,14 @@ const PageHeader: React.FC = () => {
   const [searchResults, setSearchResults] = useState<BookVolume[]>([]);
 
   const accessToken = useAppSelector(getCurrentToken);
-  const cartDataSelector = useAppSelector(getUserCart);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { data: cartData, isSuccess: cartSuccess } =
-    useGetCartQuery(accessToken);
-  const { data: booklistData, isSuccess: booklistSuccess } =
-    useGetUserBooklistsQuery(accessToken);
+  const { data: cartData } = useGetCartQuery(accessToken);
   const { data: userData } = useGetLoggedUserQuery(accessToken);
-  const { data, isSuccess, isLoading, refetch } =
-    useGetVolumesQuery(searchTerm);
+  const { data, isLoading, refetch } = useGetVolumesQuery({
+    q: searchTerm,
+  });
 
   const handleSearchClick = useCallback(
     (id: string) => {
@@ -358,17 +353,13 @@ const PageHeader: React.FC = () => {
   );
 
   const handleSearch = useCallback(() => {
-    if (isSuccess) {
-      setSearchTerm("");
-      navigate("/");
-      dispatch(setBooks(data.items));
-    }
-  }, [isSuccess, navigate, dispatch, data]);
+    if (!searchTerm.trim()) return;
+    navigate(`/?q=${encodeURIComponent(searchTerm)}`);
+    setSearchTerm("");
+  }, [navigate, searchTerm]);
 
   // Handle data updates
   useEffect(() => {
-    if (cartSuccess) dispatch(setUserCart(cartData));
-    if (booklistSuccess) dispatch(setUserBookslist(booklistData));
     if (userData) {
       const newData: UserType = userData;
       dispatch(
@@ -379,10 +370,6 @@ const PageHeader: React.FC = () => {
       );
     }
   }, [
-    cartSuccess,
-    cartData,
-    booklistSuccess,
-    booklistData,
     userData,
     dispatch,
   ]);
@@ -460,7 +447,7 @@ const PageHeader: React.FC = () => {
           showFullWidthSearch={showFullWidthSearch}
           setShowFullWidthSearch={setShowFullWidthSearch}
           accessToken={accessToken}
-          cartData={cartDataSelector}
+          cartData={cartData}
         />
       </nav>
     </header>

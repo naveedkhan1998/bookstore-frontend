@@ -1,71 +1,70 @@
 import { booksApi } from "./booksApi";
 
+type GetVolumesArgs = {
+  q: string;
+  maxResults?: string | number;
+};
+
 export const googleBooksApi = booksApi.injectEndpoints({
   endpoints: (builder) => ({
     getVolumes: builder.query({
-      query: (q, maxResult = "40") => {
-        return {
-          url: `volumes?q=${q}&maxResults=${maxResult}`,
-          method: "GET",
-        };
-      },
+      query: ({ q, maxResults = "40" }: GetVolumesArgs) => ({
+        url: `volumes?q=${encodeURIComponent(q)}&maxResults=${maxResults}`,
+        method: "GET",
+      }),
+      providesTags: ["Volumes"],
     }),
     getVolume: builder.query({
-      query: (volumeId) => {
-        return {
-          url: `volumes/${volumeId}`,
-          method: "GET",
-        };
-      },
+      query: (volumeId: string) => ({
+        url: `volumes/${volumeId}`,
+        method: "GET",
+      }),
+      providesTags: (_result, _error, volumeId) => [
+        { type: "Volumes", id: volumeId },
+      ],
     }),
     getBookshelves: builder.query({
-      query: () => {
-        return {
-          url: "mylibrary/bookshelves",
-          method: "GET",
-        };
-      },
+      query: () => ({
+        url: "mylibrary/bookshelves",
+        method: "GET",
+      }),
+      providesTags: ["Bookshelves"],
     }),
     getAnnotations: builder.query({
-      query: () => {
-        return {
-          url: "mylibrary/annotations",
-          method: "GET",
-        };
-      },
+      query: () => ({
+        url: "mylibrary/annotations",
+        method: "GET",
+      }),
     }),
     addVolumeToBookshelf: builder.mutation({
-      query: ({ shelf, volumeId }) => {
-        return {
-          url: `mylibrary/bookshelves/${shelf}/addVolume`,
-          method: "POST",
-          body: {
-            volumeId: volumeId,
-          },
-        };
-      },
+      query: ({ shelf, volumeId }: { shelf: string | number; volumeId: string }) => ({
+        url: `mylibrary/bookshelves/${shelf}/addVolume`,
+        method: "POST",
+        body: { volumeId },
+      }),
+      invalidatesTags: ["Bookshelves"],
     }),
     moveVolumeInBookshelf: builder.mutation({
-      query: ({ shelf, volumeId }) => {
-        return {
-          url: `mylibrary/bookshelves/${shelf}/moveVolume`,
-          method: "POST",
-          body: {
-            volumeId: volumeId,
-          },
-        };
-      },
+      query: ({ shelf, volumeId }: { shelf: string | number; volumeId: string }) => ({
+        url: `mylibrary/bookshelves/${shelf}/moveVolume`,
+        method: "POST",
+        body: { volumeId },
+      }),
+      invalidatesTags: ["Bookshelves"],
     }),
     removeVolumeFromBookshelf: builder.mutation({
-      query: ({ shelf, volumeId }) => {
-        return {
-          url: `mylibrary/bookshelves/${shelf}/removeVolume`,
-          method: "POST",
-          body: {
-            volumeId: volumeId,
-          },
-        };
-      },
+      query: ({
+        shelf,
+        volumeId,
+      }: {
+        shelf: string | number;
+        volumeId: string;
+      }) => ({
+        url: `mylibrary/bookshelves/${shelf}/removeVolume`,
+        method: "POST",
+        body: { volumeId },
+      }),
+      invalidatesTags: ["Bookshelves"],
     }),
   }),
 });
@@ -73,6 +72,7 @@ export const googleBooksApi = booksApi.injectEndpoints({
 export const {
   useGetVolumesQuery,
   useGetVolumeQuery,
+  useLazyGetVolumeQuery,
   useGetBookshelvesQuery,
   useGetAnnotationsQuery,
   useAddVolumeToBookshelfMutation,

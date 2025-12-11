@@ -1,13 +1,8 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Library, RefreshCw } from "lucide-react";
-import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
-import {
-  getPublicBooklists,
-  setPublicBookslist,
-} from "@/features/booklists/publicBooklistSlice";
 import { useGetPublicBooklistsQuery } from "@/services/api/booklists";
-import Card from "@/shared/ui/card/card.component";
+import Card from "@/shared/ui/card/Card";
 import PageContent from "@/shared/layouts/PageContent";
 import {
   LoadingState,
@@ -17,16 +12,8 @@ import {
 } from "@/shared/layouts/ContentComponents";
 
 const PublicBooklistsPage = () => {
-  const dispatch = useAppDispatch();
-  const { data, isSuccess, isLoading, isError, refetch } =
-    useGetPublicBooklistsQuery("");
-  const booklists = useAppSelector(getPublicBooklists);
-
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(setPublicBookslist(data));
-    }
-  }, [isSuccess, data, dispatch]);
+  const { data, isLoading, isError, refetch } = useGetPublicBooklistsQuery("");
+  const booklists = data ?? [];
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -64,7 +51,7 @@ const PublicBooklistsPage = () => {
         <EmptyState title="No public booklists available." />
       ) : (
         <Grid cols={{ default: 1, sm: 2, lg: 3, xl: 4 }}>
-          {booklists?.map((bookList) => (
+          {booklists?.map((bookList: { name: string; books: string[]; authorName?: string }) => (
             <Link
               to="/public-booklist"
               state={{ from: bookList }}

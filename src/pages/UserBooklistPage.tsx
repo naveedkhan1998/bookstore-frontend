@@ -2,7 +2,8 @@ import { useState, type FC } from "react";
 import { useParams } from "react-router-dom";
 import { BookMarked, Lock, Globe } from "lucide-react";
 import { useAppSelector } from "@/app/store/hooks";
-import { getUserBooklists } from "@/features/booklists/booklistSlice";
+import { getCurrentToken } from "@/features/auth/authSlice";
+import { useGetUserBooklistsQuery } from "@/services/api/booklists";
 import BookComponent from "@/features/books/components/BookComponent";
 import Modal from "@/shared/components/overlay/Modal";
 import PageContent from "@/shared/layouts/PageContent";
@@ -10,8 +11,10 @@ import { EmptyState, Grid } from "@/shared/layouts/ContentComponents";
 
 const UserBooklistPage: FC = () => {
   const { id } = useParams<{ id: string }>();
-  const userBooklists = useAppSelector(getUserBooklists);
-  const booklist = userBooklists.bookLists?.find((obj) => obj._id === id);
+  const accessToken = useAppSelector(getCurrentToken);
+  const { data: userBooklists, isLoading } =
+    useGetUserBooklistsQuery(accessToken);
+  const booklist = userBooklists?.bookLists?.find((obj: { _id: string }) => obj._id === id);
   const [sortBy, setSortBy] = useState<"dateAdded" | "title">("dateAdded");
 
   const formatDateTime = (dateTimeString: string): string => {
@@ -23,6 +26,14 @@ const UserBooklistPage: FC = () => {
       minute: "2-digit",
     }).format(new Date(dateTimeString));
   };
+
+  if (isLoading) {
+    return (
+      <Modal>
+        <EmptyState title="Loading booklist..." />
+      </Modal>
+    );
+  }
 
   if (!booklist) {
     return (
@@ -70,7 +81,7 @@ const UserBooklistPage: FC = () => {
           />
         ) : (
           <Grid cols={{ default: 1, sm: 2, md: 3, lg: 4, xl: 5 }}>
-            {booklist.books.map((book_id) => (
+            {booklist.books.map((book_id: string) => (
               <BookComponent key={book_id} book_id={book_id} />
             ))}
           </Grid>

@@ -6,7 +6,7 @@ import { useLoginUserMutation } from "@/services/api/auth";
 import { useAppDispatch } from "@/app/store/hooks";
 import { setCredentials } from "@/features/auth/authSlice";
 import { storeToken } from "@/services/storage/localStorage";
-import Input from "@/shared/ui/input/input.component";
+import Input from "@/shared/ui/input/Input";
 import Button from "@/shared/ui/button/Button";
 
 interface FormData {

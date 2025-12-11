@@ -1,21 +1,2 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "@/app/store";
-import type { BookVolume } from "@/shared/types/api";
-
-const initialState: BookVolume[] = [];
-
-export const bookSlice = createSlice({
-  name: "books",
-  initialState,
-  reducers: {
-    setBooks: (_state, action: PayloadAction<BookVolume[]>) => {
-      return action.payload;
-    },
-  },
-});
-
-export const { setBooks } = bookSlice.actions;
-
-export default bookSlice.reducer;
-
-export const getBooks = (state: RootState) => state.books;
+// Deprecated: books slice is no longer used now that Google Books data
+// comes directly from RTK Query (`googleBooksApi`).

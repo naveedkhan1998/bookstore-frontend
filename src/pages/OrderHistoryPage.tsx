@@ -5,7 +5,7 @@ import { useAppSelector } from "@/app/store/hooks";
 import { getCurrentToken } from "@/features/auth/authSlice";
 import { useGetTransactionsQuery } from "@/services/api/transactions";
 import type { Transactions } from "@/shared/types/api";
-import Pagination from "@/shared/ui/pagination/pagination.component";
+import Pagination from "@/shared/ui/pagination/Pagination";
 import PageContent from "@/shared/layouts/PageContent";
 import {
   LoadingState,

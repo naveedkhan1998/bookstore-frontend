@@ -10,7 +10,7 @@ import {
 } from "@/services/api/auth";
 import { storeToken } from "@/services/storage/localStorage";
 import Button from "@/shared/ui/button/Button";
-import Input from "@/shared/ui/input/input.component";
+import Input from "@/shared/ui/input/Input";
 
 const Registration: React.FC = () => {
   const dispatch = useAppDispatch();

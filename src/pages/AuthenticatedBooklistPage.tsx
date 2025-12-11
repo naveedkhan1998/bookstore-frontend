@@ -4,10 +4,9 @@ import { Library, RefreshCw } from "lucide-react";
 import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
 import { getCurrentToken } from "@/features/auth/authSlice";
 import { getRefresh, setRefresh } from "@/features/session/refreshSlice";
-import { setPublicBookslist } from "@/features/booklists/publicBooklistSlice";
 import { useGetALLBooklistsQuery } from "@/services/api/booklists";
 import type { BookCategory } from "@/shared/types/api";
-import Card from "@/shared/ui/card/card.component";
+import Card from "@/shared/ui/card/Card";
 import PageContent from "@/shared/layouts/PageContent";
 import {
   LoadingState,
@@ -20,19 +19,12 @@ const AuthenticatedBooklistPage = () => {
   const dispatch = useAppDispatch();
   const access_token = useAppSelector(getCurrentToken);
   const refresh = useAppSelector(getRefresh);
-  const { data, isSuccess, isLoading, isError, refetch } =
+  const { data, isLoading, isError, refetch } =
     useGetALLBooklistsQuery(access_token);
-
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(setPublicBookslist(data));
-    }
-  }, [isSuccess, data, dispatch]);
 
   useEffect(() => {
     if (refresh) {
       refetch();
-      dispatch(setPublicBookslist(data));
       dispatch(setRefresh(false));
     }
   }, [refresh, refetch, dispatch, data]);

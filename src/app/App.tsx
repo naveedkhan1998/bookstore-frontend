@@ -1,8 +1,6 @@
 import { Suspense } from "react";
-import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "./routes/AppRoutes";
 import Toast from "@/shared/components/feedback/ToastContainer";
-import SidebarProvider from "@/shared/context/SidebarContext";
 import MainLayout from "@/shared/layouts/MainLayout";
 
 const LoadingFallback = () => (
@@ -13,16 +11,12 @@ const LoadingFallback = () => (
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <SidebarProvider>
-        <MainLayout>
-          <Suspense fallback={<LoadingFallback />}>
-            <AppRoutes />
-          </Suspense>
-        </MainLayout>
-        <Toast />
-      </SidebarProvider>
-    </BrowserRouter>
+    <MainLayout>
+      <Suspense fallback={<LoadingFallback />}>
+        <AppRoutes />
+      </Suspense>
+      <Toast />
+    </MainLayout>
   );
 };
 

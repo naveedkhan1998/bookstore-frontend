@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Library } from "lucide-react";
-import { useAppSelector } from "@/app/store/hooks";
-import { getBooks } from "@/features/books/booksSlice";
+import { useGetVolumesQuery } from "@/services/api/googleBooks";
 import type { BookVolume } from "@/shared/types/api";
 import DefaultImage from "@/assets/pp.jpg";
-import Card from "@/shared/ui/card/card.component";
-import Pagination from "@/shared/ui/pagination/pagination.component";
+import Card from "@/shared/ui/card/Card";
+import Pagination from "@/shared/ui/pagination/Pagination";
 import PageContent from "@/shared/layouts/PageContent";
 import { LoadingState } from "@/shared/layouts/ContentComponents";
 
@@ -18,7 +17,9 @@ const BooksList = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const books = useAppSelector(getBooks);
+  const searchTerm = searchParams.get("q") || "Time";
+  const { data, isFetching, isError } = useGetVolumesQuery({ q: searchTerm });
+  const books = data?.items ?? [];
 
   // Get page from URL or default to 1
   const [currentPage, setCurrentPage] = useState(() => {
@@ -63,6 +64,11 @@ const BooksList = () => {
     }
   }, [searchParams, currentPage]);
 
+  // Reset page when search term changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
   // Pagination logic
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
@@ -106,7 +112,7 @@ const BooksList = () => {
     </motion.div>
   );
 
-  if (books.length === 0) {
+  if (isFetching) {
     return (
       <PageContent
         title="Book Library"
@@ -114,6 +120,30 @@ const BooksList = () => {
         icon={Library}
       >
         <LoadingState message="Loading your library..." />
+      </PageContent>
+    );
+  }
+
+  if (isError) {
+    return (
+      <PageContent
+        title="Book Library"
+        subtitle="Discover your next favorite read"
+        icon={Library}
+      >
+        <LoadingState message="Something went wrong loading books." />
+      </PageContent>
+    );
+  }
+
+  if (books.length === 0) {
+    return (
+      <PageContent
+        title="Book Library"
+        subtitle="No books found for your search"
+        icon={Library}
+      >
+        <LoadingState message="Try a different search term." />
       </PageContent>
     );
   }

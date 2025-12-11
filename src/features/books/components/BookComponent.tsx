@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetVolumeQuery } from "@/services/api/googleBooks";
 import type { BookVolume } from "@/shared/types/api";
 import DefaultImage from "@/assets/pp.jpg";
-import Card from "@/shared/ui/card/card.component";
+import Card from "@/shared/ui/card/Card";
 type BookID = {
   book_id: string;
 };

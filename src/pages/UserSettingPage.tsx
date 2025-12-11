@@ -19,7 +19,7 @@ import {
   Language,
 } from "@/features/settings/settingSlice";
 import Button from "@/shared/ui/button/Button";
-import Input from "@/shared/ui/input/input.component";
+import Input from "@/shared/ui/input/Input";
 import PageContent from "@/shared/layouts/PageContent";
 import { LoadingState } from "@/shared/layouts/ContentComponents";
 

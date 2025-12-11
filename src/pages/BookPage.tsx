@@ -1,23 +1,9 @@
-import { useState, useEffect, type FC } from "react";
+import { useState, type FC } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  Loader2,
-  Bookmark,
-  ShoppingCart,
-  AlertTriangle,
-  Calendar,
-  Library,
-  Building2,
-  Share2,
-  Heart,
-  Star,
-} from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { getBooks } from "@/features/books/booksSlice";
+import { Calendar, Library, Building2 } from "lucide-react";
+import { useAppSelector } from "@/app/store/hooks";
 import { getCurrentToken } from "@/features/auth/authSlice";
-import { getUserBooklists } from "@/features/booklists/booklistSlice";
-import { setUserCart } from "@/features/cart/cartSlice";
 import {
   useAddBookToBooklistMutation,
   useGetUserBooklistsQuery,
@@ -26,176 +12,38 @@ import { useGetVolumeQuery } from "@/services/api/googleBooks";
 import { useAddToCartMutation, useGetCartQuery } from "@/services/api/cart";
 import Modal from "@/shared/components/overlay/Modal";
 import DefaultPic from "@/assets/pp.jpg";
-import { Grid } from "@/shared/layouts/ContentComponents";
-
-interface PriceTagProps {
-  amount: number;
-  currencyCode: string;
-  isRetail?: boolean;
-}
-
-interface BookMetaItemProps {
-  icon: React.ElementType;
-  label: string;
-  value: string | number | undefined;
-}
-
-interface ActionButtonProps {
-  onClick: () => void;
-  isLoading?: boolean;
-  icon: React.ElementType;
-  label: string;
-  variant?: "primary" | "secondary" | "danger";
-  disabled?: boolean;
-}
-
-interface RatingStarsProps {
-  rating?: number;
-}
-
-const PriceTag: FC<PriceTagProps> = ({
-  amount,
-  currencyCode,
-  isRetail = false,
-}) => (
-  <div
-    className={`flex items-center gap-2 ${isRetail ? "text-gray-500 text-sm line-through" : "text-2xl font-bold"}`}
-  >
-    <span>{currencyCode}</span>
-    <span>{amount}</span>
-  </div>
-);
-
-const BookMetaItem: FC<BookMetaItemProps> = ({ icon: Icon, label, value }) => (
-  <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300">
-    <Icon className="w-5 h-5" />
-    <div className="flex flex-col">
-      <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>
-      <span className="font-medium">{value || "N/A"}</span>
-    </div>
-  </div>
-);
-
-const ActionButton: FC<ActionButtonProps> = ({
-  onClick,
-  isLoading = false,
-  icon: Icon,
-  label,
-  variant = "primary",
-  disabled = false,
-}) => {
-  const baseStyles =
-    "flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300";
-  const variants = {
-    primary:
-      "bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl",
-    secondary:
-      "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 shadow hover:shadow-md",
-    danger: "bg-red-500 hover:bg-red-600 text-white shadow-lg hover:shadow-xl",
-  };
-
-  return (
-    <button
-      onClick={onClick}
-      disabled={isLoading || disabled}
-      className={`${baseStyles} ${variants[variant]} ${
-        isLoading || disabled
-          ? "opacity-50 cursor-not-allowed"
-          : "transform hover:scale-105"
-      }`}
-    >
-      {isLoading ? (
-        <Loader2 className="w-5 h-5 animate-spin" />
-      ) : (
-        <Icon className="w-5 h-5" />
-      )}
-      {label}
-    </button>
-  );
-};
-
-const RatingStars: FC<RatingStarsProps> = ({ rating = 4.5 }) => (
-  <div className="flex items-center gap-2">
-    <div className="flex">
-      {[...Array(5)].map((_, i) => (
-        <Star
-          key={i}
-          className={`w-5 h-5 ${i < Math.floor(rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}`}
-        />
-      ))}
-    </div>
-    <span className="text-sm text-gray-600 dark:text-gray-300">{rating}/5</span>
-  </div>
-);
-
-interface SaleInfo {
-  listPrice?: {
-    amount: number;
-    currencyCode: string;
-  };
-  retailPrice?: {
-    amount: number;
-    currencyCode: string;
-  };
-}
-
-interface VolumeInfo {
-  title: string;
-  subtitle?: string;
-  authors?: string[];
-  publisher?: string;
-  publishedDate?: string;
-  description?: string;
-  pageCount?: number;
-  imageLinks?: {
-    thumbnail?: string;
-  };
-}
-
-interface Book {
-  id: string;
-  volumeInfo: VolumeInfo;
-  saleInfo: SaleInfo;
-}
+import { Grid, LoadingState } from "@/shared/layouts/ContentComponents";
+import {
+  PriceTag,
+  BookMetaItem,
+  RatingStars,
+  BookActions,
+  QuickActions,
+} from "@/features/books/components";
 
 const BookPage: FC = () => {
   const { id } = useParams<{ id: string }>();
-  const dispatch = useAppDispatch();
   const access_token = useAppSelector(getCurrentToken);
-  const userBooklists = useAppSelector(getUserBooklists);
-  const books = useAppSelector(getBooks);
   const [selectedBooklistID, setSelectedBooklistID] = useState<string>("");
   const [isLiked, setIsLiked] = useState<boolean>(false);
 
   const { data: bookData, isSuccess } = useGetVolumeQuery(id as string);
-  const { refetch: refetchBooklists } = useGetUserBooklistsQuery(access_token);
-  const {
-    data: cartData,
-    isSuccess: cartSuccess,
-    isFetching,
-    refetch: refetchCart,
-  } = useGetCartQuery(access_token);
+  const { data: userBooklists, refetch: refetchBooklists } =
+    useGetUserBooklistsQuery(access_token);
+  const { refetch: refetchCart } = useGetCartQuery(access_token);
 
   const [addBookToBooklist, { isLoading: addingToBooklist }] =
     useAddBookToBooklistMutation();
   const [addToCart, { isLoading: addingToCart }] = useAddToCartMutation();
 
-  const selectedBook: Book | undefined = isSuccess
-    ? bookData
-    : books.find((obj: Book) => obj.id === id);
-
-  useEffect(() => {
-    if (!isFetching && cartSuccess) {
-      dispatch(setUserCart(cartData));
-    }
-  }, [isFetching, cartSuccess, cartData, dispatch]);
+  const selectedBook = isSuccess ? bookData : undefined;
 
   const handleAddToCart = async () => {
     try {
       await addToCart({ book_id: { book_id: id }, access_token }).unwrap();
       toast.success("Book added to cart");
       refetchCart();
-    } catch (error) {
+    } catch {
       toast.error("Failed to add book to cart");
     }
   };
@@ -206,8 +54,8 @@ const BookPage: FC = () => {
       return;
     }
 
-    const booklist = userBooklists.bookLists?.find(
-      (list) => list._id === selectedBooklistID,
+    const booklist = userBooklists?.bookLists?.find(
+      (list: { _id: string }) => list._id === selectedBooklistID
     );
     if (!booklist) return;
 
@@ -219,21 +67,22 @@ const BookPage: FC = () => {
       }).unwrap();
       toast.success(`Added to ${booklist.name}`);
       refetchBooklists();
-    } catch (error) {
+    } catch {
       toast.error("Failed to add book to booklist");
     }
   };
 
-  if (!selectedBook) return null;
+  if (!selectedBook) {
+    return <LoadingState message="Loading book details..." />;
+  }
 
   const { volumeInfo, saleInfo } = selectedBook;
 
   return (
     <Modal title={volumeInfo.title}>
       <Grid cols={{ default: 1, lg: 2 }} className="gap-12">
-        {/* Left Column */}
+        {/* Left Column - Cover and Actions */}
         <div className="space-y-8">
-          {/* Book Cover */}
           <div className="aspect-[3/4] rounded-xl overflow-hidden shadow-2xl">
             <img
               src={volumeInfo.imageLinks?.thumbnail || DefaultPic}
@@ -242,7 +91,6 @@ const BookPage: FC = () => {
             />
           </div>
 
-          {/* Price and Actions */}
           <div className="space-y-6">
             {saleInfo.listPrice && (
               <div className="space-y-2">
@@ -262,69 +110,26 @@ const BookPage: FC = () => {
             )}
 
             {access_token && (
-              <div className="flex flex-col gap-4">
-                {saleInfo.listPrice ? (
-                  <ActionButton
-                    onClick={handleAddToCart}
-                    isLoading={addingToCart}
-                    icon={ShoppingCart}
-                    label="Add to Cart"
-                  />
-                ) : (
-                  <ActionButton
-                    onClick={() => {}}
-                    icon={AlertTriangle}
-                    label="Sold Out"
-                    variant="danger"
-                    disabled
-                  />
-                )}
-
-                <div className="flex gap-3">
-                  <select
-                    value={selectedBooklistID}
-                    onChange={(e) => setSelectedBooklistID(e.target.value)}
-                    className="flex-1 p-3 rounded-full border border-gray-200 dark:border-gray-700 
-                             bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">Select Booklist</option>
-                    {userBooklists.bookLists?.map((list) => (
-                      <option key={list._id} value={list._id}>
-                        {list.name} ({list.isPrivate ? "Private" : "Public"})
-                      </option>
-                    ))}
-                  </select>
-                  <ActionButton
-                    onClick={handleAddToBooklist}
-                    isLoading={addingToBooklist}
-                    icon={Bookmark}
-                    variant="secondary"
-                    label=""
-                  />
-                </div>
-              </div>
+              <BookActions
+                hasPrice={!!saleInfo.listPrice}
+                addingToCart={addingToCart}
+                addingToBooklist={addingToBooklist}
+                selectedBooklistID={selectedBooklistID}
+                booklists={userBooklists?.bookLists}
+                onAddToCart={handleAddToCart}
+                onAddToBooklist={handleAddToBooklist}
+                onBooklistSelect={setSelectedBooklistID}
+              />
             )}
           </div>
 
-          {/* Quick Actions */}
-          <div className="flex justify-around py-4 border-t border-b border-gray-200 dark:border-gray-700">
-            <button
-              onClick={() => setIsLiked(!isLiked)}
-              className="flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-red-500"
-            >
-              <Heart
-                className={`w-6 h-6 ${isLiked ? "fill-red-500 text-red-500" : ""}`}
-              />
-              <span className="text-sm">Like</span>
-            </button>
-            <button className="flex flex-col items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-500">
-              <Share2 className="w-6 h-6" />
-              <span className="text-sm">Share</span>
-            </button>
-          </div>
+          <QuickActions
+            isLiked={isLiked}
+            onLikeToggle={() => setIsLiked(!isLiked)}
+          />
         </div>
 
-        {/* Right Column */}
+        {/* Right Column - Book Details */}
         <div className="space-y-8">
           {volumeInfo.subtitle && (
             <p className="text-xl text-gray-600 dark:text-gray-400">
@@ -332,7 +137,6 @@ const BookPage: FC = () => {
             </p>
           )}
 
-          {/* Meta Information */}
           <div className="grid grid-cols-2 gap-6">
             <BookMetaItem
               icon={Library}
@@ -356,12 +160,10 @@ const BookPage: FC = () => {
             />
           </div>
 
-          {/* Rating */}
           <div className="py-6 border-t border-gray-200 dark:border-gray-700">
             <RatingStars />
           </div>
 
-          {/* Description */}
           {volumeInfo.description && (
             <div className="space-y-4">
               <h3 className="text-2xl font-semibold">About this book</h3>

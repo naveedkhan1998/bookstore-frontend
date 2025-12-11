@@ -2,21 +2,17 @@ import { useState, useEffect, type FC } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Trash2, BookOpen } from "lucide-react";
-import { useAppSelector, useAppDispatch } from "@/app/store/hooks";
+import { useAppSelector } from "@/app/store/hooks";
 import { getCurrentToken } from "@/features/auth/authSlice";
-import {
-  getUserBooklists,
-  setUserBookslist,
-} from "@/features/booklists/booklistSlice";
 import {
   useGetUserBooklistsQuery,
   useCreateBooklistMutation,
   useDeleteBooklistMutation,
 } from "@/services/api/booklists";
 import Button from "@/shared/ui/button/Button";
-import Input from "@/shared/ui/input/input.component";
-import Toggle from "@/shared/ui/toggle/toggle.component";
-import Spinner from "@/shared/ui/spinner/spinner.component";
+import Input from "@/shared/ui/input/Input";
+import Toggle from "@/shared/ui/toggle/Toggle";
+import Spinner from "@/shared/ui/spinner/Spinner";
 import PageContent from "@/shared/layouts/PageContent";
 import {
   Section,
@@ -26,13 +22,10 @@ import {
 } from "@/shared/layouts/ContentComponents";
 
 const BooklistPageAuth: FC = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const access_token = useAppSelector(getCurrentToken);
-  const { data, isSuccess, refetch } = useGetUserBooklistsQuery(access_token);
+  const { data, refetch } = useGetUserBooklistsQuery(access_token);
   const [deleteBooklist] = useDeleteBooklistMutation();
-
-  const storeData = useAppSelector(getUserBooklists);
 
   const [createBooklist, { isSuccess: createBooklistSuccess, isLoading }] =
     useCreateBooklistMutation();
@@ -48,12 +41,6 @@ const BooklistPageAuth: FC = () => {
       toast.success("Booklist Created");
     }
   }, [createBooklistSuccess, refetch]);
-
-  useEffect(() => {
-    if (isSuccess && data) {
-      dispatch(setUserBookslist(data));
-    }
-  }, [isSuccess, data, dispatch]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, type, checked, value } = e.target;
@@ -159,9 +146,9 @@ const BooklistPageAuth: FC = () => {
         description="Browse and manage your collections"
         className="mt-12"
       >
-        {storeData && storeData.bookLists && storeData.bookLists.length > 0 ? (
+        {data?.bookLists && data.bookLists.length > 0 ? (
           <Grid cols={{ default: 1, md: 2, lg: 3 }} gap={6}>
-            {storeData.bookLists.map((bookList) => (
+            {data.bookLists.map((bookList: { _id: string; name: string; isPrivate: boolean }) => (
               <ContentCard
                 key={bookList._id}
                 hoverable
